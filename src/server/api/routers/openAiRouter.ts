@@ -74,7 +74,7 @@ export const OpenAiRouter = createTRPCRouter({
             model: "gpt-3.5-turbo",
             messages: [
               {
-                content: `Someone said: ${input.newMessage}, please declare the topic exclude words such as Requesting assistance or Help with`,
+                content: `Summarize this question in short: ${input.newMessage}`,
                 role: "user",
               },
             ],
