@@ -1,7 +1,6 @@
 ﻿import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import { Configuration, OpenAIApi } from "openai";
-import { Conversation } from "@prisma/client";
 
 export const OpenAiRouter = createTRPCRouter({
   send: protectedProcedure
@@ -32,7 +31,7 @@ export const OpenAiRouter = createTRPCRouter({
           !response.data.choices[0] ||
           !response.data.choices[0].message
         ) {
-          throw new Error("No response from OpenAI");
+          throw new Error("OpenAI API Error");
         }
 
         if (response.status !== 200) {
@@ -120,6 +119,43 @@ export const OpenAiRouter = createTRPCRouter({
         },
         include: {
           messages: true,
+        },
+      });
+    }),
+
+  delete: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid("Invalid Conversation Id"),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.conversation.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid("Invalid Conversation Id"),
+        name: z
+          .string()
+          .min(3, "Name must be at least 3 characters")
+          .optional(),
+        folderId: z.string().cuid("Invalid Folder Id").optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.conversation.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.name,
+          folderId: input.folderId,
         },
       });
     }),
