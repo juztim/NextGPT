@@ -70,14 +70,37 @@ export const OpenAiRouter = createTRPCRouter({
         }
 
         if (!conversation || !input.conversationId) {
+          const summaryResponse = await openAI.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            messages: [
+              {
+                content: `Someone said: ${input.newMessage}, please declare the topic exclude words such as Requesting assistance or Help with`,
+                role: "user",
+              },
+            ],
+          });
+
+          if (
+            !summaryResponse ||
+            !summaryResponse.data ||
+            !summaryResponse.data.choices ||
+            summaryResponse.data.choices.length === 0 ||
+            !summaryResponse.data.choices[0] ||
+            !summaryResponse.data.choices[0].message
+          ) {
+            throw new Error("OpenAI API Error while summarizing");
+          }
+
           const conversation = await ctx.prisma.conversation.create({
             data: {
               userId: ctx.session.user.id,
+              name: summaryResponse.data.choices[0].message.content,
             },
             select: {
               id: true,
             },
           });
+
           await ctx.prisma.message.createMany({
             data: [
               {
@@ -91,6 +114,7 @@ export const OpenAiRouter = createTRPCRouter({
               },
             ],
           });
+
           return { newConversation: true, conversationId: conversation.id };
         }
 
