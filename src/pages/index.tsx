@@ -5,7 +5,7 @@ import Image from "next/image";
 import Logo from "~/images/logo.png";
 import ChatMessage from "~/components/chatMessage";
 import { api } from "~/utils/api";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import ChatFolder from "~/components/chatFolder";
 import AiChatMessage from "~/components/aiChatMessage";
@@ -14,6 +14,18 @@ const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
   const ctx = api.useContext();
   const innerChatBoxRef = useRef<HTMLDivElement | null>(null);
+  const { userData: session, status } = useSession();
+
+  const { mutate: deleteChat } = api.openAi.delete.useMutation({
+    onError(error) {
+      console.log(error);
+      toast.error("Error deleting chat");
+    },
+    onSuccess() {
+      toast.success("Chat deleted");
+      void ctx.openAi.getAllChats.refetch();
+    },
+  });
 
   const { mutate: sendMessage, isLoading: isSendingMessage } =
     api.openAi.send.useMutation({
@@ -69,6 +81,13 @@ const Home: NextPage = () => {
       newMessage: message,
     });
   };
+
+  // If the user is not logged in, show the login page
+  useEffect(() => {
+    if (status !== "authenticated" && status !== "loading") {
+      void signIn();
+    }
+  }, [status]);
 
   return (
     <>
@@ -204,6 +223,8 @@ const Home: NextPage = () => {
                   onChatOpen={setActiveChatId}
                   conversations={chats?.ungroupedChats}
                   index={9999}
+                  onChatDelete={(id) => deleteChat({ id })}
+                  refreshChats={() => void ctx.openAi.getAllChats.refetch()}
                 />
                 {chats?.groupedChats?.map((folder, index) => (
                   <ChatFolder
@@ -212,6 +233,8 @@ const Home: NextPage = () => {
                     key={folder.id}
                     index={index}
                     onChatOpen={setActiveChatId}
+                    onChatDelete={(id) => deleteChat({ id })}
+                    refreshChats={() => void ctx.openAi.getAllChats.refetch()}
                   />
                 ))}
               </div>

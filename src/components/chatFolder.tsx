@@ -13,11 +13,15 @@ const ChatFolder = ({
   conversations,
   index,
   onChatOpen,
+  onChatDelete,
+  refreshChats,
 }: {
   title: string;
   conversations?: Conversation[];
   index: number;
   onChatOpen: (id: string) => void;
+  onChatDelete: (id: string) => void;
+  refreshChats: () => void;
 }) => {
   return (
     <div className="folder mb-2">
@@ -54,7 +58,9 @@ const ChatFolder = ({
             key={conversation.id}
             name={conversation.name}
             onChatOpen={onChatOpen}
+            onDeleteChat={onChatDelete}
             id={conversation.id}
+            refreshChats={refreshChats}
           />
         ))}
       </div>
