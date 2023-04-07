@@ -1,0 +1,141 @@
+/***********************************************
+              	Input Groups
+************************************************/
+.input-group {
+	border-color: $light;
+
+	*:first-child {
+		border-right: none;
+	}
+
+	*:last-child {
+		border-left: none;
+	}
+
+	.input-group-text {
+		background: $dark-4;
+		color: $light;
+	}
+}
+
+.form-control {
+	background: $dark-4;
+	color: $dark-1;
+	border-color: $light;
+	font-size: $small-text;
+	padding: 11px 10px;
+}
+
+
+textarea.form-control:focus,
+.form-control:focus,
+[type=text].form-control:focus, 
+[type=password].form-control:focus, 
+[type=email].form-control:focus, 
+[type=tel].form-control:focus, 
+[contenteditable].form-control:focus,
+.form-switch .form-check-input:focus,
+.form-select:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 .25rem rgba($main-col,.25) !important;
+  border-color: rgba($main-col, .4);
+}
+
+
+/***********************************************
+              	Chat Input
+************************************************/
+.chat-ai {
+	position: relative;
+
+	.form-control-lg {
+		background: $dark-2;
+		border-color: $dark-3;
+		color: $light;
+		font-size: $small-text;
+		padding: 14px;
+
+		&::placeholder {
+			color: $light;
+		}
+	}
+
+	.input-group-text {
+		background: $dark-2;
+		color: $white;
+		border-color: $dark-3;
+	}
+}
+
+/***********************************************
+              	Select
+************************************************/
+.form-select {
+	padding: 10px 14px;
+}
+
+/***********************************************
+              	Switch
+************************************************/
+.form-switch {
+	min-height: 2.5rem;
+	display: inline-flex;
+	align-items: center;
+
+	.form-check-input {
+		height: 2rem;
+		width: 3.5rem;
+		margin-right: 10px;
+		background-color: $light-3;
+		border-color: $light-3;
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e") !important;
+	}
+}
+
+.form-check-input {
+	&:focus {
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%237436DA'/%3e%3c/svg%3e") !important;
+	}
+}
+
+.form-check-input:checked {
+	background-color: $main-col;
+	border-color: $main-col;
+
+	&:focus {
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e") !important;
+	}
+}
+
+
+/***********************************************
+              	Range Slider
+************************************************/
+input[type="range"].form-range {
+ 	&::-webkit-slider-thumb {
+		background-color: $main-col !important;
+	}
+
+	&::-moz-range-thumb {
+		background-color: $main-col !important;
+	}
+
+	&::-ms-thumb {
+		background-color: $main-col !important;
+	}
+
+	&:focus {
+		&::-webkit-slider-thumb {
+			box-shadow: 0 0 0 .25rem rgba($main-col,.25) !important;
+		}
+
+		&::-moz-range-thumb {
+			box-shadow: 0 0 0 .25rem rgba($main-col,.25) !important;
+		}
+
+		&::-ms-thumb {
+			box-shadow: 0 0 0 .25rem rgba($main-col,.25) !important;
+		}
+
+	}
+}

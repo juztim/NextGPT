@@ -1,0 +1,383 @@
+/***********************************************
+              General Styles
+************************************************/
+html {
+	font-size: 14px;
+}
+
+body {
+	background: $dark-3;
+	color: $white;	
+	font-weight: 500;
+	font-family: $font;
+}
+
+a {
+	@include tr($tr);
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.text-accent {
+	color: $accent;
+}
+
+.bg-light {
+	background: rgba($light-3, .2) !important;
+}
+
+.bg-accent-2 {
+	background: $accent-2;
+	color: $white;
+	@include br($round);
+}
+
+.main-link {
+	color: $main-col;
+
+	&:hover {
+		opacity: .6;
+		color: $main-col;
+	}
+}
+
+.link {
+	color: $accent-3;
+	text-decoration: underline;
+
+	&:hover {
+		opacity: .6;
+		color: $accent-2;
+	}
+}
+
+.text-black {
+	color: $black;
+}
+
+.text-xsmall {
+	font-size: $xsmall-text;
+}
+
+.text-small {
+	font-size: $small-text;
+}
+
+.text-normal {
+	font-size: $normal-text;
+}
+
+.text-big {
+	font-size: $caption-3;
+}
+
+.caption-1 {
+	font-size: $caption-1;
+}
+
+.caption-2 {
+	font-size: $caption-2;
+}
+
+.link-with-icon {
+	color: $white;
+
+	.text {
+		text-decoration: underline;
+		@include tr($tr);
+	}
+
+	&:hover {
+		color: $white;
+
+		.text {
+			opacity: .6;
+		}
+	}
+}
+
+.border, .border-top, .border-bottom, .border-start, .border-end {
+	border-color: $dark-1 !important;
+}
+
+.border-light {
+	border-color: rgba($black, .2) !important;
+}
+
+.icon-md {
+	font-size: 1.3rem;
+}
+
+/***********************************************
+              	  Header
+************************************************/
+.header {
+	.navbar {
+		background: $dark-2;
+		height: 50px;
+		padding: 0;
+
+		.navbar-nav {
+			li {
+				margin: 0 8px;
+			}
+
+			a {
+				color: $white;
+				cursor: pointer;
+
+				&:hover {
+					color: $light;
+				}
+
+				.icon {
+					font-size: 1.3rem;
+				}
+			}
+
+			.nav-link {
+				padding: 0;
+				display: flex;
+				align-items: center;
+			}
+
+			.nav-item {
+				display: flex;
+				align-items: center;
+			}
+
+			.dropdown {
+				a.dropdown-toggle {
+					display: flex;
+					align-items: center;
+
+					.icon {
+						@media (min-width: 576px) {
+							margin-right: 5px;
+							font-size: 1.7rem;
+						}
+					}
+
+					&:after {
+						border: none;						
+						@include tr($tr);
+						display: none;
+
+						@media (min-width: 576px) {
+							margin-left: 15px;
+							display: inline-block;
+						}
+					}
+
+					&.show {
+						&:after {
+							transform: rotate(180deg);
+						}
+					}
+				}
+
+				.dropdown-menu {
+					position: absolute;
+					background: $dark-2;
+					color: $white;
+					padding: 0;
+					@include br(0 0 $br $br);
+					border: none;
+					top: 132%;
+					@include tr($tr);
+					overflow: hidden;
+
+					li {
+						margin: 0;
+					}
+
+					.dropdown-item {
+						padding: 8px 16px;
+
+						&:hover {
+							background: rgba($light-2, .2);
+							color: $white;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+/***********************************************
+              	Buttons
+************************************************/
+.btn {
+	padding: 10px 12px;
+	font-size: $normal-text;
+
+	vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  position: relative;
+  overflow: hidden;
+  background: #e1e1e1;
+  -webkit-transition-property: color;
+  transition-property: color;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+
+  &:before {
+  	content: "";
+	  position: absolute;
+	  z-index: -1;
+	  width: 100px;
+	  height: 100px;
+	  top: 50%;	  
+	  left: 50%;
+	  margin-top: -50px;
+	  margin-left: -50px;
+	  background: $white;
+	  border-radius: 100%;
+	  -webkit-transform: scale(0);
+	  transform: scale(0);
+	  -webkit-transition-property: transform;
+	  transition-property: transform;
+	  -webkit-transition-duration: 0.4s;
+	  transition-duration: 0.54;
+	  -webkit-transition-timing-function: ease-out;
+	  transition-timing-function: ease-out;
+	  opacity: .1;
+  }
+
+  .icon {
+  	font-size: 1.3rem;
+  }
+
+  &:hover:before, &:focus:before, &:active:before {
+  	-webkit-transform: scale(2);
+  	transform: scale(2);
+	}
+
+	// Primary Button
+	&.btn-primary {
+		background: $main-col;
+		border-color: $main-col;
+		color: $white;
+
+	  &:hover, &:focus, &:active {
+	  	background: $main-col;
+	  	border-color: $main-col;
+	  }
+	}
+
+	&.btn-outline-primary {
+		border-color: $main-col;
+		color: $main-col;
+		background: none;
+
+		&:before {
+			background: $main-col;
+		}
+
+		&:hover, &:focus, &:active {
+			background: none;
+			color: $main-col;
+			border-color: $main-col;
+		}
+	}
+
+	&.btn-secondary {
+		background: $dark-3;
+		border-color: $dark-3;
+		color: $white;
+
+	  &:hover, &:focus, &:active {
+	  	background: $dark-3;
+	  	border-color:$dark-3;
+	  }
+	}
+
+	&.btn-outline-secondary {
+		border-color: $dark-1;
+		color: $light;
+		background: none;
+
+		&:hover, &:focus, &:active {
+			background: none;
+		}
+	}
+
+	&.btn-new {
+		position: relative;
+
+		.icon {
+			position: absolute;
+			left: 10px;
+			top: 50%;
+			transform: translate(0, -50%);
+			font-size: 1.4rem;
+			opacity: .8;
+			display: block;
+			margin-top: 1px;
+			@include tr($tr);
+		}
+
+		&:hover {
+			.icon {
+				transform: translate(0, -50%) rotate(90deg);
+			}
+		}
+	}
+}
+
+.btn-close {
+	@include tr($tr);
+
+	&:hover {
+		transform: rotate(90deg);
+	}
+
+	&:focus {
+		@include bsh(none);
+	}
+}
+
+.btn-check:checked + .btn {
+		background: $main-col;
+		border-color: $main-col;
+		color: $white;
+}
+
+.btn-nostyle {
+	border: none;
+	background: none;
+	color: $white;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	@include tr($tr);
+
+	.icon-folder-plus {
+		font-size: 1.3rem;
+	}
+
+	.icon-filter {
+		font-size: 1.9rem;
+	}
+
+	&:hover {
+		opacity: .6;
+	}
+
+	.icon-plus {
+		font-size: 1.3rem;
+		@include tr($tr);
+		display: block;
+	}
+
+	&:hover {
+		.icon-plus {
+			transform: rotate(90deg);
+		}
+	}
+}
+

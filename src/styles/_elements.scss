@@ -1,0 +1,88 @@
+/***********************************************
+              	  Folder
+************************************************/
+.folder {
+	.folder-toggle {
+		background: $dark-3;
+		@include br($br);
+
+		.icon-chevron-down {
+			@include tr($tr);
+			display: inline-block;
+		}
+
+		.open-folder {
+			.icon-chevron-down {
+				transform: rotate(-180deg);
+			}
+		}
+	}
+}
+
+.top-level-chat {
+	background: $dark-3;
+	@include br($br);
+}
+
+/***********************************************
+                	Tabs
+************************************************/
+.nav-pills {
+	.nav-link {
+		color: rgba($light-2, .6);
+		display: inline-flex;
+		align-items: center;
+		margin: 0 10px;
+		@include br(0);
+		padding: 0;
+		border-bottom: 2px solid transparent;
+
+		&:hover {
+			color: $white;
+		}
+
+		.icon {
+			margin-right: 5px;
+			font-size: 1.2rem;
+		}
+
+		&.active {
+			background: none;
+			border-bottom: 2px solid $main-col;
+		}
+	}
+
+	.nav-item:first-child {
+		.nav-link {
+			margin-left: 0;
+		}
+	}
+}
+
+/***********************************************
+              	Chat Item
+************************************************/
+.chat-item {
+	.image {
+		flex-shrink: 0;
+
+		img {
+			@include br(2px);
+		}
+	}
+
+	&.chat-item-ai {
+		background: $dark-1;
+	}
+}
+
+/***********************************************
+              	Progress Bar
+************************************************/
+.progress {
+	background: $accent-2;
+
+	.progress-bar {
+		background: $dark-1;
+	}
+}

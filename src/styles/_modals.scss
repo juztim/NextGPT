@@ -1,0 +1,58 @@
+/***********************************************
+              	Modals
+************************************************/
+.modal {
+	color: $black;
+
+	.modal-title {
+		font-size: $caption-3;
+		display: flex;
+		align-items: center;
+		font-weight: 600;
+
+		.icon {
+			font-size: 2rem;
+		}
+	}
+
+	.modal-header {
+		padding: 30px 45px;
+		border: none;
+	}
+
+	.modal-body {
+		padding: 10px 45px;
+	}
+
+	.modal-footer {
+		padding: 0 45px 30px;
+		border: none;
+		display: block;
+	}
+
+	.form-control {
+		background: $white;
+		color: $dark-1;
+		border-color: $light-2;
+		font-size: $small-text;
+		padding: 11px 10px;
+	}
+
+	.nav-pills {
+		.nav-link {
+			color: rgba($black, .5);
+
+			&:hover {
+				color: $black;
+			}
+
+			&.active {
+				color: $black;
+			}
+		}
+	}
+
+	.tab-pane {
+		padding: 0 0 20px;
+	}
+}
