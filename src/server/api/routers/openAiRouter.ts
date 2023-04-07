@@ -18,9 +18,20 @@ export const OpenAiRouter = createTRPCRouter({
         });
         const openAI = new OpenAIApi(openAiConfig);
 
+        const conversation = await ctx.prisma.conversation.findUnique({
+          where: {
+            id: input.conversationId,
+          },
+        });
+
         const response = await openAI.createChatCompletion({
           model: "gpt-3.5-turbo",
-          messages: [{ content: input.newMessage, role: "user" }],
+          messages: [
+            {
+              content: input.newMessage,
+              role: "user",
+            },
+          ],
         });
 
         if (
@@ -37,12 +48,6 @@ export const OpenAiRouter = createTRPCRouter({
         if (response.status !== 200) {
           throw new Error("OpenAI API Error");
         }
-
-        const conversation = await ctx.prisma.conversation.findUnique({
-          where: {
-            id: input.conversationId,
-          },
-        });
 
         if (!conversation || !input.conversationId) {
           const conversation = await ctx.prisma.conversation.create({
