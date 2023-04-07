@@ -84,7 +84,7 @@ model Conversation {
   createdAt DateTime            @default(now())
   updatedAt DateTime            @updatedAt
   messages  Message[]
-  name      String?
+  name      String?             @db.Text
   folder    ConversationFolder? @relation(fields: [folderId], references: [id])
   folderId  String?
   user      User                @relation(fields: [userId], references: [id])
