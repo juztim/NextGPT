@@ -24,14 +24,34 @@ export const OpenAiRouter = createTRPCRouter({
           },
         });
 
+        const conversationMessages = await ctx.prisma.message.findMany({
+          where: {
+            conversationId: input.conversationId,
+          },
+          select: {
+            text: true,
+            authorId: true,
+          },
+        });
+
+        const messageHistory: {
+          content: string;
+          role: "user" | "system";
+        }[] = conversationMessages.map((message) => {
+          return {
+            content: message.text,
+            role: message.authorId === ctx.session.user.id ? "user" : "system",
+          };
+        });
+
+        messageHistory.push({
+          content: input.newMessage,
+          role: "user",
+        });
+
         const response = await openAI.createChatCompletion({
           model: "gpt-3.5-turbo",
-          messages: [
-            {
-              content: input.newMessage,
-              role: "user",
-            },
-          ],
+          messages: messageHistory,
         });
 
         if (
