@@ -208,4 +208,51 @@ export const OpenAiRouter = createTRPCRouter({
         },
       });
     }),
+
+  newFolder: protectedProcedure
+    .input(
+      z.object({
+        name: z.string().min(3, "Name must be at least 3 characters"),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.conversationFolder.create({
+        data: {
+          name: input.name,
+          userId: ctx.session.user.id,
+        },
+      });
+    }),
+
+  updateFolder: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid("Invalid Folder Id"),
+        name: z.string().min(3, "Name must be at least 3 characters"),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.conversationFolder.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.name,
+        },
+      });
+    }),
+
+  deleteFolder: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid("Invalid Folder Id"),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.conversationFolder.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
 });
