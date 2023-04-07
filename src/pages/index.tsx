@@ -73,6 +73,18 @@ const Home: NextPage = () => {
     }
   );
 
+  const { mutate: createFolder, isLoading: creatingNewFolder } =
+    api.openAi.newFolder.useMutation({
+      onError: (err) => {
+        console.log(err);
+        toast.error("Error creating folder");
+      },
+      onSuccess: () => {
+        toast.success("Folder created");
+        void ctx.openAi.getAllChats.refetch();
+      },
+    });
+
   const [message, setMessage] = useState("");
 
   const submitNewMessage = () => {
@@ -169,8 +181,16 @@ const Home: NextPage = () => {
                 </button>
               </div>
               <div className="col-3 d-flex align-items-center justify-content-center">
-                <button className="btn-nostyle">
-                  <span className="icon icon-folder-plus"></span>
+                <button
+                  className="btn-nostyle"
+                  onClick={() => {
+                    createFolder({
+                      name: "New Folder",
+                    });
+                  }}
+                  disabled={creatingNewFolder}
+                >
+                  <span className="icon icon-folder-plus" />
                 </button>
               </div>
             </div>
@@ -229,6 +249,7 @@ const Home: NextPage = () => {
                   index={9999}
                   onChatDelete={(id) => deleteChat({ id })}
                   refreshChats={() => void ctx.openAi.getAllChats.refetch()}
+                  id="ungrouped"
                 />
                 {chats?.groupedChats?.map((folder, index) => (
                   <ChatFolder
@@ -239,6 +260,7 @@ const Home: NextPage = () => {
                     onChatOpen={setActiveChatId}
                     onChatDelete={(id) => deleteChat({ id })}
                     refreshChats={() => void ctx.openAi.getAllChats.refetch()}
+                    id={folder.id}
                   />
                 ))}
               </div>

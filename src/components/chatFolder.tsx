@@ -1,5 +1,7 @@
 import type { Conversation, Message } from "@prisma/client";
 import ChatPreview from "./chatPreview";
+import { api } from "~/utils/api";
+import toast from "react-hot-toast";
 
 declare module "react" {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
@@ -9,6 +11,7 @@ declare module "react" {
 }
 
 const ChatFolder = ({
+  id,
   title,
   conversations,
   index,
@@ -16,6 +19,7 @@ const ChatFolder = ({
   onChatDelete,
   refreshChats,
 }: {
+  id: string;
   title: string;
   conversations?: Conversation[];
   index: number;
@@ -23,6 +27,28 @@ const ChatFolder = ({
   onChatDelete: (id: string) => void;
   refreshChats: () => void;
 }) => {
+  const { mutate: updateFolder } = api.openAi.updateFolder.useMutation({
+    onSuccess: () => {
+      toast.success("Folder updated");
+      refreshChats();
+    },
+    onError: (error) => {
+      toast.error("Error while updating folder");
+      console.error(error);
+    },
+  });
+
+  const { mutate: deleteFolder } = api.openAi.deleteFolder.useMutation({
+    onSuccess: () => {
+      toast.success("Folder deleted");
+      refreshChats();
+    },
+    onError: (error) => {
+      toast.error("Error while deleting folder");
+      console.error(error);
+    },
+  });
+
   return (
     <div className="folder mb-2">
       <div className="folder-toggle p-3">
@@ -47,7 +73,12 @@ const ChatFolder = ({
               <span className="icon icon-edit" />
             </button>
             <button className="btn-nostyle px-2">
-              <span className="icon icon-delete" />
+              <span
+                className="icon icon-delete"
+                onClick={() => {
+                  deleteFolder({ id });
+                }}
+              />
             </button>
           </div>
         </div>
