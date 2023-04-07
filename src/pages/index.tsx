@@ -14,7 +14,7 @@ const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
   const ctx = api.useContext();
   const innerChatBoxRef = useRef<HTMLDivElement | null>(null);
-  const { userData: session, status } = useSession();
+  const { data: session, status } = useSession();
 
   const { mutate: deleteChat } = api.openAi.delete.useMutation({
     onError(error) {
