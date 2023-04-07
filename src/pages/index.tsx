@@ -122,7 +122,11 @@ const Home: NextPage = () => {
                       </a>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() => void signOut()}
+                      >
                         Log out
                       </a>
                     </li>
