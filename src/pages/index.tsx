@@ -426,6 +426,7 @@ const Home: NextPage = () => {
 
             <PromptOverview
               onOpenPrompt={(prompt) => {
+                toast.success("Prompt loaded");
                 setMessage(prompt.instructions);
               }}
               activeCharacter={selectedCharacter}
