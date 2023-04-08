@@ -145,6 +145,14 @@ const Home: NextPage = () => {
   const [message, setMessage] = useState("");
 
   const submitNewMessage = () => {
+    activeChat?.messages.push({
+      id: "temp",
+      authorId: session?.user.id ?? "",
+      text: message,
+      conversationId: activeChatId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
     sendMessage({
       conversationId: activeChatId,
       newMessage: message,
@@ -211,7 +219,7 @@ const Home: NextPage = () => {
         behavior: "smooth",
       });
     }
-  }, [activeChatId, activeChat?.messages]);
+  }, [activeChatId, activeChat?.messages.length]);
 
   return (
     <>
