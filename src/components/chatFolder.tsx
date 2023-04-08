@@ -20,6 +20,7 @@ const ChatFolder = ({
   onChatOpen,
   onChatDelete,
   refreshChats,
+  searchFilter,
 }: {
   id: string;
   title: string;
@@ -28,6 +29,7 @@ const ChatFolder = ({
   onChatOpen: (id: string) => void;
   onChatDelete: (id: string) => void;
   refreshChats: () => void;
+  searchFilter: string;
 }) => {
   const [editingFolderName, setEditingFolderName] = useState(false);
   const [folderName, setFolderName] = useState(title ?? "New Chat");
@@ -130,17 +132,29 @@ const ChatFolder = ({
             </div>
           </div>
           <div className="folder-chat collapse" id={`folder-${index}`}>
-            {conversations?.map((conversation, index) => (
-              <ChatPreview
-                key={conversation.id}
-                name={conversation.name}
-                onChatOpen={onChatOpen}
-                onDeleteChat={onChatDelete}
-                id={conversation.id}
-                refreshChats={refreshChats}
-                index={index}
-              />
-            ))}
+            {conversations
+              ?.filter((c) => {
+                if (searchFilter === "") {
+                  return true;
+                }
+                if (c.name == null) {
+                  return false;
+                }
+                return c.name
+                  .toLowerCase()
+                  .includes(searchFilter.toLowerCase());
+              })
+              .map((conversation, index) => (
+                <ChatPreview
+                  key={conversation.id}
+                  name={conversation.name}
+                  onChatOpen={onChatOpen}
+                  onDeleteChat={onChatDelete}
+                  id={conversation.id}
+                  refreshChats={refreshChats}
+                  index={index}
+                />
+              ))}
             {provided.placeholder}
           </div>
         </div>

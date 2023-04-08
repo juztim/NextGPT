@@ -29,6 +29,7 @@ const Home: NextPage = () => {
   const [selectedCharacter, setSelectedCharacter] = useState<Character>();
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [cost, setCost] = useState(0);
+  const [searchFilter, setSearchFilter] = useState("");
 
   const settingsStore = useSettingsStore();
 
@@ -326,6 +327,8 @@ const Home: NextPage = () => {
                       type="search"
                       placeholder="Search Chat"
                       aria-label="Search"
+                      value={searchFilter}
+                      onChange={(e) => setSearchFilter(e.target.value)}
                     />
                   </div>
                 </div>
@@ -370,6 +373,7 @@ const Home: NextPage = () => {
                     onChatDelete={(id) => deleteChat({ id })}
                     refreshChats={() => void ctx.openAi.getAllChats.refetch()}
                     id="ungrouped"
+                    searchFilter={searchFilter}
                   />
                   {chats?.groupedChats?.map((folder, index) => (
                     <ChatFolder
@@ -381,6 +385,7 @@ const Home: NextPage = () => {
                       onChatDelete={(id) => deleteChat({ id })}
                       refreshChats={() => void ctx.openAi.getAllChats.refetch()}
                       id={folder.id}
+                      searchFilter={searchFilter}
                     />
                   ))}
                 </div>
@@ -403,11 +408,6 @@ const Home: NextPage = () => {
                       {session?.user.apiKey ? "Edit" : "Enter"} OpenAI Key
                     </span>
                   </a>
-                </div>
-                <div className="col-5">
-                  <span className="text-muted text-xsmall">
-                    {session?.user.apiKey ? "Edit" : "Enter"} OpenAI Key
-                  </span>
                 </div>
               </div>
             </div>
