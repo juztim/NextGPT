@@ -25,6 +25,7 @@ const Home: NextPage = () => {
   const { data: session, status } = useSession();
   const [selectedCharacter, setSelectedCharacter] = useState<Character>();
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
+  const [cost, setCost] = useState(0);
 
   const settingsStore = useSettingsStore();
 
@@ -156,6 +157,22 @@ const Home: NextPage = () => {
       void signIn();
     }
   }, [status]);
+
+  useEffect(() => {
+    const costPerWord = 1000 / 750;
+    const wordCount = activeChat?.messages
+      ? activeChat.messages
+          .map((m) => m.text)
+          .join(" ")
+          .trim()
+          .split(" ").length +
+        activeChat.messages.length -
+        1
+      : 0;
+    const tokens = wordCount * costPerWord;
+    const cost = (tokens * 0.002) / 100;
+    setCost(Number(cost.toFixed(2)));
+  }, [activeChat?.messages]);
 
   return (
     <>
@@ -463,7 +480,7 @@ const Home: NextPage = () => {
                           words
                         </div>
 
-                        <div className="me-3">Estimated cost: $ 25</div>
+                        <div className="me-3">Estimated cost: {cost}$</div>
                       </div>
                     </div>
                   </div>
