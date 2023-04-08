@@ -14,6 +14,7 @@ import CreateCharacterModal from "~/components/modals/createCharacterModal";
 import CreatePromptModal from "~/components/modals/createPromptModal";
 import type { Character } from "@prisma/client";
 import SettingsModal from "~/components/modals/settingsModal";
+import ApiKeyModal from "~/components/modals/apiKeyModal";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -41,7 +42,7 @@ const Home: NextPage = () => {
           toast.error(errorMessage[0]);
         } else {
           toast.error(
-            "Error sending message. Please try again. If the problem persists, please contact support."
+            e.message ?? "Error sending message, please try again later"
           );
         }
       },
@@ -109,6 +110,9 @@ const Home: NextPage = () => {
       conversationId: activeChatId,
       newMessage: message,
       prompt: selectedCharacter?.instructions ?? undefined,
+      settings: {
+        temperature: 0.5,
+      },
     });
   };
 
@@ -443,6 +447,8 @@ const Home: NextPage = () => {
           <CreatePromptModal />
 
           <SettingsModal />
+
+          <ApiKeyModal />
         </div>
       </DragDropContext>
     </>

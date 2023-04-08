@@ -18,8 +18,21 @@ export const OpenAiRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
+        const user = await ctx.prisma.user.findUnique({
+          where: {
+            id: ctx.session.user.id,
+          },
+          select: {
+            apiKey: true,
+          },
+        });
+
+        if (!user || !user.apiKey) {
+          throw new Error("No API Key");
+        }
+
         const openAiConfig = new Configuration({
-          apiKey: process.env.OPENAI_API_KEY,
+          apiKey: user?.apiKey,
         });
         const openAI = new OpenAIApi(openAiConfig);
 
@@ -145,7 +158,7 @@ export const OpenAiRouter = createTRPCRouter({
         });
       } catch (error) {
         console.log(error);
-        throw new Error("Internal Server Error please try again later");
+        throw new Error(error.message);
       }
     }),
   getAllChats: protectedProcedure.query(async ({ ctx }) => {
@@ -379,6 +392,22 @@ export const OpenAiRouter = createTRPCRouter({
       return ctx.prisma.prompt.delete({
         where: {
           id: input.id,
+        },
+      });
+    }),
+  setApiKey: protectedProcedure
+    .input(
+      z.object({
+        key: z.string().min(8, "Invalid key length"),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          apiKey: input.key,
         },
       });
     }),
