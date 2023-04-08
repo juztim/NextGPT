@@ -102,31 +102,10 @@ export const OpenAiRouter = createTRPCRouter({
         }
 
         if (!conversation || !input.conversationId) {
-          const summaryResponse = await openAI.createChatCompletion({
-            model: "gpt-3.5-turbo",
-            messages: [
-              {
-                content: `Summarize this question in short: ${input.newMessage}`,
-                role: "user",
-              },
-            ],
-          });
-
-          if (
-            !summaryResponse ||
-            !summaryResponse.data ||
-            !summaryResponse.data.choices ||
-            summaryResponse.data.choices.length === 0 ||
-            !summaryResponse.data.choices[0] ||
-            !summaryResponse.data.choices[0].message
-          ) {
-            throw new Error("OpenAI API Error while summarizing");
-          }
-
           const conversation = await ctx.prisma.conversation.create({
             data: {
               userId: ctx.session.user.id,
-              name: summaryResponse.data.choices[0].message.content,
+              name: "New Conversation",
             },
             select: {
               id: true,
@@ -497,6 +476,60 @@ export const OpenAiRouter = createTRPCRouter({
           messages: {
             deleteMany: {},
           },
+        },
+      });
+    }),
+  getTitle: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid("Invalid Conversation Id"),
+        message: z.string().min(3, "Message must be at least 3 characters"),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.findUnique({
+        where: {
+          id: ctx.session.user.id,
+        },
+        select: {
+          apiKey: true,
+        },
+      });
+
+      if (!user || !user.apiKey) {
+        throw new Error("No API Key");
+      }
+
+      const openAiConfig = new Configuration({
+        apiKey: user?.apiKey,
+      });
+      const openAI = new OpenAIApi(openAiConfig);
+
+      const response = await openAI.createChatCompletion({
+        messages: [
+          {
+            content: `Please generate a title for the following sentence like ChatGPT does: ${input.message}`,
+            role: "user",
+          },
+        ],
+        model: "gpt-3.5-turbo",
+      });
+
+      if (
+        !response.data ||
+        !response.data.choices ||
+        !response.data.choices[0] ||
+        !response.data.choices[0].message
+      ) {
+        throw new Error("No response from OpenAI");
+      }
+
+      return ctx.prisma.conversation.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: response.data.choices[0].message.content,
         },
       });
     }),

@@ -68,6 +68,16 @@ const Home: NextPage = () => {
     },
   });
 
+  const { mutate: generateTitle } = api.openAi.getTitle.useMutation({
+    onError(error) {
+      console.log(error);
+      toast.error("Error generating title");
+    },
+    onSuccess() {
+      void ctx.openAi.getAllChats.invalidate();
+    },
+  });
+
   const { mutate: sendMessage, isLoading: isSendingMessage } =
     api.openAi.send.useMutation({
       onError: (e) => {
@@ -84,6 +94,7 @@ const Home: NextPage = () => {
         if (data?.newConversation) {
           toast.success("New conversation started");
           setActiveChatId(data.conversationId);
+          void generateTitle({ id: data.conversationId, message });
         }
         setMessage("");
         void ctx.openAi.getChat.refetch({ id: activeChatId });
@@ -512,6 +523,7 @@ const Home: NextPage = () => {
                                 listening ? "icon-mute" : "icon-microphone"
                               }`}
                             ></span>
+                            <span className="icon icon-md icon-envelope" />
                           </button>
                         </span>
                       </div>
