@@ -156,8 +156,9 @@ export const OpenAiRouter = createTRPCRouter({
             },
           ],
         });
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
+        // eslint-disable-next-line
         throw new Error(error.message);
       }
     }),
@@ -179,6 +180,13 @@ export const OpenAiRouter = createTRPCRouter({
     });
 
     return { groupedChats, ungroupedChats };
+  }),
+  deleteAllChats: protectedProcedure.mutation(async ({ ctx }) => {
+    await ctx.prisma.conversation.deleteMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
   }),
   getChat: protectedProcedure
     .input(

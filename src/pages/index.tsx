@@ -15,6 +15,7 @@ import CreatePromptModal from "~/components/modals/createPromptModal";
 import type { Character } from "@prisma/client";
 import SettingsModal from "~/components/modals/settingsModal";
 import ApiKeyModal from "~/components/modals/apiKeyModal";
+import ClearAllChats from "~/components/clearAllChatsBtn";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -306,10 +307,7 @@ const Home: NextPage = () => {
                 </div>
               </div>
               <div className="menu-body-bottom py-3">
-                <button className="btn-nostyle d-flex align-items-center">
-                  <span className="icon icon-delete me-3"></span>
-                  Clear all conversations
-                </button>
+                <ClearAllChats />
               </div>
             </div>
 
