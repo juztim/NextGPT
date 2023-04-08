@@ -1,4 +1,3 @@
-import styles from "./index.module.css";
 import { type NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
@@ -13,12 +12,14 @@ import { DragDropContext } from "react-beautiful-dnd";
 import PromptOverview from "~/components/promptOverview";
 import CreateCharacterModal from "~/components/modals/createCharacterModal";
 import CreatePromptModal from "~/components/modals/createPromptModal";
+import type { Character } from "@prisma/client";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
   const ctx = api.useContext();
   const innerChatBoxRef = useRef<HTMLDivElement | null>(null);
   const { data: session, status } = useSession();
+  const [selectedCharacter, setSelectedCharacter] = useState<Character>();
 
   const { mutate: deleteChat } = api.openAi.delete.useMutation({
     onError(error) {
@@ -426,6 +427,10 @@ const Home: NextPage = () => {
             <PromptOverview
               onOpenPrompt={(prompt) => {
                 setMessage(prompt.instructions);
+              }}
+              activeCharacter={selectedCharacter}
+              onSelectCharacter={(character) => {
+                setSelectedCharacter(character);
               }}
             />
           </div>

@@ -2,17 +2,28 @@ import { api } from "~/utils/api";
 import CharacterPreview from "./characterPreview";
 import PromptPreview from "./promptPreview";
 import { toast } from "react-hot-toast";
-import type { Prompt } from "@prisma/client";
+import type { Character, Prompt } from "@prisma/client";
 
 const PromptOverview = ({
   onOpenPrompt,
+  onSelectCharacter,
+  activeCharacter,
 }: {
   onOpenPrompt: (prompt: Prompt) => void;
+  onSelectCharacter: (character: Character) => void;
+  activeCharacter?: Character;
 }) => {
   const { data: prompts } = api.openAi.getAllPrompts.useQuery(undefined, {
     onError: (error) => {
       console.log(error);
       toast.error("Error fetching prompts!");
+    },
+  });
+
+  const { data: characters } = api.openAi.getAllCharacters.useQuery(undefined, {
+    onError: (error) => {
+      console.log(error);
+      toast.error("Error fetching characters!");
     },
   });
 
@@ -72,8 +83,14 @@ const PromptOverview = ({
             </button>
           </div>
           <div>
-            <CharacterPreview />
-            <CharacterPreview />
+            {characters?.map((character) => (
+              <CharacterPreview
+                key={character.id}
+                character={character}
+                onSelectCharacter={() => onSelectCharacter(character)}
+                active={character.id === activeCharacter?.id}
+              />
+            ))}
           </div>
         </div>
 

@@ -308,4 +308,40 @@ export const OpenAiRouter = createTRPCRouter({
       },
     });
   }),
+  createCharacter: protectedProcedure
+    .input(
+      z.object({
+        name: z.string().min(3, "Name must be at least 3 characters"),
+        description: z
+          .string()
+          .min(3, "Description must be at least 3 characters"),
+        instructions: z
+          .string()
+          .min(3, "Instructions must be at least 3 characters"),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.character.create({
+        data: {
+          name: input.name,
+          description: input.description,
+          instructions: input.instructions,
+          userId: ctx.session.user.id,
+        },
+      });
+    }),
+  getAllCharacters: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.character.findMany({
+      where: {
+        OR: [
+          {
+            userId: ctx.session.user.id,
+          },
+          {
+            userId: null,
+          },
+        ],
+      },
+    });
+  }),
 });

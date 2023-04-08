@@ -1,4 +1,36 @@
+import { useState, useRef } from "react";
+import { toast } from "react-hot-toast";
+import { api } from "~/utils/api";
+
 const CreateCharacterModal = () => {
+  const [newCharacter, setNewCharacter] = useState({
+    name: "",
+    description: "",
+    instructions: "",
+  });
+
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  const ctx = api.useContext();
+
+  const { mutate: createCharacter } = api.openAi.createCharacter.useMutation({
+    onSuccess: () => {
+      console.log("success");
+      toast.success("Character created!");
+      setNewCharacter({
+        name: "",
+        description: "",
+        instructions: "",
+      });
+      closeButtonRef.current?.click();
+      void ctx.openAi.getAllCharacters.refetch();
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Error creating character!");
+    },
+  });
+
   return (
     <div
       className="modal fade"
@@ -19,6 +51,7 @@ const CreateCharacterModal = () => {
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              ref={closeButtonRef}
             ></button>
           </div>
           <div className="modal-body">
@@ -31,6 +64,10 @@ const CreateCharacterModal = () => {
                 className="form-control"
                 id="create-title"
                 placeholder="Type title here"
+                value={newCharacter.name}
+                onChange={(e) =>
+                  setNewCharacter({ ...newCharacter, name: e.target.value })
+                }
               />
             </div>
             <div className="mb-3">
@@ -42,6 +79,13 @@ const CreateCharacterModal = () => {
                 id="create-desc"
                 rows={3}
                 placeholder="Type description here"
+                value={newCharacter.description}
+                onChange={(e) =>
+                  setNewCharacter({
+                    ...newCharacter,
+                    description: e.target.value,
+                  })
+                }
               ></textarea>
             </div>
             <div className="mb-3">
@@ -53,13 +97,26 @@ const CreateCharacterModal = () => {
                 id="create-inst"
                 rows={3}
                 placeholder="Type your instructions here"
+                value={newCharacter.instructions}
+                onChange={(e) =>
+                  setNewCharacter({
+                    ...newCharacter,
+                    instructions: e.target.value,
+                  })
+                }
               ></textarea>
             </div>
           </div>
           <div className="modal-footer">
             <div className="row g-1 m-0">
               <div className="col-sm-6 mb-1">
-                <button type="button" className="btn w-100 btn-primary">
+                <button
+                  type="button"
+                  className="btn w-100 btn-primary"
+                  onClick={() => {
+                    createCharacter(newCharacter);
+                  }}
+                >
                   Create
                 </button>
               </div>
