@@ -189,6 +189,12 @@ export const OpenAiRouter = createTRPCRouter({
     return { groupedChats, ungroupedChats };
   }),
   deleteAllChats: protectedProcedure.mutation(async ({ ctx }) => {
+    await ctx.prisma.conversationFolder.deleteMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
+
     await ctx.prisma.conversation.deleteMany({
       where: {
         userId: ctx.session.user.id,
