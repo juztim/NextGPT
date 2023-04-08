@@ -17,6 +17,9 @@ import SettingsModal from "~/components/modals/settingsModal";
 import ApiKeyModal from "~/components/modals/apiKeyModal";
 import ClearAllChats from "~/components/clearAllChatsBtn";
 import { useSettingsStore } from "~/stores/settingsStore";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -28,6 +31,13 @@ const Home: NextPage = () => {
   const [cost, setCost] = useState(0);
 
   const settingsStore = useSettingsStore();
+
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
 
   const { data: settings } = api.openAi.getSettings.useQuery(undefined, {
     onError: (err) => {
@@ -151,6 +161,22 @@ const Home: NextPage = () => {
     });
   };
 
+  const attemptVoiceRecognition = async () => {
+    if (listening) {
+      SpeechRecognition.stopListening();
+      resetTranscript();
+      return;
+    }
+    if (!browserSupportsSpeechRecognition) {
+      toast.error("Browser does not support voice recognition");
+      return;
+    }
+    await SpeechRecognition.startListening({
+      continuous: true,
+      language: "en-US",
+    });
+  };
+
   // If the user is not logged in, show the login page
   useEffect(() => {
     if (status !== "authenticated" && status !== "loading") {
@@ -173,6 +199,10 @@ const Home: NextPage = () => {
     const cost = (tokens * 0.002) / 100;
     setCost(Number(cost.toFixed(2)));
   }, [activeChat?.messages]);
+
+  useEffect(() => {
+    setMessage(transcript);
+  }, [transcript, message]);
 
   return (
     <>
@@ -455,8 +485,17 @@ const Home: NextPage = () => {
                         />
 
                         <span className="input-group-text" id="basic-addon1">
-                          <button className="btn-nostyle">
-                            <span className="icon icon-md icon-microphone"></span>
+                          <button
+                            className="btn-nostyle"
+                            onClick={() => {
+                              void attemptVoiceRecognition();
+                            }}
+                          >
+                            <span
+                              className={`icon icon-md ${
+                                listening ? "icon-mute" : "icon-microphone"
+                              }`}
+                            ></span>
                           </button>
                         </span>
                       </div>
