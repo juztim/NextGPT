@@ -444,9 +444,24 @@ const Home: NextPage = () => {
                         </span>
                       </div>
                       <div className="text-xsmall text-muted mt-1 d-flex flex-column flex-sm-row flex-lg-column flex-xl-row align-items-center align-items-sm-baseline align-items-lg-center align-items-xl-baseline">
-                        <div className="me-3">Current message: 25 words</div>
+                        <div className="me-3">
+                          Current message: {message.trim().split(" ").length}{" "}
+                          words
+                        </div>
 
-                        <div className="me-3">Total chat: 100 words</div>
+                        <div className="me-3">
+                          Total chat:{" "}
+                          {activeChat?.messages
+                            ? activeChat.messages
+                                .map((m) => m.text)
+                                .join(" ")
+                                .trim()
+                                .split(" ").length +
+                              activeChat.messages.length -
+                              1
+                            : 0}{" "}
+                          words
+                        </div>
 
                         <div className="me-3">Estimated cost: $ 25</div>
                       </div>
