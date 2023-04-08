@@ -273,4 +273,39 @@ export const OpenAiRouter = createTRPCRouter({
         },
       });
     }),
+
+  createPrompt: protectedProcedure
+    .input(
+      z.object({
+        title: z.string().min(3, "Title must be at least 3 characters"),
+        description: z
+          .string()
+          .min(3, "Description must be at least 3 characters"),
+        prompt: z.string().min(3, "Prompt must be at least 3 characters"),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.prompt.create({
+        data: {
+          name: input.title,
+          description: input.description,
+          instructions: input.prompt,
+          userId: ctx.session.user.id,
+        },
+      });
+    }),
+  getAllPrompts: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.prompt.findMany({
+      where: {
+        OR: [
+          {
+            userId: ctx.session.user.id,
+          },
+          {
+            userId: null,
+          },
+        ],
+      },
+    });
+  }),
 });

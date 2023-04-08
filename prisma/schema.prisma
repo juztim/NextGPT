@@ -57,6 +57,8 @@ model User {
   messages            Message[]
   conversationFolders ConversationFolder[]
   Conversation        Conversation[]
+  Prompt              Prompt[]
+  Character           Character[]
 }
 
 model VerificationToken {
@@ -106,4 +108,30 @@ model Message {
 
   @@index([authorId])
   @@index([conversationId])
+}
+
+model Prompt {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String   @db.Text
+  description String? @db.Text
+  instructions String @db.Text
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
+
+  @@index([userId])
+}
+
+model Character {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  name         String
+  description  String?  @db.Text
+  instructions String?  @db.Text
+  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String?
+
+  @@index([userId])
 }
