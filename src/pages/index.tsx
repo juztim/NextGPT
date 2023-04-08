@@ -131,7 +131,10 @@ const Home: NextPage = () => {
       newMessage: message,
       prompt: selectedCharacter?.instructions ?? undefined,
       settings: {
-        temperature: 0.5,
+        temperature: settings?.temperature ?? 0.5,
+        format: settings?.format ?? "text",
+        writingStyle: settings?.writingStyle ?? "default",
+        tone: settings?.tone ?? "default",
       },
     });
   };

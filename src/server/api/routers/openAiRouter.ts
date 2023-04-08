@@ -11,8 +11,9 @@ export const OpenAiRouter = createTRPCRouter({
         newMessage: z.string().min(2, "Message must be at least 2 characters"),
         settings: z.object({
           temperature: z.number().min(0).max(1),
-          tone: z.string().optional(),
-          writingStyle: z.string().optional(),
+          tone: z.string(),
+          writingStyle: z.string(),
+          format: z.string(),
         }),
       })
     )
@@ -67,6 +68,11 @@ export const OpenAiRouter = createTRPCRouter({
           role: "user",
         });
 
+        messageHistory.unshift({
+          content: `Please respect the following instructions. Respond in a ${input.settings.tone}. Use the following writing style: ${input.settings.writingStyle}. Additionally I want you to format your response as ${input.settings.format}.`,
+          role: "system",
+        });
+
         if (input.prompt) {
           messageHistory.unshift({
             content: input.prompt,
@@ -77,6 +83,7 @@ export const OpenAiRouter = createTRPCRouter({
         const response = await openAI.createChatCompletion({
           model: "gpt-3.5-turbo",
           messages: messageHistory,
+          temperature: input.settings.temperature,
         });
 
         if (
