@@ -107,6 +107,7 @@ const Home: NextPage = () => {
     sendMessage({
       conversationId: activeChatId,
       newMessage: message,
+      prompt: selectedCharacter?.instructions ?? undefined,
     });
   };
 

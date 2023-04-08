@@ -49,6 +49,13 @@ export const OpenAiRouter = createTRPCRouter({
           role: "user",
         });
 
+        if (input.prompt) {
+          messageHistory.unshift({
+            content: input.prompt,
+            role: "user",
+          });
+        }
+
         const response = await openAI.createChatCompletion({
           model: "gpt-3.5-turbo",
           messages: messageHistory,
