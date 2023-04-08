@@ -351,4 +351,30 @@ export const OpenAiRouter = createTRPCRouter({
       },
     });
   }),
+  deleteCharacter: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid("Invalid Character Id"),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.character.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
+  deletePrompt: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid("Invalid Prompt Id"),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.prompt.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
 });
