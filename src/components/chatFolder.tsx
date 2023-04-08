@@ -98,7 +98,7 @@ const ChatFolder = ({
                   ref={folderNameInputRef}
                   onBlur={() => {
                     if (editingFolderName) {
-                      updateFolder({ id, name: title });
+                      updateFolder({ id, name: folderName });
                     }
                     setEditingFolderName(false);
                   }}
