@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Draggable } from "react-beautiful-dnd";
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
 
@@ -9,6 +10,7 @@ const ChatPreview = ({
   onChatOpen,
   onDeleteChat,
   refreshChats,
+  index,
 }: {
   id: string;
   name?: string | null;
@@ -16,6 +18,7 @@ const ChatPreview = ({
   onChatOpen: (id: string) => void;
   onDeleteChat: (id: string) => void;
   refreshChats: () => void;
+  index: number;
 }) => {
   const [editingChatName, setEditingChatName] = useState(false);
   const chatNameInputRef = useRef<HTMLInputElement | null>(null);
@@ -37,47 +40,58 @@ const ChatPreview = ({
   }, [editingChatName]);
 
   return (
-    <div className="pt-3 px-3 pb-2" style={{ cursor: "pointer" }}>
-      <div className="row g-1">
-        <div className="col-9" onClick={() => onChatOpen(id)}>
-          <span className={`icon icon-${favored ? "star" : "chat"} me-2`} />
-          <input
-            type="text"
-            className="text"
-            value={chatName}
-            style={{
-              background: "transparent",
-              color: "white",
-              border: "none",
-              width: "inherit",
-            }}
-            disabled={!editingChatName}
-            ref={chatNameInputRef}
-            onBlur={() => {
-              if (editingChatName) {
-                updateChat({ id, name: chatName });
-              }
-              setEditingChatName(false);
-            }}
-            onChange={(e) => setChatName(e.target.value.trim())}
-          />
+    <Draggable draggableId={id} index={index}>
+      {(provided) => (
+        <div
+          className="pt-3 px-3 pb-2"
+          style={{ cursor: "pointer" }}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+        >
+          <div className="row g-1">
+            <div className="col-9" onClick={() => onChatOpen(id)}>
+              <span className={`icon icon-${favored ? "star" : "chat"} me-2`} />
+              <input
+                type="text"
+                className="text"
+                value={chatName}
+                style={{
+                  background: "transparent",
+                  color: "white",
+                  border: "none",
+                  width: "inherit",
+                  pointerEvents: editingChatName ? "auto" : "none",
+                }}
+                disabled={!editingChatName}
+                ref={chatNameInputRef}
+                onBlur={() => {
+                  if (editingChatName) {
+                    updateChat({ id, name: chatName });
+                  }
+                  setEditingChatName(false);
+                }}
+                onChange={(e) => setChatName(e.target.value.trim())}
+              />
+            </div>
+            <div className="col-3 d-flex align-items-center justify-content-end">
+              <button className="btn-nostyle px-2">
+                <span
+                  className="icon icon-edit"
+                  onClick={() => setEditingChatName(!editingChatName)}
+                />
+              </button>
+              <button className="btn-nostyle px-2">
+                <span
+                  className="icon icon-delete"
+                  onClick={() => onDeleteChat(id)}
+                />
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="col-3 d-flex align-items-center justify-content-end">
-          <button className="btn-nostyle px-2">
-            <span
-              className="icon icon-edit"
-              onClick={() => setEditingChatName(!editingChatName)}
-            />
-          </button>
-          <button className="btn-nostyle px-2">
-            <span
-              className="icon icon-delete"
-              onClick={() => onDeleteChat(id)}
-            />
-          </button>
-        </div>
-      </div>
-    </div>
+      )}
+    </Draggable>
   );
 };
 

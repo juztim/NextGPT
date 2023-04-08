@@ -255,4 +255,22 @@ export const OpenAiRouter = createTRPCRouter({
         },
       });
     }),
+
+  move: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid("Invalid Conversation Id"),
+        folderId: z.string().cuid("Invalid Folder Id").optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.conversation.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          folderId: input.folderId ?? null,
+        },
+      });
+    }),
 });
