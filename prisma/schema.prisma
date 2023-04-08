@@ -59,6 +59,7 @@ model User {
   Conversation        Conversation[]
   Prompt              Prompt[]
   Character           Character[]
+  apiKey              String?
 }
 
 model VerificationToken {
@@ -111,14 +112,14 @@ model Message {
 }
 
 model Prompt {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String   @db.Text
-  description String? @db.Text
-  instructions String @db.Text
-  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String?
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  name         String   @db.Text
+  description  String?  @db.Text
+  instructions String   @db.Text
+  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String?
 
   @@index([userId])
 }
