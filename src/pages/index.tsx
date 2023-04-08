@@ -162,7 +162,9 @@ const Home: NextPage = () => {
                       aria-expanded="false"
                     >
                       <span className="icon icon-account-circle"></span>
-                      <span className="d-none d-sm-inline">John Doe</span>
+                      <span className="d-none d-sm-inline">
+                        {session?.user.name}
+                      </span>
                     </a>
                     <ul className="dropdown-menu">
                       <li>
@@ -311,21 +313,6 @@ const Home: NextPage = () => {
             </div>
 
             <div className="menu-footer py-3 border-top">
-              <div className="row g-2 mb-1">
-                <div className="col-7">
-                  <a
-                    href="#"
-                    className="link-with-icon d-flex align-items-center text-xsmall"
-                  >
-                    <span className="icon text-accent icon-shild-info me-2 text-big"></span>
-                    <span className="text">License Key</span>
-                  </a>
-                </div>
-                <div className="col-5">
-                  <span className="text-muted text-xsmall">Unlicensed</span>
-                </div>
-              </div>
-
               <div className="row g-2">
                 <div className="col-7">
                   <a
