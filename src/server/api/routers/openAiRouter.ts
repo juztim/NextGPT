@@ -94,7 +94,7 @@ export const OpenAiRouter = createTRPCRouter({
           !response.data.choices[0] ||
           !response.data.choices[0].message
         ) {
-          throw new Error("OpenAI API Error");
+          throw new Error("OpenAI API returned no response");
         }
 
         if (response.status !== 200) {

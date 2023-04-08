@@ -20,6 +20,7 @@ import { useSettingsStore } from "~/stores/settingsStore";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import autoAnimate from "@formkit/auto-animate";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -30,6 +31,7 @@ const Home: NextPage = () => {
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [cost, setCost] = useState(0);
   const [searchFilter, setSearchFilter] = useState("");
+  const chatPlaceHolderRef = useRef<HTMLDivElement | null>(null);
 
   const settingsStore = useSettingsStore();
 
@@ -87,8 +89,8 @@ const Home: NextPage = () => {
         void ctx.openAi.getChat.refetch({ id: activeChatId });
         void ctx.openAi.getAllChats.refetch();
 
-        if (innerChatBoxRef.current) {
-          innerChatBoxRef.current.scrollIntoView({
+        if (chatPlaceHolderRef.current) {
+          chatPlaceHolderRef.current.scrollIntoView({
             behavior: "smooth",
           });
         }
@@ -204,6 +206,18 @@ const Home: NextPage = () => {
   useEffect(() => {
     setMessage(transcript);
   }, [transcript]);
+
+  useEffect(() => {
+    innerChatBoxRef.current && autoAnimate(innerChatBoxRef.current);
+  }, [innerChatBoxRef]);
+
+  useEffect(() => {
+    if (chatPlaceHolderRef.current) {
+      chatPlaceHolderRef.current.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  }, [activeChatId]);
 
   return (
     <>
@@ -441,7 +455,7 @@ const Home: NextPage = () => {
                     float: "left",
                     clear: "both",
                   }}
-                  ref={innerChatBoxRef}
+                  ref={chatPlaceHolderRef}
                 ></div>
               </div>
             </div>
