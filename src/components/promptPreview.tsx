@@ -24,6 +24,12 @@ const PromptPreview = ({
   return (
     <div
       className="mb-2"
+      style={{
+        display: "flex",
+        position: "relative",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
       onClick={(e) => {
         e.stopPropagation();
         onOpenPrompt(prompt);
@@ -37,6 +43,10 @@ const PromptPreview = ({
         {prompt.name}
         <button
           className="btn-nostyle px-2"
+          style={{
+            position: "absolute",
+            right: "20px",
+          }}
           onClick={(e) => {
             e.stopPropagation();
             deletePrompt({ id: prompt.id });
