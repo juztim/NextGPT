@@ -476,4 +476,22 @@ export const OpenAiRouter = createTRPCRouter({
       },
     });
   }),
+  clearChat: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid("Invalid Conversation Id"),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.conversation.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          messages: {
+            deleteMany: {},
+          },
+        },
+      });
+    }),
 });

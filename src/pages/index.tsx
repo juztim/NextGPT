@@ -123,6 +123,17 @@ const Home: NextPage = () => {
     },
   });
 
+  const { mutate: clearChat } = api.openAi.clearChat.useMutation({
+    onError: (err) => {
+      console.log(err);
+      toast.error("Error clearing chat");
+    },
+    onSuccess: () => {
+      toast.success("Chat cleared");
+      void ctx.openAi.getChat.refetch({ id: activeChatId });
+    },
+  });
+
   const [message, setMessage] = useState("");
 
   const submitNewMessage = () => {
@@ -397,7 +408,12 @@ const Home: NextPage = () => {
                       <span className="text">Regenerate response</span>
                     </button>
 
-                    <button className="btn btn-outline-secondary btn-sm d-flex align-items-center mx-1">
+                    <button
+                      className="btn btn-outline-secondary btn-sm d-flex align-items-center mx-1"
+                      onClick={() => {
+                        clearChat({ id: activeChatId });
+                      }}
+                    >
                       <span className="icon icon-refund me-2"></span>
                       <span className="text">Reset Chat</span>
                     </button>
