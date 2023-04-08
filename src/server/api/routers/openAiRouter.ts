@@ -9,6 +9,11 @@ export const OpenAiRouter = createTRPCRouter({
         conversationId: z.string().optional(),
         prompt: z.string().optional(),
         newMessage: z.string().min(2, "Message must be at least 2 characters"),
+        settings: z.object({
+          temperature: z.number().min(0).max(1),
+          tone: z.string().optional(),
+          writingStyle: z.string().optional(),
+        }),
       })
     )
     .mutation(async ({ ctx, input }) => {
