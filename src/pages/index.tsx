@@ -22,6 +22,7 @@ const Home: NextPage = () => {
   const innerChatBoxRef = useRef<HTMLDivElement | null>(null);
   const { data: session, status } = useSession();
   const [selectedCharacter, setSelectedCharacter] = useState<Character>();
+  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
 
   const { mutate: deleteChat } = api.openAi.delete.useMutation({
     onError(error) {
@@ -318,14 +319,17 @@ const Home: NextPage = () => {
                   <a
                     href="#"
                     className="link-with-icon d-flex align-items-center text-xsmall"
+                    onClick={() => setShowApiKeyModal(true)}
                   >
                     <span className="icon text-accent icon-shild-info me-2 text-big"></span>
-                    <span className="text">Open AI API Key</span>
+                    <span className="text">
+                      {session?.user.apiKey ? "Edit" : "Enter"} OpenAI Key
+                    </span>
                   </a>
                 </div>
                 <div className="col-5">
                   <span className="text-muted text-xsmall">
-                    Enter AI API Key
+                    {session?.user.apiKey ? "Edit" : "Enter"} OpenAI Key
                   </span>
                 </div>
               </div>
@@ -435,7 +439,7 @@ const Home: NextPage = () => {
 
           <SettingsModal />
 
-          <ApiKeyModal />
+          <ApiKeyModal show={showApiKeyModal} setShow={setShowApiKeyModal} />
         </div>
       </DragDropContext>
     </>
