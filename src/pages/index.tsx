@@ -117,17 +117,18 @@ const Home: NextPage = () => {
     <>
       <DragDropContext
         onDragEnd={(e) => {
-          if (!e) return;
           if (e.destination) {
+            const folder =
+              e.destination.droppableId == "ungrouped"
+                ? undefined
+                : e.destination.droppableId;
             moveChat({
               id: e.draggableId,
-              folderId: e.destination.droppableId,
+              folderId: folder,
             });
           }
         }}
-        onDragStart={() => {
-          console.log("drag start");
-        }}
+        onDragStart={() => undefined}
       >
         <header className="header fixed-top">
           <nav className="navbar">
