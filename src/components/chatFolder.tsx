@@ -1,8 +1,9 @@
-import type { Conversation, Message } from "@prisma/client";
+import type { Conversation } from "@prisma/client";
 import ChatPreview from "./chatPreview";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { Droppable } from "react-beautiful-dnd";
+import { useEffect, useRef, useState } from "react";
 
 declare module "react" {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
@@ -28,6 +29,10 @@ const ChatFolder = ({
   onChatDelete: (id: string) => void;
   refreshChats: () => void;
 }) => {
+  const [editingFolderName, setEditingFolderName] = useState(false);
+  const [folderName, setFolderName] = useState(title ?? "New Chat");
+  const folderNameInputRef = useRef<HTMLInputElement | null>(null);
+
   const { mutate: updateFolder } = api.openAi.updateFolder.useMutation({
     onSuccess: () => {
       toast.success("Folder updated");
@@ -50,6 +55,10 @@ const ChatFolder = ({
     },
   });
 
+  useEffect(() => {
+    folderNameInputRef.current?.focus();
+  }, [editingFolderName]);
+
   return (
     <Droppable droppableId={id}>
       {(provided) => (
@@ -67,25 +76,55 @@ const ChatFolder = ({
                 role="button"
                 aria-expanded="true"
                 aria-controls={`folder-${index}`}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
               >
                 <span className="icon icon-folder me-2" />
-                <span className="text">
-                  {title}
-                  <span className="text-muted">({conversations?.length})</span>
-                </span>
+
+                <input
+                  type="text"
+                  className="text"
+                  value={folderName}
+                  style={{
+                    background: "transparent",
+                    color: "white",
+                    border: "none",
+                    width: "inherit",
+                    pointerEvents: editingFolderName ? "auto" : "none",
+                  }}
+                  disabled={!editingFolderName}
+                  ref={folderNameInputRef}
+                  onBlur={() => {
+                    if (editingFolderName) {
+                      updateFolder({ id, name: title });
+                    }
+                    setEditingFolderName(false);
+                  }}
+                  onChange={(e) => setFolderName(e.target.value)}
+                />
+                <span className="text-muted">({conversations?.length})</span>
                 {/*<span className="icon icon-chevron-down" />*/}
               </div>
               <div className="col-3 d-flex align-items-center justify-content-end">
-                <button className="btn-nostyle px-2">
+                <button
+                  className="btn-nostyle px-2"
+                  disabled={id === "ungrouped"}
+                  onClick={() => {
+                    setEditingFolderName(true);
+                  }}
+                >
                   <span className="icon icon-edit" />
                 </button>
-                <button className="btn-nostyle px-2">
-                  <span
-                    className="icon icon-delete"
-                    onClick={() => {
-                      deleteFolder({ id });
-                    }}
-                  />
+                <button
+                  className="btn-nostyle px-2"
+                  disabled={id === "ungrouped"}
+                  onClick={() => {
+                    deleteFolder({ id });
+                  }}
+                >
+                  <span className="icon icon-delete" />
                 </button>
               </div>
             </div>
