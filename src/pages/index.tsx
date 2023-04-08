@@ -202,7 +202,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     setMessage(transcript);
-  }, [transcript, message]);
+  }, [transcript]);
 
   return (
     <>
