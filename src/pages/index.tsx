@@ -88,12 +88,6 @@ const Home: NextPage = () => {
         setMessage("");
         void ctx.openAi.getChat.refetch({ id: activeChatId });
         void ctx.openAi.getAllChats.refetch();
-
-        if (chatPlaceHolderRef.current) {
-          chatPlaceHolderRef.current.scrollIntoView({
-            behavior: "smooth",
-          });
-        }
       },
     });
 
@@ -217,7 +211,7 @@ const Home: NextPage = () => {
         behavior: "smooth",
       });
     }
-  }, [activeChatId]);
+  }, [activeChatId, activeChat?.messages]);
 
   return (
     <>
