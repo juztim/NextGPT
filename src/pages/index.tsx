@@ -16,6 +16,7 @@ import type { Character } from "@prisma/client";
 import SettingsModal from "~/components/modals/settingsModal";
 import ApiKeyModal from "~/components/modals/apiKeyModal";
 import ClearAllChats from "~/components/clearAllChatsBtn";
+import { useSettingsStore } from "~/stores/settingsStore";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -24,6 +25,23 @@ const Home: NextPage = () => {
   const { data: session, status } = useSession();
   const [selectedCharacter, setSelectedCharacter] = useState<Character>();
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
+
+  const settingsStore = useSettingsStore();
+
+  const { data: settings } = api.openAi.getSettings.useQuery(undefined, {
+    onError: (err) => {
+      console.log(err);
+      toast.error("Error loading settings");
+    },
+    onSuccess: (data) => {
+      settingsStore.saveSettings({
+        format: data?.format ?? "",
+        temperature: data?.temperature ?? 0.5,
+        tone: data?.tone ?? "",
+        writingStyle: data?.writingStyle ?? "",
+      });
+    },
+  });
 
   const { mutate: deleteChat } = api.openAi.delete.useMutation({
     onError(error) {

@@ -1,4 +1,39 @@
+import { useEffect, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
+import { useSettingsStore } from "~/stores/settingsStore";
+import { api } from "~/utils/api";
+
 const SettingsModal = () => {
+  const [newSettings, setNewSettings] = useState({
+    temperature: 0,
+    tone: "",
+    format: "",
+    writingStyle: "",
+  });
+
+  const settings = useSettingsStore();
+  const closeBtn = useRef<HTMLButtonElement>(null);
+
+  const { mutate: setSettings } = api.openAi.setSettings.useMutation({
+    onSuccess: () => {
+      toast.success("Settings updated!");
+      closeBtn.current?.click();
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Error whilst saving settings to Database!");
+    },
+  });
+
+  useEffect(() => {
+    setNewSettings({
+      temperature: settings.temperature,
+      tone: settings.tone,
+      format: settings.format,
+      writingStyle: settings.writingStyle,
+    });
+  }, [settings]);
+
   return (
     <div
       className="modal fade"
@@ -172,10 +207,33 @@ const SettingsModal = () => {
                     <select
                       className="form-select"
                       aria-label="Tone"
-                      defaultValue={0}
+                      value={newSettings.tone || ""}
+                      onChange={(e) => {
+                        setNewSettings({
+                          ...newSettings,
+                          tone: e.target.value,
+                        });
+                      }}
                     >
-                      <option value="0">Default</option>
-                      <option value="1">Bussiness</option>
+                      <option value="academic">Academic</option>
+                      <option value="analytical">Analytical</option>
+                      <option value="argumentative">Argumentative</option>
+                      <option value="conversation">Conversational</option>
+                      <option value="creative">Creative</option>
+                      <option value="critical">Critical</option>
+                      <option value="descriptive">Descriptive</option>
+                      <option value="epigrammatic">Epigrammatic</option>
+                      <option value="epistolary">Epistolary</option>
+                      <option value="expository">Expository</option>
+                      <option value="informative">Informative</option>
+                      <option value="instructive">Instructive</option>
+                      <option value="journalistic">Journalistic</option>
+                      <option value="metaphorical">Metaphorical</option>
+                      <option value="narrative">Narrative</option>
+                      <option value="persuasive">Persuasive</option>
+                      <option value="poetic">Poetic</option>
+                      <option value="satirical">Satirical</option>
+                      <option value="technical">Technical</option>
                     </select>
                   </div>
 
@@ -184,10 +242,34 @@ const SettingsModal = () => {
                     <select
                       className="form-select"
                       aria-label="Writing Style"
-                      defaultValue={0}
+                      value={newSettings.writingStyle || ""}
+                      onChange={(e) => {
+                        setNewSettings({
+                          ...newSettings,
+                          writingStyle: e.target.value,
+                        });
+                      }}
                     >
-                      <option value="0">Default</option>
-                      <option value="1">Bussiness</option>
+                      <option value="authorative">Authorative</option>
+                      <option value="clinical">Clinical</option>
+                      <option value="cold">Cold</option>
+                      <option value="confident">Confident</option>
+                      <option value="cynical">Cynical</option>
+                      <option value="emotional">Emotional</option>
+                      <option value="empathetic">Empathetic</option>
+                      <option value="formal">Formal</option>
+                      <option value="friendly">Friendly</option>
+                      <option value="humorous">Humorous</option>
+                      <option value="informal">Informal</option>
+                      <option value="ironic">Ironic</option>
+                      <option value="optimistic">Optimistic</option>
+                      <option value="pessimistic">Pessimistic</option>
+                      <option value="playful">Playful</option>
+                      <option value="sarcastic">Sarcastic</option>
+                      <option value="serious">Serious</option>
+                      <option value="sympathetic">Sympathetic</option>
+                      <option value="tentative">Tentative</option>
+                      <option value="warm">Warm</option>
                     </select>
                   </div>
 
@@ -196,10 +278,22 @@ const SettingsModal = () => {
                     <select
                       className="form-select"
                       aria-label="Format"
-                      defaultValue={0}
+                      value={newSettings.format || ""}
+                      onChange={(e) => {
+                        setNewSettings({
+                          ...newSettings,
+                          format: e.target.value,
+                        });
+                      }}
                     >
-                      <option value={0}>Default</option>
-                      <option value="1">Bussiness</option>
+                      <option value="concise">Concise</option>
+                      <option value="step by step">Step-By-Step</option>
+                      <option value="explain like im 5">ELI5</option>
+                      <option value="extreme detail">Extreme Detail</option>
+                      <option value="story">Story</option>
+                      <option value="poem">Poem</option>
+                      <option value="song">Song</option>
+                      <option value="joke">Joke</option>
                     </select>
                   </div>
                 </section>
@@ -295,7 +389,9 @@ const SettingsModal = () => {
                 </div>
 
                 <div className="section">
-                  <h5 className="text-normal fw-bold">Temperature: 0.7</h5>
+                  <h5 className="text-normal fw-bold">
+                    Temperature: {newSettings.temperature}
+                  </h5>
 
                   <div>
                     <a href="#" className="link text-small">
@@ -313,8 +409,15 @@ const SettingsModal = () => {
                     type="range"
                     className="form-range"
                     min="0"
-                    max="12"
+                    max="100"
                     id="temperature"
+                    defaultValue={newSettings.temperature * 100}
+                    onChange={(e) => {
+                      setNewSettings({
+                        ...newSettings,
+                        temperature: Number(e.target.value) / 100,
+                      });
+                    }}
                   />
                   <div className="d-flex justify-content-between">
                     <span>Precise</span>
@@ -404,13 +507,24 @@ const SettingsModal = () => {
           </div>
 
           <div className="modal-footer justify-content-start">
-            <button type="button" className="btn btn-primary ms-0">
+            <button
+              type="button"
+              className="btn btn-primary ms-0"
+              onClick={() => {
+                settings.saveSettings(newSettings);
+                setSettings({
+                  settings: newSettings,
+                });
+                closeBtn.current?.click();
+              }}
+            >
               Save
             </button>
             <button
               type="button"
               className="btn btn-outline-primary"
               data-bs-dismiss="modal"
+              ref={closeBtn}
             >
               Cancel
             </button>

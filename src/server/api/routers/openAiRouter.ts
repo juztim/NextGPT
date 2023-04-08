@@ -419,4 +419,54 @@ export const OpenAiRouter = createTRPCRouter({
         },
       });
     }),
+  setSettings: protectedProcedure
+    .input(
+      z.object({
+        settings: z.object({
+          temperature: z
+            .number()
+            .min(0, "Temperature must be at least 0")
+            .max(1, "Temperature must be at most 1"),
+          tone: z.string(),
+          format: z.string(),
+          writingStyle: z.string(),
+        }),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const existingSettings = await ctx.prisma.settings.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+      if (existingSettings) {
+        return ctx.prisma.settings.update({
+          where: {
+            id: existingSettings.id,
+          },
+          data: {
+            temperature: input.settings.temperature,
+            tone: input.settings.tone,
+            format: input.settings.format,
+            writingStyle: input.settings.writingStyle,
+          },
+        });
+      }
+      return ctx.prisma.settings.create({
+        data: {
+          temperature: input.settings.temperature,
+          tone: input.settings.tone,
+          format: input.settings.format,
+          writingStyle: input.settings.writingStyle,
+          userId: ctx.session.user.id,
+        },
+      });
+    }),
+  getSettings: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.settings.findFirst({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
+  }),
 });
