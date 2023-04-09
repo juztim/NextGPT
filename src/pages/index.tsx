@@ -78,6 +78,7 @@ const Home: NextPage = () => {
     },
     onSuccess() {
       void ctx.openAi.getAllChats.invalidate();
+      void ctx.openAi.getChat.invalidate();
     },
   });
 
@@ -401,6 +402,20 @@ const Home: NextPage = () => {
               <div className="inner">
                 <div className="sticky-top inner-header border-bottom mb-4">
                   {chats?.ungroupedChats
+                    .filter((c) => c.favored)
+                    .map((c) => (
+                      <UndraggableChatPreview
+                        conversation={c}
+                        onChatOpen={() => setActiveChatId(c.id)}
+                        onDeleteChat={() => deleteChat({ id: c.id })}
+                        refreshChats={() =>
+                          void ctx.openAi.getAllChats.refetch()
+                        }
+                        key={c.id}
+                      />
+                    ))}
+                  {chats?.groupedChats
+                    .flatMap((c) => c.conversations)
                     .filter((c) => c.favored)
                     .map((c) => (
                       <UndraggableChatPreview
