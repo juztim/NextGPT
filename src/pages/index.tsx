@@ -22,6 +22,7 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import autoAnimate from "@formkit/auto-animate";
 import UndraggableChatPreview from "~/components/undraggableChatPreview";
+import { OpenAI } from "openai-streams";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -34,7 +35,7 @@ const Home: NextPage = () => {
   const [searchFilter, setSearchFilter] = useState("");
   const chatPlaceHolderRef = useRef<HTMLDivElement | null>(null);
   const [conversationWordCount, setConversationWordCount] = useState(0);
-  const [animateNextMessage, setAnimateNextMessage] = useState(false);
+  const [streamedMessage, setStreamedMessage] = useState<string | null>();
 
   const settingsStore = useSettingsStore();
 
@@ -95,7 +96,6 @@ const Home: NextPage = () => {
         }
       },
       onSuccess: (data) => {
-        setAnimateNextMessage(true);
         if (data?.newConversation) {
           toast.success("New conversation started");
           setActiveChatId(data.conversationId);
@@ -106,6 +106,32 @@ const Home: NextPage = () => {
         void ctx.openAi.getAllChats.refetch();
       },
     });
+
+  const { mutate: addMessage } = api.openAi.addMessage.useMutation({
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.newMessage;
+      if (errorMessage && errorMessage[0]) {
+        toast.error(errorMessage[0]);
+      } else {
+        toast.error(
+          e.message ?? "Error sending message, please try again later"
+        );
+      }
+    },
+    onSuccess: async (data) => {
+      if (data?.newConversation) {
+        toast.success("New conversation started");
+        setActiveChatId(data.conversationId);
+        void generateTitle({ id: data.conversationId, message });
+      }
+      setMessage("");
+      await ctx.openAi.getChat.refetch({ id: activeChatId });
+      if (data?.botMessage) {
+        setStreamedMessage(null);
+      }
+      await ctx.openAi.getAllChats.refetch();
+    },
+  });
 
   const { data: chats } = api.openAi.getAllChats.useQuery(undefined, {
     onError: (err) => {
@@ -160,7 +186,11 @@ const Home: NextPage = () => {
 
   const [message, setMessage] = useState("");
 
-  const submitNewMessage = () => {
+  const submitNewMessage = async () => {
+    if (!session?.user.apiKey) {
+      toast.error("Please enter your OpenAI API key");
+      return;
+    }
     activeChat?.messages.push({
       id: "temp",
       authorId: session?.user.id ?? "",
@@ -169,16 +199,62 @@ const Home: NextPage = () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     });
-    sendMessage({
-      conversationId: activeChatId,
+    addMessage({
       newMessage: message,
-      prompt: selectedCharacter?.instructions ?? undefined,
-      settings: {
+      conversationId: activeChatId,
+    });
+
+    const messageHistory: {
+      content: string;
+      role: "user" | "system";
+    }[] = activeChat?.messages.map((message) => {
+      return {
+        content: message.text,
+        role: message.authorId === session.user.id ? "user" : "system",
+      };
+    });
+
+    messageHistory.unshift({
+      content: `Please respect the following instructions. Respond in a ${settingsStore.tone}. Use the following writing style: ${settingsStore.writingStyle}. Additionally I want you to format your response as ${settingsStore.format}.`,
+      role: "system",
+    });
+
+    if (selectedCharacter && selectedCharacter.instructions) {
+      messageHistory.unshift({
+        content: selectedCharacter.instructions,
+        role: "user",
+      });
+    }
+
+    const stream = await OpenAI(
+      "chat",
+      {
+        model: "gpt-3.5-turbo",
+        messages: messageHistory,
         temperature: settings?.temperature ?? 0.5,
-        format: settings?.format ?? "text",
-        writingStyle: settings?.writingStyle ?? "default",
-        tone: settings?.tone ?? "default",
       },
+      { apiKey: session.user.apiKey }
+    );
+
+    const reader = stream.getReader();
+    let streamedLocalMessage = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      const text = new TextDecoder("utf-8").decode(value);
+
+      if (done) {
+        break;
+      }
+
+      streamedLocalMessage += text;
+      setStreamedMessage(streamedLocalMessage);
+    }
+
+    addMessage({
+      newMessage: streamedLocalMessage,
+      conversationId: activeChatId,
+      botMessage: true,
     });
   };
 
@@ -232,10 +308,10 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (chatPlaceHolderRef.current) {
       chatPlaceHolderRef.current.scrollIntoView({
-        behavior: "smooth",
+        behavior: "auto",
       });
     }
-  }, [activeChatId, activeChat?.messages.length]);
+  }, [activeChatId, activeChat?.messages.length, streamedMessage]);
 
   useEffect(() => {
     setConversationWordCount(
@@ -250,10 +326,6 @@ const Home: NextPage = () => {
         : 0
     );
   }, [activeChat, activeChat?.messages]);
-
-  useEffect(() => {
-    setAnimateNextMessage(false);
-  }, [activeChatId]);
 
   return (
     <>
@@ -488,10 +560,6 @@ const Home: NextPage = () => {
                         <AiChatMessage
                           message={message.text}
                           key={message.id}
-                          animate={
-                            index === activeChat.messages.length - 1 &&
-                            animateNextMessage
-                          }
                         />
                       );
                     } else {
@@ -505,6 +573,7 @@ const Home: NextPage = () => {
                     message={"Start a new Conversation by sending a message"}
                   />
                 )}
+                {streamedMessage && <AiChatMessage message={streamedMessage} />}
                 <div
                   style={{
                     float: "left",
@@ -547,7 +616,7 @@ const Home: NextPage = () => {
                           onChange={(e) => setMessage(e.target.value)}
                           onKeyDown={(e) => {
                             if (e.key !== "Enter") return;
-                            submitNewMessage();
+                            void submitNewMessage();
                           }}
                           value={message}
                           disabled={isSendingMessage}

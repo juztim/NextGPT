@@ -4,7 +4,7 @@ import AvatarChat from "~/images/avatar-chat.jpg";
 
 const AiChatMessage = ({
   message,
-  animate = true,
+  animate = false,
 }: {
   message: string;
   animate?: boolean;

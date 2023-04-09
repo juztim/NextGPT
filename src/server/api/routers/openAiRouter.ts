@@ -86,20 +86,17 @@ export const OpenAiRouter = createTRPCRouter({
           temperature: input.settings.temperature,
         });
 
-        if (
-          !response ||
-          !response.data ||
-          !response.data.choices ||
-          response.data.choices.length === 0 ||
-          !response.data.choices[0] ||
-          !response.data.choices[0].message
-        ) {
-          throw new Error("OpenAI API returned no response");
-        }
-
-        if (response.status !== 200) {
-          throw new Error("OpenAI API Error");
-        }
+        /* const stream = await OpenAI(
+          "chat",
+          {
+            model: "gpt-3.5-turbo",
+            messages: messageHistory,
+            temperature: input.settings.temperature,
+          },
+          {
+            apiKey: user?.apiKey,
+          }
+        ); */
 
         if (!conversation || !input.conversationId) {
           const conversation = await ctx.prisma.conversation.create({
@@ -148,6 +145,70 @@ export const OpenAiRouter = createTRPCRouter({
         throw new Error(error.message);
       }
     }),
+
+  addMessage: protectedProcedure
+    .input(
+      z.object({
+        conversationId: z.string().optional(),
+        newMessage: z.string().min(1, "Message must be at least 1 character"),
+        botMessage: z.boolean().default(false),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const existingConversation = await ctx.prisma.conversation.findUnique({
+          where: {
+            id: input.conversationId,
+          },
+        });
+
+        if (!existingConversation || input.conversationId === undefined) {
+          const newConversation = await ctx.prisma.conversation.create({
+            data: {
+              userId: ctx.session.user.id,
+              name: "New Conversation",
+            },
+            select: {
+              id: true,
+            },
+          });
+
+          await ctx.prisma.message.createMany({
+            data: [
+              {
+                conversationId: newConversation.id,
+                text: input.newMessage,
+                authorId: input.botMessage ? null : ctx.session.user.id,
+              },
+            ],
+          });
+          return {
+            newConversation: true,
+            conversationId: newConversation.id,
+            botMessage: input.botMessage,
+          };
+        }
+
+        await ctx.prisma.message.create({
+          data: {
+            conversationId: input.conversationId,
+            text: input.newMessage,
+            authorId: input.botMessage ? null : ctx.session.user.id,
+          },
+        });
+
+        return {
+          newConversation: false,
+          conversationId: input.conversationId,
+          botMessage: input.botMessage,
+        };
+      } catch (error: any) {
+        console.log(error);
+        // eslint-disable-next-line
+        throw new Error(error.message);
+      }
+    }),
+
   getAllChats: protectedProcedure.query(async ({ ctx }) => {
     const ungroupedChats = await ctx.prisma.conversation.findMany({
       where: {
