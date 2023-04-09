@@ -126,7 +126,7 @@ export const OpenAiRouter = createTRPCRouter({
           return { newConversation: true, conversationId: conversation.id };
         }
 
-        await ctx.prisma.message.createMany({
+        /* await ctx.prisma.message.createMany({
           data: [
             {
               conversationId: input.conversationId,
@@ -138,7 +138,7 @@ export const OpenAiRouter = createTRPCRouter({
               text: response.data.choices[0].message.content,
             },
           ],
-        });
+        }); */
       } catch (error: any) {
         console.log(error);
         // eslint-disable-next-line
