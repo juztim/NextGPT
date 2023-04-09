@@ -13,6 +13,7 @@ const ClearAllChats = () => {
       toast.success("All chats cleared!");
       setRequireConfirmation(false);
       void ctx.openAi.getAllChats.refetch();
+      void ctx.openAi.getChat.invalidate();
     },
     onError: (error) => {
       console.log(error.message);
