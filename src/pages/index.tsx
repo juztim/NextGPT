@@ -400,8 +400,8 @@ const Home: NextPage = () => {
                     .map((c) => (
                       <UndraggableChatPreview
                         conversation={c}
-                        onChatOpen={() => undefined}
-                        onDeleteChat={() => undefined}
+                        onChatOpen={() => setActiveChatId(c.id)}
+                        onDeleteChat={() => deleteChat({ id: c.id })}
                         refreshChats={() =>
                           void ctx.openAi.getAllChats.refetch()
                         }
