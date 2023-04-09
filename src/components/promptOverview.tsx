@@ -3,6 +3,7 @@ import CharacterPreview from "./characterPreview";
 import PromptPreview from "./promptPreview";
 import { toast } from "react-hot-toast";
 import type { Character, Prompt } from "@prisma/client";
+import { useState } from "react";
 
 const PromptOverview = ({
   onOpenPrompt,
@@ -26,6 +27,8 @@ const PromptOverview = ({
       toast.error("Error fetching characters!");
     },
   });
+
+  const [searchFilter, setSearchFilter] = useState("");
 
   return (
     <div id="right-menu" className="show">
@@ -68,6 +71,8 @@ const PromptOverview = ({
                     type="search"
                     placeholder="Search Chat"
                     aria-label="Search"
+                    value={searchFilter}
+                    onChange={(e) => setSearchFilter(e.target.value)}
                   />
                 </div>
               </div>
@@ -83,14 +88,16 @@ const PromptOverview = ({
             </button>
           </div>
           <div>
-            {characters?.map((character) => (
-              <CharacterPreview
-                key={character.id}
-                character={character}
-                onSelectCharacter={() => onSelectCharacter(character)}
-                active={character.id === activeCharacter?.id}
-              />
-            ))}
+            {characters
+              ?.filter((c) => c.name.toLowerCase().includes(searchFilter))
+              .map((character) => (
+                <CharacterPreview
+                  key={character.id}
+                  character={character}
+                  onSelectCharacter={() => onSelectCharacter(character)}
+                  active={character.id === activeCharacter?.id}
+                />
+              ))}
           </div>
         </div>
 
@@ -107,6 +114,8 @@ const PromptOverview = ({
                     type="search"
                     placeholder="Search Prompt"
                     aria-label="Search"
+                    value={searchFilter}
+                    onChange={(e) => setSearchFilter(e.target.value)}
                   />
                 </div>
               </div>
@@ -122,13 +131,15 @@ const PromptOverview = ({
             </button>
           </div>
           <div>
-            {prompts?.map((prompt) => (
-              <PromptPreview
-                key={prompt.id}
-                prompt={prompt}
-                onOpenPrompt={onOpenPrompt}
-              />
-            ))}
+            {prompts
+              ?.filter((c) => c.name.toLowerCase().includes(searchFilter))
+              .map((prompt) => (
+                <PromptPreview
+                  key={prompt.id}
+                  prompt={prompt}
+                  onOpenPrompt={onOpenPrompt}
+                />
+              ))}
           </div>
         </div>
       </div>
