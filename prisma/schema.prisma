@@ -93,6 +93,7 @@ model Conversation {
   folderId  String?
   user      User                @relation(fields: [userId], references: [id])
   userId    String
+  favored   Boolean             @default(false)
 
   @@index([folderId])
   @@index([userId])

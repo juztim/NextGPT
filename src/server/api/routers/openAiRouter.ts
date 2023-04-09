@@ -220,6 +220,7 @@ export const OpenAiRouter = createTRPCRouter({
           .min(3, "Name must be at least 3 characters")
           .optional(),
         folderId: z.string().cuid("Invalid Folder Id").optional(),
+        favorite: z.boolean().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -230,6 +231,7 @@ export const OpenAiRouter = createTRPCRouter({
         data: {
           name: input.name,
           folderId: input.folderId,
+          favored: input.favorite,
         },
       });
     }),
