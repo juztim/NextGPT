@@ -34,6 +34,8 @@ const ChatFolder = ({
   const [editingFolderName, setEditingFolderName] = useState(false);
   const [folderName, setFolderName] = useState(title ?? "New Chat");
   const folderNameInputRef = useRef<HTMLInputElement | null>(null);
+  const [requireDeleteConfirmation, setRequireDeleteConfirmation] =
+    useState(false);
 
   const { mutate: updateFolder } = api.openAi.updateFolder.useMutation({
     onSuccess: () => {
@@ -110,24 +112,56 @@ const ChatFolder = ({
                 {/*<span className="icon icon-chevron-down" />*/}
               </div>
               <div className="col-3 d-flex align-items-center justify-content-end">
-                <button
-                  className="btn-nostyle px-2"
-                  disabled={id === "ungrouped"}
-                  onClick={() => {
-                    setEditingFolderName(true);
-                  }}
-                >
-                  <span className="icon icon-edit" />
-                </button>
-                <button
-                  className="btn-nostyle px-2"
-                  disabled={id === "ungrouped"}
-                  onClick={() => {
-                    deleteFolder({ id });
-                  }}
-                >
-                  <span className="icon icon-delete" />
-                </button>
+                {requireDeleteConfirmation ? (
+                  <>
+                    <button
+                      className="btn-nostyle px-2"
+                      disabled={id === "ungrouped"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteFolder({ id });
+                      }}
+                    >
+                      <span
+                        className="icon icon-check"
+                        style={{ color: "green" }}
+                      />
+                    </button>
+                    <button
+                      className="btn-nostyle px-2"
+                      disabled={id === "ungrouped"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setRequireDeleteConfirmation(false);
+                      }}
+                    >
+                      <span className="icon icon-x" style={{ color: "red" }} />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      className="btn-nostyle px-2"
+                      disabled={id === "ungrouped"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditingFolderName(true);
+                      }}
+                    >
+                      <span className="icon icon-edit" />
+                    </button>
+                    <button
+                      className="btn-nostyle px-2"
+                      disabled={id === "ungrouped"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setRequireDeleteConfirmation(true);
+                      }}
+                    >
+                      <span className="icon icon-delete" />
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
