@@ -191,18 +191,6 @@ const Home: NextPage = () => {
       toast.error("Please enter your OpenAI API key");
       return;
     }
-    activeChat?.messages.push({
-      id: "temp",
-      authorId: session?.user.id ?? "",
-      text: message,
-      conversationId: activeChatId,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-    addMessage({
-      newMessage: message,
-      conversationId: activeChatId,
-    });
 
     const messageHistory:
       | {
@@ -214,7 +202,12 @@ const Home: NextPage = () => {
         content: message.text,
         role: message.authorId === session.user.id ? "user" : "system",
       };
-    }) ?? [{ content: "", role: "system" }];
+    }) ?? [{ content: message, role: "user" }];
+
+    addMessage({
+      newMessage: message,
+      conversationId: activeChatId,
+    });
 
     messageHistory.unshift({
       content: `Please respect the following instructions. Respond in a ${settingsStore.tone}. Use the following writing style: ${settingsStore.writingStyle}. Additionally I want you to format your response as ${settingsStore.format}.`,
@@ -227,6 +220,8 @@ const Home: NextPage = () => {
         role: "user",
       });
     }
+
+    console.log(messageHistory);
 
     const stream = await OpenAI(
       "chat",
