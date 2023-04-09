@@ -36,11 +36,14 @@ const ChatFolder = ({
   const folderNameInputRef = useRef<HTMLInputElement | null>(null);
   const [requireDeleteConfirmation, setRequireDeleteConfirmation] =
     useState(false);
+  const [requireEditConfirmation, setRequireEditConfirmation] = useState(false);
 
   const { mutate: updateFolder } = api.openAi.updateFolder.useMutation({
     onSuccess: () => {
       toast.success("Folder updated");
       refreshChats();
+      setEditingFolderName(false);
+      setRequireEditConfirmation(false);
     },
     onError: (error) => {
       toast.error("Error while updating folder");
@@ -52,6 +55,7 @@ const ChatFolder = ({
     onSuccess: () => {
       toast.success("Folder deleted");
       refreshChats();
+      setRequireDeleteConfirmation(false);
     },
     onError: (error) => {
       toast.error("Error while deleting folder");
@@ -60,8 +64,10 @@ const ChatFolder = ({
   });
 
   useEffect(() => {
-    folderNameInputRef.current?.focus();
-  }, [editingFolderName]);
+    console.log("editingFolderName", editingFolderName);
+    console.log("requireEditConfirmation", requireEditConfirmation);
+    editingFolderName && folderNameInputRef.current?.focus();
+  }, [editingFolderName, requireEditConfirmation]);
 
   return (
     <Droppable droppableId={id}>
@@ -100,12 +106,6 @@ const ChatFolder = ({
                   }}
                   disabled={!editingFolderName}
                   ref={folderNameInputRef}
-                  onBlur={() => {
-                    if (editingFolderName) {
-                      updateFolder({ id, name: folderName });
-                    }
-                    setEditingFolderName(false);
-                  }}
                   onChange={(e) => setFolderName(e.target.value)}
                 />
                 <span className="text-muted">({conversations?.length})</span>
@@ -138,6 +138,33 @@ const ChatFolder = ({
                       <span className="icon icon-x" style={{ color: "red" }} />
                     </button>
                   </>
+                ) : requireEditConfirmation ? (
+                  <>
+                    <button
+                      className="btn-nostyle px-2"
+                      disabled={id === "ungrouped"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        updateFolder({ id, name: folderName });
+                      }}
+                    >
+                      <span
+                        className="icon icon-check"
+                        style={{ color: "green" }}
+                      />
+                    </button>
+                    <button
+                      className="btn-nostyle px-2"
+                      disabled={id === "ungrouped"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setRequireEditConfirmation(false);
+                        setEditingFolderName(false);
+                      }}
+                    >
+                      <span className="icon icon-x" style={{ color: "red" }} />
+                    </button>
+                  </>
                 ) : (
                   <>
                     <button
@@ -146,6 +173,7 @@ const ChatFolder = ({
                       onClick={(e) => {
                         e.stopPropagation();
                         setEditingFolderName(true);
+                        setRequireEditConfirmation(true);
                       }}
                     >
                       <span className="icon icon-edit" />
