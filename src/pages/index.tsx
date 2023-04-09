@@ -552,17 +552,7 @@ const Home: NextPage = () => {
                         </div>
 
                         <div className="me-3">
-                          Total chat:{" "}
-                          {activeChat?.messages
-                            ? activeChat.messages
-                                .map((m) => m.text)
-                                .join(" ")
-                                .trim()
-                                .split(" ").length +
-                              activeChat.messages.length -
-                              1
-                            : 0}{" "}
-                          words
+                          Total chat: {conversationWordCount} words
                         </div>
 
                         <div className="me-3">Estimated cost: {cost}$</div>
