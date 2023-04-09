@@ -109,7 +109,7 @@ export const OpenAiRouter = createTRPCRouter({
             },
           });
 
-          await ctx.prisma.message.createMany({
+          /* await ctx.prisma.message.createMany({
             data: [
               {
                 conversationId: conversation.id,
@@ -121,7 +121,7 @@ export const OpenAiRouter = createTRPCRouter({
                 text: response.data.choices[0].message.content,
               },
             ],
-          });
+          }); */
 
           return { newConversation: true, conversationId: conversation.id };
         }
