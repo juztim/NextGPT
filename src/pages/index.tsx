@@ -34,6 +34,7 @@ const Home: NextPage = () => {
   const [cost, setCost] = useState(0);
   const [searchFilter, setSearchFilter] = useState("");
   const chatPlaceHolderRef = useRef<HTMLDivElement | null>(null);
+  const [conversationWordCount, setConversationWordCount] = useState(0);
 
   const settingsStore = useSettingsStore();
 
@@ -234,6 +235,20 @@ const Home: NextPage = () => {
     }
   }, [activeChatId, activeChat?.messages.length]);
 
+  useEffect(() => {
+    setConversationWordCount(
+      activeChat?.messages
+        ? activeChat.messages
+            .map((m) => m.text)
+            .join(" ")
+            .trim()
+            .split(" ").length +
+            activeChat.messages.length -
+            1
+        : 0
+    );
+  }, [activeChat, activeChat?.messages]);
+
   return (
     <>
       <DragDropContext
@@ -261,7 +276,11 @@ const Home: NextPage = () => {
                   className="logo img-fluid"
                 />
               </a>
-
+              <span>
+                {activeChat?.name
+                  ? `${activeChat.name} (${conversationWordCount})`
+                  : "Start a new Chat"}
+              </span>
               <div className="d-flex align-items-center">
                 <ul className="d-flex flex-row navbar-nav">
                   <li className="nav-item dropdown me-sm-4">
