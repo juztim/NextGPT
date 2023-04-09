@@ -72,7 +72,9 @@ const PromptOverview = ({
                     placeholder="Search Chat"
                     aria-label="Search"
                     value={searchFilter}
-                    onChange={(e) => setSearchFilter(e.target.value)}
+                    onChange={(e) =>
+                      setSearchFilter(e.target.value.toLowerCase())
+                    }
                   />
                 </div>
               </div>
@@ -115,7 +117,9 @@ const PromptOverview = ({
                     placeholder="Search Prompt"
                     aria-label="Search"
                     value={searchFilter}
-                    onChange={(e) => setSearchFilter(e.target.value)}
+                    onChange={(e) =>
+                      setSearchFilter(e.target.value.toLowerCase())
+                    }
                   />
                 </div>
               </div>
