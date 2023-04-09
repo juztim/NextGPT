@@ -147,10 +147,9 @@ const ChatFolder = ({
               .map((conversation, index) => (
                 <ChatPreview
                   key={conversation.id}
-                  name={conversation.name}
+                  conversation={conversation}
                   onChatOpen={onChatOpen}
                   onDeleteChat={onChatDelete}
-                  id={conversation.id}
                   refreshChats={refreshChats}
                   index={index}
                 />

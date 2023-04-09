@@ -1,20 +1,17 @@
+import type { Conversation } from "@prisma/client";
 import { useEffect, useRef, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
 
 const ChatPreview = ({
-  id,
-  name,
-  favored,
+  conversation,
   onChatOpen,
   onDeleteChat,
   refreshChats,
   index,
 }: {
-  id: string;
-  name?: string | null;
-  favored?: boolean;
+  conversation: Conversation;
   onChatOpen: (id: string) => void;
   onDeleteChat: (id: string) => void;
   refreshChats: () => void;
@@ -22,7 +19,7 @@ const ChatPreview = ({
 }) => {
   const [editingChatName, setEditingChatName] = useState(false);
   const chatNameInputRef = useRef<HTMLInputElement | null>(null);
-  const [chatName, setChatName] = useState(name ?? "New Chat");
+  const [chatName, setChatName] = useState(conversation.name ?? "New Chat");
 
   const { mutate: updateChat } = api.openAi.update.useMutation({
     onSuccess: () => {
@@ -39,8 +36,12 @@ const ChatPreview = ({
     chatNameInputRef.current?.focus();
   }, [editingChatName]);
 
+  useEffect(() => {
+    setChatName(conversation.name ?? "New Chat");
+  }, [conversation.name]);
+
   return (
-    <Draggable draggableId={id} index={index}>
+    <Draggable draggableId={conversation.id} index={index}>
       {(provided) => (
         <div
           className="pt-3 px-3 pb-2"
@@ -50,8 +51,29 @@ const ChatPreview = ({
           ref={provided.innerRef}
         >
           <div className="row g-1">
-            <div className="col-9" onClick={() => onChatOpen(id)}>
-              <span className={`icon icon-${favored ? "star" : "chat"} me-2`} />
+            <div
+              className="col-9"
+              onClick={(e) => {
+                e.stopPropagation();
+                onChatOpen(conversation.id);
+              }}
+            >
+              <span
+                className={`icon icon-${
+                  conversation.favored ? "star" : "chat"
+                } me-2`}
+                style={{
+                  cursor: "pointer",
+                  color: conversation.favored ? "yellow" : "white",
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  updateChat({
+                    id: conversation.id,
+                    favorite: !conversation.favored,
+                  });
+                }}
+              />
               <input
                 type="text"
                 className="text"
@@ -67,7 +89,7 @@ const ChatPreview = ({
                 ref={chatNameInputRef}
                 onBlur={() => {
                   if (editingChatName) {
-                    updateChat({ id, name: chatName });
+                    updateChat({ id: conversation.id, name: chatName });
                   }
                   setEditingChatName(false);
                 }}
@@ -84,7 +106,7 @@ const ChatPreview = ({
               <button className="btn-nostyle px-2">
                 <span
                   className="icon icon-delete"
-                  onClick={() => onDeleteChat(id)}
+                  onClick={() => onDeleteChat(conversation.id)}
                 />
               </button>
             </div>
