@@ -204,15 +204,17 @@ const Home: NextPage = () => {
       conversationId: activeChatId,
     });
 
-    const messageHistory: {
-      content: string;
-      role: "user" | "system";
-    }[] = activeChat?.messages.map((message) => {
+    const messageHistory:
+      | {
+          content: string;
+          role: "user" | "system";
+        }[]
+      | undefined = activeChat?.messages.map((message) => {
       return {
         content: message.text,
         role: message.authorId === session.user.id ? "user" : "system",
       };
-    });
+    }) ?? [{ content: "", role: "system" }];
 
     messageHistory.unshift({
       content: `Please respect the following instructions. Respond in a ${settingsStore.tone}. Use the following writing style: ${settingsStore.writingStyle}. Additionally I want you to format your response as ${settingsStore.format}.`,
