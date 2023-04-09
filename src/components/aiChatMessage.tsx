@@ -1,7 +1,14 @@
 ﻿import Image from "next/image";
+import { TypeAnimation } from "react-type-animation";
 import AvatarChat from "~/images/avatar-chat.jpg";
 
-const AiChatMessage = ({ message }: { message: string }) => {
+const AiChatMessage = ({
+  message,
+  animate = true,
+}: {
+  message: string;
+  animate?: boolean;
+}) => {
   return (
     <div className="chat-item chat-item-ai">
       <div className="row justify-content-center py-5">
@@ -11,7 +18,11 @@ const AiChatMessage = ({ message }: { message: string }) => {
               <Image src={AvatarChat} alt="Avatar Chat" className="img-fluid" />
             </div>
 
-            <div>{message}</div>
+            {animate ? (
+              <TypeAnimation cursor={false} speed={75} sequence={[message]} />
+            ) : (
+              <div>{message}</div>
+            )}
 
             <div className="d-flex align-items-start ms-4">
               <button className="btn-nostyle">

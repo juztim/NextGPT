@@ -21,7 +21,6 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import autoAnimate from "@formkit/auto-animate";
-import ChatPreview from "~/components/chatPreview";
 import UndraggableChatPreview from "~/components/undraggableChatPreview";
 
 const Home: NextPage = () => {
@@ -35,6 +34,7 @@ const Home: NextPage = () => {
   const [searchFilter, setSearchFilter] = useState("");
   const chatPlaceHolderRef = useRef<HTMLDivElement | null>(null);
   const [conversationWordCount, setConversationWordCount] = useState(0);
+  const [animateNextMessage, setAnimateNextMessage] = useState(false);
 
   const settingsStore = useSettingsStore();
 
@@ -94,6 +94,7 @@ const Home: NextPage = () => {
         }
       },
       onSuccess: (data) => {
+        setAnimateNextMessage(true);
         if (data?.newConversation) {
           toast.success("New conversation started");
           setActiveChatId(data.conversationId);
@@ -248,6 +249,10 @@ const Home: NextPage = () => {
         : 0
     );
   }, [activeChat, activeChat?.messages]);
+
+  useEffect(() => {
+    setAnimateNextMessage(false);
+  }, [activeChatId]);
 
   return (
     <>
@@ -462,12 +467,16 @@ const Home: NextPage = () => {
             <div className="content-body">
               <div className="inner" ref={innerChatBoxRef}>
                 {activeChatId !== "" ? (
-                  activeChat?.messages?.map((message) => {
+                  activeChat?.messages?.map((message, index) => {
                     if (!message.authorId) {
                       return (
                         <AiChatMessage
                           message={message.text}
                           key={message.id}
+                          animate={
+                            index === activeChat.messages.length - 1 &&
+                            animateNextMessage
+                          }
                         />
                       );
                     } else {
