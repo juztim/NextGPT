@@ -87,28 +87,52 @@ const ChatPreview = ({
                 }}
                 disabled={!editingChatName}
                 ref={chatNameInputRef}
-                onBlur={() => {
-                  if (editingChatName) {
-                    updateChat({ id: conversation.id, name: chatName });
-                  }
-                  setEditingChatName(false);
-                }}
                 onChange={(e) => setChatName(e.target.value.trim())}
               />
             </div>
             <div className="col-3 d-flex align-items-center justify-content-end">
-              <button className="btn-nostyle px-2">
-                <span
-                  className="icon icon-edit"
-                  onClick={() => setEditingChatName(!editingChatName)}
-                />
-              </button>
-              <button className="btn-nostyle px-2">
-                <span
-                  className="icon icon-delete"
-                  onClick={() => onDeleteChat(conversation.id)}
-                />
-              </button>
+              {editingChatName ? (
+                <>
+                  <span
+                    className="icon icon-x me-3"
+                    style={{
+                      color: "red",
+                      cursor: "pointer",
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEditingChatName(false);
+                    }}
+                  />
+                  <span
+                    className="icon icon-check me-3"
+                    style={{
+                      color: "green",
+                      cursor: "pointer",
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      updateChat({ id: conversation.id, name: chatName });
+                      setEditingChatName(false);
+                    }}
+                  />
+                </>
+              ) : (
+                <>
+                  <button className="btn-nostyle px-2">
+                    <span
+                      className="icon icon-edit"
+                      onClick={() => setEditingChatName(!editingChatName)}
+                    />
+                  </button>
+                  <button className="btn-nostyle px-2">
+                    <span
+                      className="icon icon-delete"
+                      onClick={() => onDeleteChat(conversation.id)}
+                    />
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
