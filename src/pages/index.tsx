@@ -519,7 +519,7 @@ const Home: NextPage = () => {
                           type="text"
                           className="form-control form-control-lg"
                           id="chat-ai"
-                          placeholder="Next question is...."
+                          placeholder="Send a message..."
                           onChange={(e) => setMessage(e.target.value)}
                           onKeyDown={(e) => {
                             if (e.key !== "Enter") return;
