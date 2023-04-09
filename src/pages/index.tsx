@@ -21,6 +21,8 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import autoAnimate from "@formkit/auto-animate";
+import ChatPreview from "~/components/chatPreview";
+import UndraggableChatPreview from "~/components/undraggableChatPreview";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -374,22 +376,19 @@ const Home: NextPage = () => {
             <div className="menu-body mt-4">
               <div className="inner">
                 <div className="sticky-top inner-header border-bottom mb-4">
-                  <div className="p-3">
-                    <div className="row g-1">
-                      <div className="col-9">
-                        <span className="icon icon-star text-accent me-2"></span>
-                        <span className="text">Favorized Chat Name</span>
-                      </div>
-                      <div className="col-3 d-flex align-items-center justify-content-end">
-                        <button className="btn-nostyle px-2">
-                          <span className="icon icon-edit"></span>
-                        </button>
-                        <button className="btn-nostyle px-2">
-                          <span className="icon icon-delete"></span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                  {chats?.ungroupedChats
+                    .filter((c) => c.favored)
+                    .map((c) => (
+                      <UndraggableChatPreview
+                        conversation={c}
+                        onChatOpen={() => undefined}
+                        onDeleteChat={() => undefined}
+                        refreshChats={() =>
+                          void ctx.openAi.getAllChats.refetch()
+                        }
+                        key={c.id}
+                      />
+                    ))}
                 </div>
                 <div>
                   <ChatFolder
