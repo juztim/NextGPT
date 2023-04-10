@@ -122,6 +122,7 @@ model Prompt {
   instructions String   @db.Text
   user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String?
+  category     String?  @db.Text
 
   @@index([userId])
 }
@@ -135,6 +136,7 @@ model Character {
   instructions String?  @db.Text
   user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String?
+  category     String?  @db.Text
 
   @@index([userId])
 }

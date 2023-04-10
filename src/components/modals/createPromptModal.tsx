@@ -10,15 +10,17 @@ const CreatePromptModal = () => {
     title: "",
     description: "",
     prompt: "",
+    category: "",
   });
 
   const { mutate: createPrompt } = api.openAi.createPrompt.useMutation({
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Prompt created successfully!");
       setNewPrompt({
         title: "",
         description: "",
         prompt: "",
+        category: "",
       });
       modalCloseButton.current?.click();
       void ctx.openAi.getAllPrompts.refetch();
@@ -59,6 +61,33 @@ const CreatePromptModal = () => {
                 console.log(newPrompt);
               }}
             >
+              <div className="mb-3">
+                <label htmlFor="create-category" className="form-label">
+                  Category:
+                </label>
+                <select
+                  className="form-select"
+                  id="create-category"
+                  value={newPrompt.category}
+                  onChange={(e) =>
+                    setNewPrompt({
+                      ...newPrompt,
+                      category: e.target.value,
+                    })
+                  }
+                >
+                  <option disabled>Select a category</option>
+                  <option value="generalandadmin">General & Admin </option>
+                  <option value="marketingandsales">Marketing & Sales</option>
+                  <option value="developmentandit">Development & IT</option>
+                  <option value="contentwriting">Content Writing</option>
+                  <option value="designandart">Design & Art</option>
+                  <option value="createandvideos">Creative & Videos</option>
+                  <option value="lifestyleandentertainment">
+                    Lifestyle & Entertainment
+                  </option>
+                </select>
+              </div>
               <div className="mb-3">
                 <label htmlFor="prompt-title" className="form-label">
                   Title:

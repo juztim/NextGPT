@@ -7,6 +7,7 @@ const CreateCharacterModal = () => {
     name: "",
     description: "",
     instructions: "",
+    category: "",
   });
 
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -21,6 +22,7 @@ const CreateCharacterModal = () => {
         name: "",
         description: "",
         instructions: "",
+        category: "",
       });
       closeButtonRef.current?.click();
       void ctx.openAi.getAllCharacters.refetch();
@@ -44,7 +46,7 @@ const CreateCharacterModal = () => {
           <div className="modal-header">
             <h4 className="modal-title fs-5" id="create-character-title">
               <span className="icon icon-face me-3"></span>
-              Create Charcter
+              Create Character
             </h4>
             <button
               type="button"
@@ -55,6 +57,33 @@ const CreateCharacterModal = () => {
             ></button>
           </div>
           <div className="modal-body">
+            <div className="mb-3">
+              <label htmlFor="create-category" className="form-label">
+                Category:
+              </label>
+              <select
+                className="form-select"
+                id="create-category"
+                value={newCharacter.category}
+                onChange={(e) =>
+                  setNewCharacter({
+                    ...newCharacter,
+                    category: e.target.value,
+                  })
+                }
+              >
+                <option disabled>Select a category</option>
+                <option value="generalandadmin">General & Admin </option>
+                <option value="marketingandsales">Marketing & Sales</option>
+                <option value="developmentandit">Development & IT</option>
+                <option value="contentwriting">Content Writing</option>
+                <option value="designandart">Design & Art</option>
+                <option value="createandvideos">Creative & Videos</option>
+                <option value="lifestyleandentertainment">
+                  Lifestyle & Entertainment
+                </option>
+              </select>
+            </div>
             <div className="mb-3">
               <label htmlFor="create-title" className="form-label">
                 Title:

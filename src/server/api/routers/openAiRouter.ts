@@ -3,148 +3,148 @@ import { z } from "zod";
 import { Configuration, OpenAIApi } from "openai";
 
 export const OpenAiRouter = createTRPCRouter({
-  send: protectedProcedure
-    .input(
-      z.object({
-        conversationId: z.string().optional(),
-        prompt: z.string().optional(),
-        newMessage: z.string().min(2, "Message must be at least 2 characters"),
-        settings: z.object({
-          temperature: z.number().min(0).max(1),
-          tone: z.string(),
-          writingStyle: z.string(),
-          format: z.string(),
-        }),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const user = await ctx.prisma.user.findUnique({
-          where: {
-            id: ctx.session.user.id,
-          },
-          select: {
-            apiKey: true,
-          },
-        });
-
-        if (!user || !user.apiKey) {
-          throw new Error("No API Key");
-        }
-
-        const openAiConfig = new Configuration({
-          apiKey: user?.apiKey,
-        });
-        const openAI = new OpenAIApi(openAiConfig);
-
-        const conversation = await ctx.prisma.conversation.findUnique({
-          where: {
-            id: input.conversationId,
-          },
-        });
-
-        const conversationMessages = await ctx.prisma.message.findMany({
-          where: {
-            conversationId: input.conversationId,
-          },
-          select: {
-            text: true,
-            authorId: true,
-          },
-        });
-
-        const messageHistory: {
-          content: string;
-          role: "user" | "system";
-        }[] = conversationMessages.map((message) => {
-          return {
-            content: message.text,
-            role: message.authorId === ctx.session.user.id ? "user" : "system",
-          };
-        });
-
-        messageHistory.push({
-          content: input.newMessage,
-          role: "user",
-        });
-
-        messageHistory.unshift({
-          content: `Please respect the following instructions. Respond in a ${input.settings.tone}. Use the following writing style: ${input.settings.writingStyle}. Additionally I want you to format your response as ${input.settings.format}.`,
-          role: "system",
-        });
-
-        if (input.prompt) {
-          messageHistory.unshift({
-            content: input.prompt,
-            role: "user",
-          });
-        }
-
-        const response = await openAI.createChatCompletion({
-          model: "gpt-3.5-turbo",
-          messages: messageHistory,
-          temperature: input.settings.temperature,
-        });
-
-        /* const stream = await OpenAI(
-          "chat",
-          {
-            model: "gpt-3.5-turbo",
-            messages: messageHistory,
-            temperature: input.settings.temperature,
-          },
-          {
-            apiKey: user?.apiKey,
-          }
-        ); */
-
-        if (!conversation || !input.conversationId) {
-          const conversation = await ctx.prisma.conversation.create({
-            data: {
-              userId: ctx.session.user.id,
-              name: "New Conversation",
-            },
-            select: {
-              id: true,
-            },
-          });
-
-          /* await ctx.prisma.message.createMany({
-            data: [
-              {
-                conversationId: conversation.id,
-                text: input.newMessage,
-                authorId: ctx.session.user.id,
-              },
-              {
-                conversationId: conversation.id,
-                text: response.data.choices[0].message.content,
-              },
-            ],
-          }); */
-
-          return { newConversation: true, conversationId: conversation.id };
-        }
-
-        /* await ctx.prisma.message.createMany({
-          data: [
-            {
-              conversationId: input.conversationId,
-              text: input.newMessage,
-              authorId: ctx.session.user.id,
-            },
-            {
-              conversationId: input.conversationId,
-              text: response.data.choices[0].message.content,
-            },
-          ],
-        }); */
-      } catch (error: any) {
-        console.log(error);
-        // eslint-disable-next-line
-        throw new Error(error.message);
-      }
-    }),
+  // send: protectedProcedure
+  //   .input(
+  //     z.object({
+  //       conversationId: z.string().optional(),
+  //       prompt: z.string().optional(),
+  //       newMessage: z.string().min(2, "Message must be at least 2 characters"),
+  //       settings: z.object({
+  //         temperature: z.number().min(0).max(1),
+  //         tone: z.string(),
+  //         writingStyle: z.string(),
+  //         format: z.string(),
+  //       }),
+  //     })
+  //   )
+  //   .mutation(async ({ ctx, input }) => {
+  //     try {
+  //       const user = await ctx.prisma.user.findUnique({
+  //         where: {
+  //           id: ctx.session.user.id,
+  //         },
+  //         select: {
+  //           apiKey: true,
+  //         },
+  //       });
+  //
+  //       if (!user || !user.apiKey) {
+  //         throw new Error("No API Key");
+  //       }
+  //
+  //       const openAiConfig = new Configuration({
+  //         apiKey: user?.apiKey,
+  //       });
+  //       const openAI = new OpenAIApi(openAiConfig);
+  //
+  //       const conversation = await ctx.prisma.conversation.findUnique({
+  //         where: {
+  //           id: input.conversationId,
+  //         },
+  //       });
+  //
+  //       const conversationMessages = await ctx.prisma.message.findMany({
+  //         where: {
+  //           conversationId: input.conversationId,
+  //         },
+  //         select: {
+  //           text: true,
+  //           authorId: true,
+  //         },
+  //       });
+  //
+  //       const messageHistory: {
+  //         content: string;
+  //         role: "user" | "system";
+  //       }[] = conversationMessages.map((message) => {
+  //         return {
+  //           content: message.text,
+  //           role: message.authorId === ctx.session.user.id ? "user" : "system",
+  //         };
+  //       });
+  //
+  //       messageHistory.push({
+  //         content: input.newMessage,
+  //         role: "user",
+  //       });
+  //
+  //       messageHistory.unshift({
+  //         content: `Please respect the following instructions. Respond in a ${input.settings.tone}. Use the following writing style: ${input.settings.writingStyle}. Additionally I want you to format your response as ${input.settings.format}.`,
+  //         role: "system",
+  //       });
+  //
+  //       if (input.prompt) {
+  //         messageHistory.unshift({
+  //           content: input.prompt,
+  //           role: "user",
+  //         });
+  //       }
+  //
+  //       // const response = await openAI.createChatCompletion({
+  //       //   model: "gpt-3.5-turbo",
+  //       //   messages: messageHistory,
+  //       //   temperature: input.settings.temperature,
+  //       // });
+  //
+  //       /* const stream = await OpenAI(
+  //         "chat",
+  //         {
+  //           model: "gpt-3.5-turbo",
+  //           messages: messageHistory,
+  //           temperature: input.settings.temperature,
+  //         },
+  //         {
+  //           apiKey: user?.apiKey,
+  //         }
+  //       ); */
+  //
+  //       if (!conversation || !input.conversationId) {
+  //         const conversation = await ctx.prisma.conversation.create({
+  //           data: {
+  //             userId: ctx.session.user.id,
+  //             name: "New Conversation",
+  //           },
+  //           select: {
+  //             id: true,
+  //           },
+  //         });
+  //
+  //         /* await ctx.prisma.message.createMany({
+  //           data: [
+  //             {
+  //               conversationId: conversation.id,
+  //               text: input.newMessage,
+  //               authorId: ctx.session.user.id,
+  //             },
+  //             {
+  //               conversationId: conversation.id,
+  //               text: response.data.choices[0].message.content,
+  //             },
+  //           ],
+  //         }); */
+  //
+  //         return { newConversation: true, conversationId: conversation.id };
+  //       }
+  //
+  //       /* await ctx.prisma.message.createMany({
+  //         data: [
+  //           {
+  //             conversationId: input.conversationId,
+  //             text: input.newMessage,
+  //             authorId: ctx.session.user.id,
+  //           },
+  //           {
+  //             conversationId: input.conversationId,
+  //             text: response.data.choices[0].message.content,
+  //           },
+  //         ],
+  //       }); */
+  //     } catch (error: any) {
+  //       console.log(error);
+  //       // eslint-disable-next-line
+  //       throw new Error(error.message);
+  //     }
+  //   }),
 
   addMessage: protectedProcedure
     .input(
@@ -370,6 +370,7 @@ export const OpenAiRouter = createTRPCRouter({
           .string()
           .min(3, "Description must be at least 3 characters"),
         prompt: z.string().min(3, "Prompt must be at least 3 characters"),
+        category: z.string().min(3, "Category must be at least 3 characters"),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -378,6 +379,7 @@ export const OpenAiRouter = createTRPCRouter({
           name: input.title,
           description: input.description,
           instructions: input.prompt,
+          category: input.category,
           userId: ctx.session.user.id,
         },
       });
@@ -406,6 +408,7 @@ export const OpenAiRouter = createTRPCRouter({
         instructions: z
           .string()
           .min(3, "Instructions must be at least 3 characters"),
+        category: z.string().min(3, "Category must be at least 3 characters"),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -414,6 +417,7 @@ export const OpenAiRouter = createTRPCRouter({
           name: input.name,
           description: input.description,
           instructions: input.instructions,
+          category: input.category,
           userId: ctx.session.user.id,
         },
       });
