@@ -207,13 +207,13 @@ const ApiKeyModal = () => {
               </div>
             </div>
 
-            <a
+            {/*<a
               href="https://www.typingmind.com/faqs"
               target="_blank"
               className="link"
             >
               See more FAQs
-            </a>
+            </a>*/}
           </div>
           <div className="modal-footer "></div>
         </div>
