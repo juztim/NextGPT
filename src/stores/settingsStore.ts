@@ -12,12 +12,14 @@ type SettingsStoreData = {
   openAiToken: string;
   setOpenAiToken: (openAiToken: string) => void;
   outputLanguage: string;
+  initialInstructions: string;
   saveSettings: (settings: {
     temperature: number;
     tone: string;
     format: string;
     writingStyle: string;
     outputLanguage: string;
+    initialInstructions: string;
   }) => void;
 };
 
@@ -34,12 +36,15 @@ export const useSettingsStore = create<SettingsStoreData>((set) => {
     openAiToken: "",
     setOpenAiToken: (openAiToken: string) => set({ openAiToken }),
     outputLanguage: "english",
+    initialInstructions:
+      "You are ChatGPT, a large language model trained by OpenAI.",
     saveSettings: (settings: {
       temperature: number;
       tone: string;
       format: string;
       writingStyle: string;
       outputLanguage: string;
+      initialInstructions: string;
     }) =>
       set({
         temperature: settings.temperature,
@@ -47,6 +52,7 @@ export const useSettingsStore = create<SettingsStoreData>((set) => {
         format: settings.format,
         writingStyle: settings.writingStyle,
         outputLanguage: settings.outputLanguage,
+        initialInstructions: settings.initialInstructions,
       }),
   };
 });

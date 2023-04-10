@@ -486,6 +486,7 @@ export const OpenAiRouter = createTRPCRouter({
           format: z.string(),
           writingStyle: z.string(),
           outputLanguage: z.string(),
+          initialInstructions: z.string(),
         }),
       })
     )
@@ -506,6 +507,7 @@ export const OpenAiRouter = createTRPCRouter({
             format: input.settings.format,
             writingStyle: input.settings.writingStyle,
             outputLanguage: input.settings.outputLanguage,
+            initialInstructions: input.settings.initialInstructions,
           },
         });
       }

@@ -150,6 +150,7 @@ model Settings {
   tone         String   @default("friendly")
   format       String   @default("short")
   outputLanguage String @default("english")
+  initialInstructions String? @db.Text
 
   @@index([userId])
 }

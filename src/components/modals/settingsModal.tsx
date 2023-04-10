@@ -10,6 +10,7 @@ const SettingsModal = () => {
     format: "",
     writingStyle: "",
     outputLanguage: "",
+    initialInstructions: "",
   });
 
   const settings = useSettingsStore();
@@ -33,6 +34,7 @@ const SettingsModal = () => {
       format: settings.format,
       writingStyle: settings.writingStyle,
       outputLanguage: settings.outputLanguage,
+      initialInstructions: settings.initialInstructions,
     });
   }, [settings]);
 
@@ -380,8 +382,24 @@ const SettingsModal = () => {
                     <a className="link text-small">Reset to default</a>
                   </div>
 
-                  <div className="mt-2 border border-light p-3 text-xsmall mb-2 rounded">
-                    You are ChatGPT, a large language model trained by OpenAI.
+                  <div
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <input
+                      className="mt-2 border border-light p-3 text-xsmall mb-2 rounded"
+                      style={{
+                        width: "100%",
+                      }}
+                      value={newSettings.initialInstructions || ""}
+                      onChange={(e) => {
+                        setNewSettings({
+                          ...newSettings,
+                          initialInstructions: e.target.value,
+                        });
+                      }}
+                    />
                   </div>
 
                   <div className="form-check form-switch d-flex align-items-center">

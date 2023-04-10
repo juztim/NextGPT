@@ -58,6 +58,7 @@ const Home: NextPage = () => {
         tone: data?.tone ?? "",
         writingStyle: data?.writingStyle ?? "",
         outputLanguage: data?.outputLanguage ?? "",
+        initialInstructions: data?.initialInstructions ?? "",
       });
     },
   });
@@ -213,8 +214,13 @@ const Home: NextPage = () => {
     messageHistory.push({ content: message, role: "user" });
 
     messageHistory.unshift({
+      content: settingsStore.initialInstructions,
+      role: "user",
+    });
+
+    messageHistory.unshift({
       content: `Please respect the following instructions. Respond in a ${settingsStore.tone}. Use the following writing style: ${settingsStore.writingStyle}. Additionally I want you to format your response as ${settingsStore.format}. Reply in ${settingsStore.outputLanguage}.}`,
-      role: "assistant",
+      role: "user",
     });
 
     if (selectedCharacter && selectedCharacter.instructions) {
