@@ -361,7 +361,7 @@ const Home: NextPage = () => {
               </a>
               <span>
                 {activeChat?.name
-                  ? `${activeChat.name} (${conversationWordCount})`
+                  ? `${activeChat.name} (${activeChat.messages.length} messages)`
                   : "Start a new Chat"}
               </span>
               <div className="d-flex align-items-center">
