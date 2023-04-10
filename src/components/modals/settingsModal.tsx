@@ -319,7 +319,14 @@ const SettingsModal = () => {
 
                 <section>
                   <div className="mb-2">
-                    <label className="text-xsmall mb-2">Search Engine</label>
+                    <label
+                      className="text-xsmall mb-2"
+                      style={{
+                        fontWeight: "bolder",
+                      }}
+                    >
+                      Search Engine
+                    </label>
                     <select
                       className="form-select"
                       aria-label="Search Engine"
