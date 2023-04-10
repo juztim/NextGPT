@@ -26,8 +26,35 @@ const CreatePromptModal = () => {
       void ctx.openAi.getAllPrompts.refetch();
     },
     onError: (error) => {
-      console.log(error);
-      toast.error("Error creating prompt!");
+      const titleError = error.data?.zodError?.fieldErrors.title;
+      const descriptionError = error.data?.zodError?.fieldErrors.description;
+      const instructionsError = error.data?.zodError?.fieldErrors.instructions;
+      const categoryError = error.data?.zodError?.fieldErrors.category;
+
+      if (titleError && titleError[0]) {
+        toast.error(titleError[0]);
+      }
+
+      if (descriptionError && descriptionError[0]) {
+        toast.error(descriptionError[0]);
+      }
+
+      if (instructionsError && instructionsError[0]) {
+        toast.error(instructionsError[0]);
+      }
+
+      if (categoryError && categoryError[0]) {
+        toast.error(categoryError[0]);
+      }
+
+      if (
+        !titleError &&
+        !descriptionError &&
+        !instructionsError &&
+        !categoryError
+      ) {
+        toast.error("Error creating character!");
+      }
     },
   });
 

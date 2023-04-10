@@ -368,9 +368,10 @@ export const OpenAiRouter = createTRPCRouter({
         title: z.string().min(3, "Title must be at least 3 characters"),
         description: z
           .string()
-          .min(3, "Description must be at least 3 characters"),
+          .min(3, "Description must be at least 3 characters")
+          .optional(),
         prompt: z.string().min(3, "Prompt must be at least 3 characters"),
-        category: z.string().min(3, "Category must be at least 3 characters"),
+        category: z.string().min(3, "Category must be selected"),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -404,11 +405,12 @@ export const OpenAiRouter = createTRPCRouter({
         name: z.string().min(3, "Name must be at least 3 characters"),
         description: z
           .string()
-          .min(3, "Description must be at least 3 characters"),
+          .min(3, "Description must be at least 3 characters")
+          .optional(),
         instructions: z
           .string()
           .min(3, "Instructions must be at least 3 characters"),
-        category: z.string().min(3, "Category must be at least 3 characters"),
+        category: z.string().min(3, "Category must be selected"),
       })
     )
     .mutation(async ({ ctx, input }) => {
