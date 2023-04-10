@@ -192,10 +192,15 @@ const Home: NextPage = () => {
       return;
     }
 
+    addMessage({
+      newMessage: message,
+      conversationId: activeChatId,
+    });
+
     const messageHistory:
       | {
           content: string;
-          role: "user" | "system";
+          role: "user" | "system" | "assistant";
         }[]
       | undefined = activeChat?.messages.map((message) => {
       return {
@@ -204,24 +209,19 @@ const Home: NextPage = () => {
       };
     }) ?? [{ content: message, role: "user" }];
 
-    addMessage({
-      newMessage: message,
-      conversationId: activeChatId,
-    });
+    messageHistory.push({ content: message, role: "user" });
 
     messageHistory.unshift({
       content: `Please respect the following instructions. Respond in a ${settingsStore.tone}. Use the following writing style: ${settingsStore.writingStyle}. Additionally I want you to format your response as ${settingsStore.format}.`,
-      role: "system",
+      role: "assistant",
     });
 
     if (selectedCharacter && selectedCharacter.instructions) {
       messageHistory.unshift({
         content: selectedCharacter.instructions,
-        role: "user",
+        role: "assistant",
       });
     }
-
-    console.log(messageHistory);
 
     const stream = await OpenAI(
       "chat",
