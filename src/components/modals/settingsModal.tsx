@@ -196,8 +196,7 @@ const SettingsModal = () => {
                     <select
                       className="form-select"
                       aria-label="Output Language"
-                      defaultValue="english"
-                      value={newSettings.outputLanguage || "english"}
+                      value={newSettings.outputLanguage || "russian"}
                       onChange={(e) => {
                         setNewSettings({
                           ...newSettings,

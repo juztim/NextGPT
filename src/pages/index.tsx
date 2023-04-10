@@ -57,6 +57,7 @@ const Home: NextPage = () => {
         temperature: data?.temperature ?? 0.5,
         tone: data?.tone ?? "",
         writingStyle: data?.writingStyle ?? "",
+        outputLanguage: data?.outputLanguage ?? "",
       });
     },
   });
@@ -212,7 +213,7 @@ const Home: NextPage = () => {
     messageHistory.push({ content: message, role: "user" });
 
     messageHistory.unshift({
-      content: `Please respect the following instructions. Respond in a ${settingsStore.tone}. Use the following writing style: ${settingsStore.writingStyle}. Additionally I want you to format your response as ${settingsStore.format}.`,
+      content: `Please respect the following instructions. Respond in a ${settingsStore.tone}. Use the following writing style: ${settingsStore.writingStyle}. Additionally I want you to format your response as ${settingsStore.format}. Reply in ${settingsStore.outputLanguage}.}`,
       role: "assistant",
     });
 
