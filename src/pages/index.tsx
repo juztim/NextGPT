@@ -59,6 +59,7 @@ const Home: NextPage = () => {
         writingStyle: data?.writingStyle ?? "",
         outputLanguage: data?.outputLanguage ?? "",
         initialInstructions: data?.initialInstructions ?? "",
+        showWordCount: data?.showWordCount ?? false,
       });
     },
   });
@@ -642,18 +643,22 @@ const Home: NextPage = () => {
                           </button>
                         </span>
                       </div>
-                      <div className="text-xsmall text-muted mt-1 d-flex flex-column flex-sm-row flex-lg-column flex-xl-row align-items-center align-items-sm-baseline align-items-lg-center align-items-xl-baseline">
-                        <div className="me-3">
-                          Current message: {message.trim().split(" ").length}{" "}
-                          words
-                        </div>
+                      {useSettingsStore.getState().showWordCount && (
+                        <>
+                          <div className="text-xsmall text-muted mt-1 d-flex flex-column flex-sm-row flex-lg-column flex-xl-row align-items-center align-items-sm-baseline align-items-lg-center align-items-xl-baseline">
+                            <div className="me-3">
+                              Current message:{" "}
+                              {message.trim().split(" ").length} words
+                            </div>
 
-                        <div className="me-3">
-                          Total chat: {conversationWordCount} words
-                        </div>
+                            <div className="me-3">
+                              Total chat: {conversationWordCount} words
+                            </div>
 
-                        <div className="me-3">Estimated cost: {cost}$</div>
-                      </div>
+                            <div className="me-3">Estimated cost: {cost}$</div>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

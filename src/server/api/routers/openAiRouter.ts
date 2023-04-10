@@ -487,6 +487,7 @@ export const OpenAiRouter = createTRPCRouter({
           writingStyle: z.string(),
           outputLanguage: z.string(),
           initialInstructions: z.string(),
+          showWordCount: z.boolean(),
         }),
       })
     )
@@ -508,6 +509,7 @@ export const OpenAiRouter = createTRPCRouter({
             writingStyle: input.settings.writingStyle,
             outputLanguage: input.settings.outputLanguage,
             initialInstructions: input.settings.initialInstructions,
+            showWordCount: input.settings.showWordCount,
           },
         });
       }
@@ -517,6 +519,9 @@ export const OpenAiRouter = createTRPCRouter({
           tone: input.settings.tone,
           format: input.settings.format,
           writingStyle: input.settings.writingStyle,
+          outputLanguage: input.settings.outputLanguage,
+          initialInstructions: input.settings.initialInstructions,
+          showWordCount: input.settings.showWordCount,
           userId: ctx.session.user.id,
         },
       });

@@ -11,6 +11,7 @@ const SettingsModal = () => {
     writingStyle: "",
     outputLanguage: "",
     initialInstructions: "",
+    showWordCount: true,
   });
 
   const settings = useSettingsStore();
@@ -35,6 +36,7 @@ const SettingsModal = () => {
       writingStyle: settings.writingStyle,
       outputLanguage: settings.outputLanguage,
       initialInstructions: settings.initialInstructions,
+      showWordCount: settings.showWordCount,
     });
   }, [settings]);
 
@@ -408,6 +410,13 @@ const SettingsModal = () => {
                       type="checkbox"
                       role="switch"
                       id="stream-ai"
+                      checked={newSettings.showWordCount || false}
+                      onChange={(e) => {
+                        setNewSettings({
+                          ...newSettings,
+                          showWordCount: e.target.checked,
+                        });
+                      }}
                     />
 
                     <div>
