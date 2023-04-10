@@ -8,7 +8,7 @@ const ChatMessage = ({ message }: { message: string }) => {
     <div className="chat-item">
       <div className="row justify-content-center py-5">
         <div className="col-xl-8 col-sm-10 col-11">
-          <div className="d-flex">
+          <div className="d-flex align-items-center">
             <div className="image me-4">
               <Image
                 src={data?.user.image ?? AvatarUser}
