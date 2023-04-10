@@ -342,7 +342,11 @@ const SettingsModal = () => {
                       </span>
                     </h5>
 
-                    <a className="main-link text-small" href="#">
+                    <a
+                      className="main-link text-small"
+                      href="https://platform.openai.com/docs/guides/chat"
+                      target="_blank"
+                    >
                       Learn More
                     </a>
                   </div>
@@ -377,7 +381,13 @@ const SettingsModal = () => {
                       Initial System Instruction
                     </h5>
 
-                    <a className="main-link text-small">Learn More</a>
+                    <a
+                      className="main-link text-small"
+                      href="https://platform.openai.com/docs/guides/chat/instructing-chat-models"
+                      target="_blank"
+                    >
+                      Learn More
+                    </a>
                   </div>
 
                   <div>
