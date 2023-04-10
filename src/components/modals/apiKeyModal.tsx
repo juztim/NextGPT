@@ -55,7 +55,7 @@ const ApiKeyModal = () => {
 
             <div className="mb-3">
               <label htmlFor="addApiKey" className="form-label">
-                Title:
+                API Key
               </label>
               <input
                 type="text"
