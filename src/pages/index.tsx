@@ -604,7 +604,7 @@ const Home: NextPage = () => {
                         clearChat({ id: activeChatId });
                       }}
                     >
-                      <span className="icon icon-refund me-2"></span>
+                      <span className="icon icon-delete me-2"></span>
                       <span className="text">Reset Chat</span>
                     </button>
                   </div>
