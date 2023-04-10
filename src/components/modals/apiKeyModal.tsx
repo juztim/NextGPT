@@ -149,7 +149,7 @@ const ApiKeyModal = () => {
                     aria-controls="flush-collapseTwo"
                   >
                     Do I need to have ChatGPT Plus ($20/month) to use
-                    FeatureDesk?
+                    FutureDesk?
                   </button>
                 </h6>
                 <div
