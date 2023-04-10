@@ -32,7 +32,7 @@ const ApiKeyModal = ({
   return (
     <Modal show={show} onHide={() => setShow(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>API Key</Modal.Title>
+        <Modal.Title>Enter your OpenAI API Key</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form
@@ -46,19 +46,26 @@ const ApiKeyModal = ({
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Control
               type="text"
-              placeholder="Enter API Key"
+              placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
               onChange={(e) => {
                 setNewApiKey(e.target.value);
               }}
               value={newApiKey}
             />
+            <Form.Text className="text-muted">
+              You can get your API Key from{" "}
+              <a
+                href="https://platform.openai.com/account/api-keys"
+                target="_blank"
+                rel="noreferrer"
+              >
+                OpenAI
+              </a>
+            </Form.Text>
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShow(false)}>
-          Close
-        </Button>
         <Button
           variant="primary"
           onClick={() =>
@@ -67,7 +74,10 @@ const ApiKeyModal = ({
             })
           }
         >
-          Save Changes
+          Save
+        </Button>
+        <Button variant="secondary" onClick={() => setShow(false)}>
+          Cancel
         </Button>
       </Modal.Footer>
     </Modal>
