@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { api } from "~/utils/api";
 
 type SettingsStoreData = {
   temperature: number;
@@ -12,11 +11,13 @@ type SettingsStoreData = {
   setWritingStyle: (writingStyle: string) => void;
   openAiToken: string;
   setOpenAiToken: (openAiToken: string) => void;
+  outputLanguage: string;
   saveSettings: (settings: {
     temperature: number;
     tone: string;
     format: string;
     writingStyle: string;
+    outputLanguage: string;
   }) => void;
 };
 
@@ -32,17 +33,20 @@ export const useSettingsStore = create<SettingsStoreData>((set) => {
     setWritingStyle: (writingStyle: string) => set({ writingStyle }),
     openAiToken: "",
     setOpenAiToken: (openAiToken: string) => set({ openAiToken }),
+    outputLanguage: "english",
     saveSettings: (settings: {
       temperature: number;
       tone: string;
       format: string;
       writingStyle: string;
+      outputLanguage: string;
     }) =>
       set({
         temperature: settings.temperature,
         tone: settings.tone,
         format: settings.format,
         writingStyle: settings.writingStyle,
+        outputLanguage: settings.outputLanguage,
       }),
   };
 });

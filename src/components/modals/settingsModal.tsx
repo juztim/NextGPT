@@ -9,6 +9,7 @@ const SettingsModal = () => {
     tone: "",
     format: "",
     writingStyle: "",
+    outputLanguage: "",
   });
 
   const settings = useSettingsStore();
@@ -31,6 +32,7 @@ const SettingsModal = () => {
       tone: settings.tone,
       format: settings.format,
       writingStyle: settings.writingStyle,
+      outputLanguage: settings.outputLanguage,
     });
   }, [settings]);
 
@@ -188,19 +190,30 @@ const SettingsModal = () => {
                 </section>
 
                 <section className="mb-5">
-                  {/* <h5 className="text-normal fw-bold">Output</h5>
+                  <h5 className="text-normal fw-bold">Output</h5>
                   <div className="mb-2">
                     <label className="text-xsmall mb-2">Output Language</label>
                     <select
                       className="form-select"
                       aria-label="Output Language"
-                      defaultValue={0}
+                      defaultValue="english"
+                      value={newSettings.outputLanguage || "english"}
+                      onChange={(e) => {
+                        setNewSettings({
+                          ...newSettings,
+                          outputLanguage: e.target.value,
+                        });
+                      }}
                     >
-                      <option value="0">English US</option>
-                      <option value="1">English UK</option>
-                      <option value="2">French FR</option>
+                      <option value="english">English</option>
+                      <option value="german">German</option>
+                      <option value="spanish">Spanish</option>
+                      <option value="french">French</option>
+                      <option value="chinese">Chinese</option>
+                      <option value="japanese">Japanese</option>
+                      <option value="russian">Russian</option>
                     </select>
-                  </div> */}
+                  </div>
 
                   <div className="mb-2">
                     <label className="text-xsmall mb-2">Tone</label>

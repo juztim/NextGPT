@@ -149,6 +149,7 @@ model Settings {
   writingStyle String   @default("casual")
   tone         String   @default("friendly")
   format       String   @default("short")
+  outputLanguage String @default("english")
 
   @@index([userId])
 }
