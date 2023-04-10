@@ -227,6 +227,7 @@ const SettingsModal = () => {
                         });
                       }}
                     >
+                      <option value="normal">Default</option>
                       <option value="academic">Academic</option>
                       <option value="analytical">Analytical</option>
                       <option value="argumentative">Argumentative</option>
@@ -262,6 +263,7 @@ const SettingsModal = () => {
                         });
                       }}
                     >
+                      <option value="normal">Default</option>
                       <option value="authorative">Authorative</option>
                       <option value="clinical">Clinical</option>
                       <option value="cold">Cold</option>
@@ -298,6 +300,7 @@ const SettingsModal = () => {
                         });
                       }}
                     >
+                      <option value="normal">Default</option>
                       <option value="concise">Concise</option>
                       <option value="step by step">Step-By-Step</option>
                       <option value="explain like im 5">ELI5</option>
