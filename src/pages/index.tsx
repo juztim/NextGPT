@@ -30,7 +30,6 @@ const Home: NextPage = () => {
   const innerChatBoxRef = useRef<HTMLDivElement | null>(null);
   const { data: session, status } = useSession();
   const [selectedCharacter, setSelectedCharacter] = useState<Character>();
-  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [cost, setCost] = useState(0);
   const [searchFilter, setSearchFilter] = useState("");
   const chatPlaceHolderRef = useRef<HTMLDivElement | null>(null);
@@ -542,8 +541,9 @@ const Home: NextPage = () => {
                 <div className="col-7">
                   <a
                     href="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#apiKey"
                     className="link-with-icon d-flex align-items-center text-xsmall"
-                    onClick={() => setShowApiKeyModal(true)}
                   >
                     <span className="icon text-accent icon-shild-info me-2 text-big"></span>
                     <span className="text">
@@ -689,7 +689,7 @@ const Home: NextPage = () => {
 
           <SettingsModal />
 
-          <ApiKeyModal show={showApiKeyModal} setShow={setShowApiKeyModal} />
+          <ApiKeyModal />
         </div>
       </DragDropContext>
     </>
