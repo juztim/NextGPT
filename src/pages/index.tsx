@@ -85,8 +85,32 @@ const Home: NextPage = () => {
     },
   });
 
-  const { mutate: sendMessage, isLoading: isSendingMessage } =
-    api.openAi.send.useMutation({
+  // const { mutate: sendMessage, isLoading: isSendingMessage } =
+  //   api.openAi.send.useMutation({
+  //     onError: (e) => {
+  //       const errorMessage = e.data?.zodError?.fieldErrors.newMessage;
+  //       if (errorMessage && errorMessage[0]) {
+  //         toast.error(errorMessage[0]);
+  //       } else {
+  //         toast.error(
+  //           e.message ?? "Error sending message, please try again later"
+  //         );
+  //       }
+  //     },
+  //     onSuccess: (data) => {
+  //       if (data?.newConversation) {
+  //         toast.success("New conversation started");
+  //         setActiveChatId(data.conversationId);
+  //         void generateTitle({ id: data.conversationId, message });
+  //       }
+  //       setMessage("");
+  //       void ctx.openAi.getChat.refetch({ id: activeChatId });
+  //       void ctx.openAi.getAllChats.refetch();
+  //     },
+  //   });
+
+  const { mutate: addMessage, isLoading: isSendingMessage } =
+    api.openAi.addMessage.useMutation({
       onError: (e) => {
         const errorMessage = e.data?.zodError?.fieldErrors.newMessage;
         if (errorMessage && errorMessage[0]) {
@@ -97,43 +121,20 @@ const Home: NextPage = () => {
           );
         }
       },
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         if (data?.newConversation) {
           toast.success("New conversation started");
           setActiveChatId(data.conversationId);
           void generateTitle({ id: data.conversationId, message });
         }
         setMessage("");
-        void ctx.openAi.getChat.refetch({ id: activeChatId });
-        void ctx.openAi.getAllChats.refetch();
+        await ctx.openAi.getChat.refetch({ id: activeChatId });
+        if (data?.botMessage) {
+          setStreamedMessage(null);
+        }
+        await ctx.openAi.getAllChats.refetch();
       },
     });
-
-  const { mutate: addMessage } = api.openAi.addMessage.useMutation({
-    onError: (e) => {
-      const errorMessage = e.data?.zodError?.fieldErrors.newMessage;
-      if (errorMessage && errorMessage[0]) {
-        toast.error(errorMessage[0]);
-      } else {
-        toast.error(
-          e.message ?? "Error sending message, please try again later"
-        );
-      }
-    },
-    onSuccess: async (data) => {
-      if (data?.newConversation) {
-        toast.success("New conversation started");
-        setActiveChatId(data.conversationId);
-        void generateTitle({ id: data.conversationId, message });
-      }
-      setMessage("");
-      await ctx.openAi.getChat.refetch({ id: activeChatId });
-      if (data?.botMessage) {
-        setStreamedMessage(null);
-      }
-      await ctx.openAi.getAllChats.refetch();
-    },
-  });
 
   const { data: chats } = api.openAi.getAllChats.useQuery(undefined, {
     onError: (err) => {
