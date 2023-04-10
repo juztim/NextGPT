@@ -609,7 +609,13 @@ const Home: NextPage = () => {
                     </button>
                   </div>
                   <div className="d-flex">
-                    <span className="icon icon-paper-clip icon-md me-2 mt-3"></span>
+                    <span
+                      className="icon icon-paper-clip icon-md me-2 mt-3"
+                      onClick={() => {
+                        toast.error("Coming soon!");
+                      }}
+                      style={{ cursor: "pointer" }}
+                    />
 
                     <div className="flex-grow-1">
                       <div className="input-group chat-ai">
