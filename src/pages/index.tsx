@@ -85,30 +85,6 @@ const Home: NextPage = () => {
     },
   });
 
-  // const { mutate: sendMessage, isLoading: isSendingMessage } =
-  //   api.openAi.send.useMutation({
-  //     onError: (e) => {
-  //       const errorMessage = e.data?.zodError?.fieldErrors.newMessage;
-  //       if (errorMessage && errorMessage[0]) {
-  //         toast.error(errorMessage[0]);
-  //       } else {
-  //         toast.error(
-  //           e.message ?? "Error sending message, please try again later"
-  //         );
-  //       }
-  //     },
-  //     onSuccess: (data) => {
-  //       if (data?.newConversation) {
-  //         toast.success("New conversation started");
-  //         setActiveChatId(data.conversationId);
-  //         void generateTitle({ id: data.conversationId, message });
-  //       }
-  //       setMessage("");
-  //       void ctx.openAi.getChat.refetch({ id: activeChatId });
-  //       void ctx.openAi.getAllChats.refetch();
-  //     },
-  //   });
-
   const { mutate: addMessage, isLoading: isSendingMessage } =
     api.openAi.addMessage.useMutation({
       onError: (e) => {
@@ -122,9 +98,7 @@ const Home: NextPage = () => {
         }
       },
       onSuccess: async (data) => {
-        if (data?.newConversation) {
-          toast.success("New conversation started");
-          setActiveChatId(data.conversationId);
+        if (data?.firstMessage) {
           void generateTitle({ id: data.conversationId, message });
         }
         setMessage("");
@@ -186,6 +160,19 @@ const Home: NextPage = () => {
       void ctx.openAi.getChat.refetch({ id: activeChatId });
     },
   });
+
+  const { mutate: createChat, isLoading: creatingNewChat } =
+    api.openAi.createConversation.useMutation({
+      onError: (err) => {
+        console.log(err);
+        toast.error("Error creating conversation");
+      },
+      onSuccess: (data) => {
+        toast.success("Conversation created");
+        setActiveChatId(data.conversationId);
+        void ctx.openAi.getAllChats.refetch();
+      },
+    });
 
   const [message, setMessage] = useState("");
 
@@ -426,7 +413,10 @@ const Home: NextPage = () => {
                 <div className="col-9">
                   <button
                     className="btn btn-primary btn-block w-100 btn-new"
-                    onClick={() => setActiveChatId("")}
+                    onClick={() => {
+                      createChat();
+                    }}
+                    disabled={creatingNewChat}
                   >
                     <span className="icon icon-plus"></span>
                     New Chat
@@ -560,7 +550,7 @@ const Home: NextPage = () => {
             <div className="content-body">
               <div className="inner" ref={innerChatBoxRef}>
                 {activeChatId !== "" ? (
-                  activeChat?.messages?.map((message, index) => {
+                  activeChat?.messages?.map((message) => {
                     if (!message.authorId) {
                       return (
                         <AiChatMessage

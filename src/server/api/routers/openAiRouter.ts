@@ -160,33 +160,13 @@ export const OpenAiRouter = createTRPCRouter({
           where: {
             id: input.conversationId,
           },
+          include: {
+            messages: true,
+          },
         });
 
         if (!existingConversation || input.conversationId === undefined) {
-          const newConversation = await ctx.prisma.conversation.create({
-            data: {
-              userId: ctx.session.user.id,
-              name: "New Conversation",
-            },
-            select: {
-              id: true,
-            },
-          });
-
-          await ctx.prisma.message.createMany({
-            data: [
-              {
-                conversationId: newConversation.id,
-                text: input.newMessage,
-                authorId: input.botMessage ? null : ctx.session.user.id,
-              },
-            ],
-          });
-          return {
-            newConversation: true,
-            conversationId: newConversation.id,
-            botMessage: input.botMessage,
-          };
+          throw new Error("Conversation does not exist");
         }
 
         await ctx.prisma.message.create({
@@ -198,7 +178,7 @@ export const OpenAiRouter = createTRPCRouter({
         });
 
         return {
-          newConversation: false,
+          firstMessage: existingConversation.messages.length === 0,
           conversationId: input.conversationId,
           botMessage: input.botMessage,
         };
@@ -208,6 +188,19 @@ export const OpenAiRouter = createTRPCRouter({
         throw new Error(error.message);
       }
     }),
+  createConversation: protectedProcedure.mutation(async ({ ctx }) => {
+    const conversation = await ctx.prisma.conversation.create({
+      data: {
+        userId: ctx.session.user.id,
+        name: "New Conversation",
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return { conversationId: conversation.id };
+  }),
 
   getAllChats: protectedProcedure.query(async ({ ctx }) => {
     const ungroupedChats = await ctx.prisma.conversation.findMany({
