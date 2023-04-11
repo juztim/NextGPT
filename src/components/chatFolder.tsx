@@ -64,8 +64,6 @@ const ChatFolder = ({
   });
 
   useEffect(() => {
-    console.log("editingFolderName", editingFolderName);
-    console.log("requireEditConfirmation", requireEditConfirmation);
     editingFolderName && folderNameInputRef.current?.focus();
   }, [editingFolderName, requireEditConfirmation]);
 
