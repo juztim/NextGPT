@@ -106,8 +106,8 @@ const ChatFolder = ({
                   ref={folderNameInputRef}
                   onChange={(e) => setFolderName(e.target.value)}
                 />
+                <span className="icon icon-chevron-down" />
                 <span className="text-muted">({conversations?.length})</span>
-                {/*<span className="icon icon-chevron-down" />*/}
               </div>
               <div className="col-3 d-flex align-items-center justify-content-end">
                 {requireDeleteConfirmation ? (

@@ -113,7 +113,9 @@ const Welcome: NextPage = () => {
                         <button
                           className="btn btn-primary btn-lg mb-5"
                           onClick={() => {
-                            void signIn();
+                            void signIn(undefined, {
+                              callbackUrl: "/",
+                            });
                           }}
                         >
                           Start Now
