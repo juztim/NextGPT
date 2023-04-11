@@ -53,6 +53,7 @@ const CharacterPreview = ({
           position: "absolute",
           right: "20px",
         }}
+        disabled
         onClick={(e) => {
           e.stopPropagation();
           //deleteCharacter({ id: character.id });

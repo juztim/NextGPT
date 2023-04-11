@@ -47,9 +47,10 @@ const PromptPreview = ({
             position: "absolute",
             right: "20px",
           }}
+          disabled
           onClick={(e) => {
             e.stopPropagation();
-            deletePrompt({ id: prompt.id });
+            //deletePrompt({ id: prompt.id });
           }}
         >
           <span className="icon icon-delete" />
