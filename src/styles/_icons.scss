@@ -12,7 +12,7 @@
 
 [class^="icon-"], [class*=" icon-"], .header .navbar .navbar-nav .dropdown a.dropdown-toggle:after {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'icomoon' !important;
+  font-family: 'icomoon', serif !important;
   speak: never;
   font-style: normal;
   font-weight: normal;
@@ -23,6 +23,22 @@
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-send:before {
+  content: "\e92e";
+}
+.icon-sound:before {
+  content: "\e92f";
+  color: #444654;
+}
+.icon-coolicon:before {
+  content: "\e930";
+  color: #444654;
+}
+.icon-mic-off:before {
+  content: "\e931";
+  color: #444654;
 }
 .icon-search-2:before {
   content: "\e92d";
@@ -147,7 +163,7 @@
 .icon-delete:before {
   content: "\e921";
 }
-.icon-chevron-down:before, .header .navbar .navbar-nav .dropdown a.dropdown-toggle:after {
+.icon-chevron-down:before {
   content: "\e922";
 }
 .icon-chat:before {
@@ -161,4 +177,10 @@
 }
 .icon-account-circle:before {
   content: "\e926";
+}
+.icon-download:before {
+  content: "\e95b";
+}
+.icon-download-cloud:before {
+  content: "\e95c";
 }

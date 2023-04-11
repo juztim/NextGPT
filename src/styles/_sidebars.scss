@@ -72,7 +72,7 @@
 }
 
 #right-menu {
-	right: 0px;
+	right: 0;
 
 	&:not(.show) {
 		transform: translateX(260px);
@@ -118,7 +118,7 @@
 #content-holder {
 	max-width: 100%;
 	margin-top: 50px;
-	height: calc(100vh - 50px);
+	height: calc(100vh - 70px);
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -130,7 +130,7 @@
 		}
 
 		&.left-open {
-			margin-left {
+			.margin-left {
 				margin-left: 260px;
 			}
 		}
@@ -151,3 +151,4 @@
 		}
 	}
 }
+

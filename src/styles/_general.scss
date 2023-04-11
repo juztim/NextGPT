@@ -10,12 +10,24 @@ body {
 	color: $white;	
 	font-weight: 500;
 	font-family: $font;
+	width: 100%;
+	overflow-x: hidden;
+}
+
+.page-content {
+	width: 100%;
+	overflow-x: hidden;
 }
 
 a {
 	@include tr($tr);
 	text-decoration: none;
 	cursor: pointer;
+	color: $accent-3;
+
+	&.toggler {
+		color: $white;
+	}
 }
 
 .text-accent {
@@ -55,6 +67,10 @@ a {
 	color: $black;
 }
 
+.text-white {
+	color: $white;
+}
+
 .text-xsmall {
 	font-size: $xsmall-text;
 }
@@ -69,6 +85,18 @@ a {
 
 .text-big {
 	font-size: $caption-3;
+}
+
+.text-weight-normal {
+	font-weight: 400 !important;
+}
+
+.text-weight-thin {
+	font-weight: 300 !important;
+}
+
+.text-underline {
+	text-decoration: underline;
 }
 
 .caption-1 {
@@ -214,47 +242,60 @@ a {
 	font-size: $normal-text;
 
 	vertical-align: middle;
-  -webkit-transform: perspective(1px) translateZ(0);
-  transform: perspective(1px) translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  position: relative;
-  overflow: hidden;
-  background: #e1e1e1;
-  -webkit-transition-property: color;
-  transition-property: color;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
+	-webkit-transform: perspective(1px) translateZ(0);
+	transform: perspective(1px) translateZ(0);
+	box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+	position: relative;
+	overflow: hidden;
+	background: #e1e1e1;
+	-webkit-transition-property: color;
+	transition-property: color;
+	-webkit-transition-duration: 0.3s;
+	transition-duration: 0.3s;
 
-  &:before {
-  	content: "";
-	  position: absolute;
-	  z-index: -1;
-	  width: 100px;
-	  height: 100px;
-	  top: 50%;	  
-	  left: 50%;
-	  margin-top: -50px;
-	  margin-left: -50px;
-	  background: $white;
-	  border-radius: 100%;
-	  -webkit-transform: scale(0);
-	  transform: scale(0);
-	  -webkit-transition-property: transform;
-	  transition-property: transform;
-	  -webkit-transition-duration: 0.4s;
-	  transition-duration: 0.54;
-	  -webkit-transition-timing-function: ease-out;
-	  transition-timing-function: ease-out;
-	  opacity: .1;
-  }
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
 
-  .icon {
-  	font-size: 1.3rem;
-  }
+	&:before {
+		content: "";
+		position: absolute;
+		z-index: -1;
+		width: 100px;
+		height: 100px;
+		top: 50%;	  
+		left: 50%;
+		margin-top: -50px;
+		margin-left: -50px;
+		background: $white;
+		border-radius: 100%;
+		-webkit-transform: scale(0);
+		transform: scale(0);
+		-webkit-transition-property: transform;
+		transition-property: transform;
+		-webkit-transition-duration: 0.4s;
+		transition-duration: 0.54s;
+		-webkit-transition-timing-function: ease-out;
+		transition-timing-function: ease-out;
+		opacity: .1;
+	}
 
-  &:hover:before, &:focus:before, &:active:before {
-  	-webkit-transform: scale(2);
-  	transform: scale(2);
+	.icon {
+		font-size: 1.3rem;
+	}
+
+	&.btn-lg {
+		padding: 15px 25px;
+
+		.icon {
+			font-size: 1.5rem;
+		}
+	}
+
+	&:hover:before, &:focus:before, &:active:before {
+	  	-webkit-transform: scale(2);
+	  	transform: scale(2);
 	}
 
 	// Primary Button
@@ -263,10 +304,10 @@ a {
 		border-color: $main-col;
 		color: $white;
 
-	  &:hover, &:focus, &:active {
-	  	background: $main-col;
-	  	border-color: $main-col;
-	  }
+		&:hover, &:focus, &:active {
+			background: $main-col;
+			border-color: $main-col;
+		}
 	}
 
 	&.btn-outline-primary {
@@ -290,10 +331,10 @@ a {
 		border-color: $dark-3;
 		color: $white;
 
-	  &:hover, &:focus, &:active {
-	  	background: $dark-3;
-	  	border-color:$dark-3;
-	  }
+		&:hover, &:focus, &:active {
+			background: $dark-3;
+			border-color:$dark-3;
+		}
 	}
 
 	&.btn-outline-secondary {
@@ -326,6 +367,32 @@ a {
 				transform: translate(0, -50%) rotate(90deg);
 			}
 		}
+	}
+
+	&.btn-white {
+		background: $white;
+		border-color: $white;
+		color: $main-col;
+
+		&:hover, &:focus, &:active {
+			background: $white;
+			border-color: $white;
+		}
+	}
+
+	&.btn-outline-white {
+		border-color: $white;
+		color: $white;
+		background: none;
+
+		&:hover, &:focus, &:active {
+			background: none;
+		}
+	}
+
+	&.btn-link {
+		background: transparent;
+		text-decoration: none;
 	}
 }
 
@@ -379,5 +446,52 @@ a {
 			transform: rotate(90deg);
 		}
 	}
+}
+
+
+#valuePrep {
+	li {
+		display: flex;
+		align-items: center;
+		margin-bottom: 10px;
+		font-weight: 300;
+
+		.icon {
+			font-size: 2rem;
+			margin-right: 5px;
+		}
+	}
+}
+
+.accordion-item {
+	border: 0;
+}
+
+.accordion-button {
+	padding: 12px 0;
+
+	&:active, &:focus {
+		outline: none !important;
+		box-shadow: none;
+	}
+}
+
+.accordion-button:not(.collapsed) {
+	color: $main-col;
+	background: none;
+}
+
+/***********************************************
+	 Custom scrollbar for webkit browser
+************************************************/
+
+::-webkit-scrollbar {
+    width: 6px;
+} 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(#33363F, 1); 
+} 
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(#33363F, 1); 
 }
 

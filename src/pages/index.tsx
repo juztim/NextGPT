@@ -1,5 +1,5 @@
 import { type NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Logo from "~/images/logo.png";
 import ChatMessage from "~/components/chatMessage";
@@ -23,6 +23,7 @@ import SpeechRecognition, {
 import autoAnimate from "@formkit/auto-animate";
 import UndraggableChatPreview from "~/components/undraggableChatPreview";
 import { OpenAI } from "openai-streams";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -35,6 +36,7 @@ const Home: NextPage = () => {
   const chatPlaceHolderRef = useRef<HTMLDivElement | null>(null);
   const [conversationWordCount, setConversationWordCount] = useState(0);
   const [streamedMessage, setStreamedMessage] = useState<string | null>();
+  const router = useRouter();
 
   const settingsStore = useSettingsStore();
 
@@ -269,9 +271,9 @@ const Home: NextPage = () => {
   // If the user is not logged in, show the login page
   useEffect(() => {
     if (status !== "authenticated" && status !== "loading") {
-      void signIn();
+      void router.push("/welcome");
     }
-  }, [status]);
+  }, [status, router]);
 
   useEffect(() => {
     const costPerWord = 1000 / 750;
@@ -549,26 +551,18 @@ const Home: NextPage = () => {
           <div id="content-holder" className="left-open right-open">
             <div className="content-body">
               <div className="inner" ref={innerChatBoxRef}>
-                {activeChatId !== "" ? (
-                  activeChat?.messages?.map((message) => {
-                    if (!message.authorId) {
-                      return (
-                        <AiChatMessage
-                          message={message.text}
-                          key={message.id}
-                        />
-                      );
-                    } else {
-                      return (
-                        <ChatMessage message={message.text} key={message.id} />
-                      );
-                    }
-                  })
-                ) : (
-                  <ChatMessage
-                    message={"Start a new Conversation by sending a message"}
-                  />
-                )}
+                {activeChat?.messages?.map((message) => {
+                  if (!message.authorId) {
+                    return (
+                      <AiChatMessage message={message.text} key={message.id} />
+                    );
+                  } else {
+                    return (
+                      <ChatMessage message={message.text} key={message.id} />
+                    );
+                  }
+                })}
+
                 {streamedMessage && <AiChatMessage message={streamedMessage} />}
                 <div
                   style={{

@@ -22,6 +22,10 @@
 
 	.modal-body {
 		padding: 10px 45px;
+
+		&.mh-400 {
+			max-height: 400px;
+		}
 	}
 
 	.modal-footer {
@@ -54,5 +58,26 @@
 
 	.tab-pane {
 		padding: 0 0 20px;
+	}
+
+	.add-item {
+		background: #F5F5F5;
+		border-radius: 6px;
+		padding: 15px;
+		margin-bottom: 12px;
+
+		h5 {
+			.icon {
+				margin-right: 10px;
+			}
+		}
+
+		p {
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 18px;
+			color: rgba(0, 0, 0, 0.5);
+			padding-left: 25px;
+		}
 	}
 }
