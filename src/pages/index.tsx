@@ -163,6 +163,7 @@ const Home: NextPage = () => {
     },
     onSuccess: () => {
       toast.success("Chat cleared");
+      stopGenerating.current = false;
       void ctx.openAi.getChat.refetch({ id: activeChatId });
     },
   });
