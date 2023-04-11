@@ -189,9 +189,7 @@ const Home: NextPage = () => {
       return;
     }
     if (activeChatId === "") {
-      console.log("Creating Chat");
       await createChat();
-      console.log("ChatID: ", activeChatIdRef.current);
     }
 
     addMessage({
