@@ -24,6 +24,7 @@ import autoAnimate from "@formkit/auto-animate";
 import UndraggableChatPreview from "~/components/undraggableChatPreview";
 import { OpenAI } from "openai-streams";
 import { useRouter } from "next/router";
+import { yieldStream } from "yield-stream";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -38,6 +39,8 @@ const Home: NextPage = () => {
   const [streamedMessage, setStreamedMessage] = useState<string | null>();
   const router = useRouter();
   const chatControlRef = useRef<HTMLDivElement | null>(null);
+  const stopGenerating = useRef(false);
+  const activeChatIdRef = useRef<string>("");
 
   const settingsStore = useSettingsStore();
 
@@ -164,7 +167,7 @@ const Home: NextPage = () => {
     },
   });
 
-  const { mutate: createChat, isLoading: creatingNewChat } =
+  const { mutateAsync: createChat, isLoading: creatingNewChat } =
     api.openAi.createConversation.useMutation({
       onError: (err) => {
         console.log(err);
@@ -172,6 +175,7 @@ const Home: NextPage = () => {
       },
       onSuccess: (data) => {
         toast.success("Conversation created");
+        activeChatIdRef.current = data.conversationId;
         setActiveChatId(data.conversationId);
         void ctx.openAi.getAllChats.refetch();
       },
@@ -184,10 +188,15 @@ const Home: NextPage = () => {
       toast.error("Please enter your OpenAI API key");
       return;
     }
+    if (activeChatId === "") {
+      console.log("Creating Chat");
+      await createChat();
+      console.log("ChatID: ", activeChatIdRef.current);
+    }
 
     addMessage({
       newMessage: message,
-      conversationId: activeChatId,
+      conversationId: activeChatIdRef.current,
     });
 
     const messageHistory:
@@ -231,14 +240,11 @@ const Home: NextPage = () => {
       { apiKey: session.user.apiKey }
     );
 
-    const reader = stream.getReader();
     let streamedLocalMessage = "";
+    for await (const chunk of yieldStream(stream)) {
+      const text = new TextDecoder("utf-8").decode(chunk);
 
-    while (true) {
-      const { done, value } = await reader.read();
-      const text = new TextDecoder("utf-8").decode(value);
-
-      if (done) {
+      if (stopGenerating.current) {
         break;
       }
 
@@ -248,9 +254,10 @@ const Home: NextPage = () => {
 
     addMessage({
       newMessage: streamedLocalMessage,
-      conversationId: activeChatId,
+      conversationId: activeChatIdRef.current,
       botMessage: true,
     });
+    stopGenerating.current = false;
   };
 
   const attemptVoiceRecognition = async () => {
@@ -325,6 +332,10 @@ const Home: NextPage = () => {
         : 0
     );
   }, [activeChat, activeChat?.messages]);
+
+  useEffect(() => {
+    activeChatIdRef.current = activeChatId;
+  }, [activeChatId]);
 
   return (
     <>
@@ -421,7 +432,7 @@ const Home: NextPage = () => {
                   <button
                     className="btn btn-primary btn-block w-100 btn-new"
                     onClick={() => {
-                      createChat();
+                      setActiveChatId("");
                     }}
                     disabled={creatingNewChat}
                   >
@@ -583,7 +594,12 @@ const Home: NextPage = () => {
               <div className="row justify-content-center">
                 <div className="col-xxl-8 col-sm-10 col-11">
                   <div className="d-flex pb-3 justify-content-center">
-                    <button className="btn btn-outline-secondary btn-sm d-flex align-items-center mx-1">
+                    <button
+                      className="btn btn-outline-secondary btn-sm d-flex align-items-center mx-1"
+                      onClick={() => {
+                        stopGenerating.current = true;
+                      }}
+                    >
                       <span className="icon icon-renew me-2"></span>
                       <span className="text">Regenerate response</span>
                     </button>
@@ -644,7 +660,7 @@ const Home: NextPage = () => {
                             <button
                               className="btn-nostyle"
                               onClick={() => {
-                                submitNewMessage();
+                                void submitNewMessage();
                               }}
                             >
                               <span className="icon icon-md icon-send" />
