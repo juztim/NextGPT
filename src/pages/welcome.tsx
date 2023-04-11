@@ -117,7 +117,7 @@ const Welcome: NextPage = () => {
                           className="btn btn-primary btn-lg mb-5"
                           onClick={() => {
                             if (status === "authenticated") {
-                              void router.push("/");
+                              window.location.href = "/";
                             } else {
                               void signIn();
                             }
