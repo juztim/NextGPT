@@ -603,8 +603,16 @@ const Home: NextPage = () => {
                         stopGenerating.current = true;
                       }}
                     >
-                      <span className="icon icon-renew me-2"></span>
-                      <span className="text">Regenerate response</span>
+                      <span
+                        className={`icon me-2 ${
+                          streamedMessage === null ? "icon-renew" : "icon-x"
+                        }`}
+                      />
+                      <span className="text">
+                        {streamedMessage === null
+                          ? "Regenerate response"
+                          : "Stop Generating"}
+                      </span>
                     </button>
 
                     <button
