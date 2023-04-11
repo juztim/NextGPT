@@ -654,7 +654,7 @@ const Home: NextPage = () => {
                           >
                             <span
                               className={`icon icon-md ${
-                                listening ? "icon-mic-off" : "icon-mic"
+                                listening ? "icon-mute" : "icon-mic"
                               }`}
                             />
                           </button>
