@@ -609,9 +609,9 @@ const Home: NextPage = () => {
                         }`}
                       />
                       <span className="text">
-                        {streamedMessage === null
+                        {streamedMessage === null || streamedMessage === ""
                           ? "Regenerate response"
-                          : "Stop Generating"}
+                          : streamedMessage}
                       </span>
                     </button>
 
