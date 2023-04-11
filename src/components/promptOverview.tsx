@@ -14,14 +14,14 @@ const PromptOverview = ({
   onSelectCharacter: (character: Character) => void;
   activeCharacter?: Character;
 }) => {
-  const { data: prompts } = api.openAi.getAllPrompts.useQuery(undefined, {
+  const { data: prompts } = api.prompt.getAdded.useQuery(undefined, {
     onError: (error) => {
       console.log(error);
       toast.error("Error fetching prompts!");
     },
   });
 
-  const { data: characters } = api.openAi.getAllCharacters.useQuery(undefined, {
+  const { data: characters } = api.character.getAdded.useQuery(undefined, {
     onError: (error) => {
       console.log(error);
       toast.error("Error fetching characters!");
@@ -83,7 +83,7 @@ const PromptOverview = ({
             <button
               className="btn-nostyle py-2 px-3 d-flex align-items-center mb-2"
               data-bs-toggle="modal"
-              data-bs-target="#create-character"
+              data-bs-target="#aiLib"
             >
               <span className="icon icon-plus me-2" />
               <span className="text">Add Character</span>
@@ -128,7 +128,7 @@ const PromptOverview = ({
             <button
               className="btn-nostyle py-2 px-3 d-flex align-items-center mb-2"
               data-bs-toggle="modal"
-              data-bs-target="#create-prompt"
+              data-bs-target="#promptLib"
             >
               <span className="icon icon-plus me-2" />
               <span className="text">Add Prompt</span>

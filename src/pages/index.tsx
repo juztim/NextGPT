@@ -25,6 +25,8 @@ import UndraggableChatPreview from "~/components/undraggableChatPreview";
 import { OpenAI } from "openai-streams";
 import { useRouter } from "next/router";
 import { yieldStream } from "yield-stream";
+import CharacterLibraryModal from "~/components/modals/characterLibraryModal";
+import PromptLibraryModal from "~/components/modals/promptLibraryModal";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -717,7 +719,11 @@ const Home: NextPage = () => {
 
           <CreateCharacterModal />
 
+          <CharacterLibraryModal />
+
           <CreatePromptModal />
+
+          <PromptLibraryModal />
 
           <SettingsModal />
 

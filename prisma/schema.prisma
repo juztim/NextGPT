@@ -61,6 +61,8 @@ model User {
   Character           Character[]
   apiKey              String?
   Settings            Settings[]
+  PromptJoin          PromptJoin[]
+  CharacterJoin       CharacterJoin[]
 }
 
 model VerificationToken {
@@ -114,29 +116,31 @@ model Message {
 }
 
 model Prompt {
-  id           String   @id @default(cuid())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  name         String   @db.Text
-  description  String?  @db.Text
-  instructions String   @db.Text
-  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String       @id @default(cuid())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  name         String       @db.Text
+  description  String?      @db.Text
+  instructions String       @db.Text
+  user         User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String?
-  category     String?  @db.Text
+  category     String?      @db.Text
+  PromptJoin   PromptJoin[]
 
   @@index([userId])
 }
 
 model Character {
-  id           String   @id @default(cuid())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  name         String
-  description  String?  @db.Text
-  instructions String?  @db.Text
-  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String?
-  category     String?  @db.Text
+  id            String          @id @default(cuid())
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  name          String
+  description   String?         @db.Text
+  instructions  String?         @db.Text
+  user          User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String?
+  category      String?         @db.Text
+  CharacterJoin CharacterJoin[]
 
   @@index([userId])
 }
@@ -155,5 +159,31 @@ model Settings {
   initialInstructions String?  @db.Text
   showWordCount       Boolean  @default(true)
 
+  @@index([userId])
+}
+
+model PromptJoin {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  prompt    Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  promptId  String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+
+  @@index([promptId])
+  @@index([userId])
+}
+
+model CharacterJoin {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  characterId String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+
+  @@index([characterId])
   @@index([userId])
 }

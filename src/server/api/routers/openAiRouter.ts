@@ -417,33 +417,19 @@ export const OpenAiRouter = createTRPCRouter({
         },
       });
     }),
-  getAllCharacters: protectedProcedure.query(async ({ ctx }) => {
-    return ctx.prisma.character.findMany({
-      where: {
-        OR: [
-          {
-            userId: ctx.session.user.id,
-          },
-          {
-            userId: null,
-          },
-        ],
-      },
-    });
-  }),
   deleteCharacter: protectedProcedure
     .input(
       z.object({
         id: z.string().cuid("Invalid Character Id"),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      return ctx.prisma.character.delete({
+    .mutation(({ ctx, input }) =>
+      ctx.prisma.character.delete({
         where: {
           id: input.id,
         },
-      });
-    }),
+      })
+    ),
   deletePrompt: protectedProcedure
     .input(
       z.object({
