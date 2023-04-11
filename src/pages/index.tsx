@@ -577,6 +577,10 @@ const Home: NextPage = () => {
                   }
                 })}
 
+                {activeChatId == "" && (
+                  <AiChatMessage message="Welcome to FutureDesk! Type your message here to start a new conversation." />
+                )}
+
                 {streamedMessage && <AiChatMessage message={streamedMessage} />}
                 <div
                   style={{
