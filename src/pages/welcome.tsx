@@ -1,9 +1,12 @@
 import { type NextPage } from "next";
 import Image from "next/image";
 import Logo from "~/images/logo.png";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const Welcome: NextPage = () => {
+  const { status } = useSession();
+  const router = useRouter();
   return (
     <>
       <div className="page-content">
@@ -113,9 +116,11 @@ const Welcome: NextPage = () => {
                         <button
                           className="btn btn-primary btn-lg mb-5"
                           onClick={() => {
-                            void signIn(undefined, {
-                              callbackUrl: "/",
-                            });
+                            if (status === "authenticated") {
+                              void router.push("/");
+                            } else {
+                              void signIn();
+                            }
                           }}
                         >
                           Start Now
@@ -141,7 +146,11 @@ const Welcome: NextPage = () => {
                         <button
                           className="btn btn-outline-white btn-lg mb-3"
                           onClick={() => {
-                            void signIn();
+                            if (status === "authenticated") {
+                              void router.push("/");
+                            } else {
+                              void signIn();
+                            }
                           }}
                         >
                           Get your FutureDesk
