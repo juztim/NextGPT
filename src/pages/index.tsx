@@ -36,7 +36,7 @@ const Home: NextPage = () => {
   const [searchFilter, setSearchFilter] = useState("");
   const chatPlaceHolderRef = useRef<HTMLDivElement | null>(null);
   const [conversationWordCount, setConversationWordCount] = useState(0);
-  const [streamedMessage, setStreamedMessage] = useState<string | null>();
+  const [streamedMessage, setStreamedMessage] = useState<string | null>(null);
   const router = useRouter();
   const chatControlRef = useRef<HTMLDivElement | null>(null);
   const stopGenerating = useRef(false);
@@ -611,7 +611,7 @@ const Home: NextPage = () => {
                       <span className="text">
                         {streamedMessage === null || streamedMessage === ""
                           ? "Regenerate response"
-                          : streamedMessage}
+                          : "Stop Generating"}
                       </span>
                     </button>
 
