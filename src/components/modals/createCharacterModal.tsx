@@ -25,7 +25,7 @@ const CreateCharacterModal = () => {
         category: "",
       });
       closeButtonRef.current?.click();
-      void ctx.openAi.getAllCharacters.refetch();
+      void ctx.character.getAll.refetch();
     },
     onError: (error) => {
       const titleError = error.data?.zodError?.fieldErrors.name;

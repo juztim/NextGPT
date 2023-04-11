@@ -11,24 +11,24 @@ const CharacterPreview = ({
   onSelectCharacter: (character: Character) => void;
   active: boolean;
 }) => {
-  const ctx = api.useContext();
+  //const ctx = api.useContext();
 
-  const { mutate: deleteCharacter } = api.openAi.deleteCharacter.useMutation({
-    onSuccess: () => {
-      toast.success("Character deleted");
-      void ctx.openAi.getAllCharacters.refetch();
-    },
-    onError: (error) => {
-      toast.error("Error deleting character");
-    },
-  });
+  // const { mutate: deleteCharacter } = api.openAi.deleteCharacter.useMutation({
+  //   onSuccess: () => {
+  //     toast.success("Character deleted");
+  //     void ctx.openAi.getAllCharacters.refetch();
+  //   },
+  //   onError: (error) => {
+  //     toast.error("Error deleting character");
+  //   },
+  // });
 
   return (
     <div
       className="mb-2"
       onClick={(e) => {
-        e.stopPropagation();
-        onSelectCharacter(character);
+        // e.stopPropagation();
+        // onSelectCharacter(character);
       }}
       style={{
         display: "flex",
@@ -55,7 +55,7 @@ const CharacterPreview = ({
         }}
         onClick={(e) => {
           e.stopPropagation();
-          deleteCharacter({ id: character.id });
+          //deleteCharacter({ id: character.id });
         }}
       >
         <span className="icon icon-delete" />
