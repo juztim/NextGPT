@@ -610,6 +610,8 @@ const Home: NextPage = () => {
                       className="btn btn-outline-secondary btn-sm d-flex align-items-center mx-1"
                       onClick={() => {
                         clearChat({ id: activeChatId });
+                        stopGenerating.current = true;
+                        setStreamedMessage("");
                       }}
                     >
                       <span className="icon icon-delete me-2"></span>
