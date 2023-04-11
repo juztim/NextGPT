@@ -48,10 +48,7 @@ const ApiKeyModal = () => {
             />
           </div>
           <div className="modal-body">
-            <p>
-              You need an OpenAI API Key to use FutureDesk Your API Key is
-              stored locally on your browser and never sent anywhere else.
-            </p>
+            <p>You need an OpenAI API Key to use FutureDesk.</p>
 
             <div className="mb-3">
               <label htmlFor="addApiKey" className="form-label">
@@ -96,24 +93,7 @@ const ApiKeyModal = () => {
               </div>
             </div>
 
-            <p>
-              API Key not working?
-              <a
-                href="https://platform.openai.com/account/api-keys"
-                target="_blank"
-                className="link ms-2"
-                rel="noreferrer"
-              >
-                Click here
-              </a>
-            </p>
-
-            <p>
-              The app will connect to OpenAI API server to check if your API Key
-              is working properly
-            </p>
-
-            <h4 className="pt-4 pb-3">FAQs about API Key</h4>
+            {/*<h4 className="pt-4 pb-3">FAQs about API Key</h4>*/}
 
             <div className="accordion accordion-flush mb-4" id="accordionFAQ">
               <div className="accordion-item">
@@ -126,7 +106,7 @@ const ApiKeyModal = () => {
                     aria-expanded="false"
                     aria-controls="flush-collapseOne"
                   >
-                    How is the API key handled?
+                    API Key not working?
                   </button>
                 </h6>
                 <div
@@ -135,74 +115,28 @@ const ApiKeyModal = () => {
                   aria-labelledby="flush-headingOne"
                   data-bs-parent="#accordionFAQ"
                 >
-                  <div className="accordion-body">Loren ipsum ...</div>
-                </div>
-              </div>
-              <div className="accordion-item">
-                <h6 className="accordion-header" id="flush-headingTwo">
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#flush-collapseTwo"
-                    aria-expanded="false"
-                    aria-controls="flush-collapseTwo"
-                  >
-                    Do I need to have ChatGPT Plus ($20/month) to use
-                    FutureDesk?
-                  </button>
-                </h6>
-                <div
-                  id="flush-collapseTwo"
-                  className="accordion-collapse collapse"
-                  aria-labelledby="flush-headingTwo"
-                  data-bs-parent="#accordionFAQ"
-                >
-                  <div className="accordion-body">Loren ipsum ...</div>
-                </div>
-              </div>
-              <div className="accordion-item">
-                <h6 className="accordion-header" id="flush-headingThree">
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#flush-collapseThree"
-                    aria-expanded="false"
-                    aria-controls="flush-collapseThree"
-                  >
-                    Do I need to pay for OpenAI for a ChatGPT API Key?
-                  </button>
-                </h6>
-                <div
-                  id="flush-collapseThree"
-                  className="accordion-collapse collapse"
-                  aria-labelledby="flush-headingThree"
-                  data-bs-parent="#accordionFAQ"
-                >
-                  <div className="accordion-body">Loren ipsum ...</div>
-                </div>
-              </div>
-              <div className="accordion-item">
-                <h6 className="accordion-header" id="flush-headingFour">
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#flush-collapseFour"
-                    aria-expanded="false"
-                    aria-controls="flush-collapseFour"
-                  >
-                    License Key vs. API Key
-                  </button>
-                </h6>
-                <div
-                  id="flush-collapseFour"
-                  className="accordion-collapse collapse"
-                  aria-labelledby="flush-headingFour"
-                  data-bs-parent="#accordionFAQ"
-                >
-                  <div className="accordion-body">Loren ipsum ...</div>
+                  <div className="accordion-body">
+                    Make sure you have your billing information on the{" "}
+                    <a
+                      href=" https://platform.openai.com/account/billing/overview"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      OpenAI Billing page.
+                    </a>{" "}
+                    If you don&apos;t, it won&apos;t work. it&apos;s really
+                    cheap! You only pay for what you use, like $1 for every
+                    100,000 words.{" "}
+                    <a
+                      href="https://openai.com/pricing#language-models"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      See pricing
+                    </a>{" "}
+                    You don&apos;t have to pay extra for a ChatGPT Plus
+                    Subscription to use the API key.
+                  </div>
                 </div>
               </div>
             </div>

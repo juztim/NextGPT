@@ -37,6 +37,7 @@ const Home: NextPage = () => {
   const [conversationWordCount, setConversationWordCount] = useState(0);
   const [streamedMessage, setStreamedMessage] = useState<string | null>();
   const router = useRouter();
+  const chatControlRef = useRef<HTMLDivElement | null>(null);
 
   const settingsStore = useSettingsStore();
 
@@ -298,6 +299,10 @@ const Home: NextPage = () => {
   useEffect(() => {
     innerChatBoxRef.current && autoAnimate(innerChatBoxRef.current);
   }, [innerChatBoxRef]);
+
+  useEffect(() => {
+    chatControlRef.current && autoAnimate(chatControlRef.current);
+  }, [chatControlRef]);
 
   useEffect(() => {
     if (chatPlaceHolderRef.current) {
@@ -618,7 +623,11 @@ const Home: NextPage = () => {
                           disabled={isSendingMessage}
                         />
 
-                        <span className="input-group-text" id="basic-addon1">
+                        <span
+                          className="input-group-text"
+                          id="basic-addon1"
+                          ref={chatControlRef}
+                        >
                           <button
                             className="btn-nostyle"
                             onClick={() => {
@@ -627,11 +636,20 @@ const Home: NextPage = () => {
                           >
                             <span
                               className={`icon icon-md ${
-                                listening ? "icon-mute" : "icon-microphone"
+                                listening ? "icon-mic-off" : "icon-mic"
                               }`}
-                            ></span>
-                            <span className="icon icon-md icon-envelope" />
+                            />
                           </button>
+                          {message.length > 0 && (
+                            <button
+                              className="btn-nostyle"
+                              onClick={() => {
+                                submitNewMessage();
+                              }}
+                            >
+                              <span className="icon icon-md icon-send" />
+                            </button>
+                          )}
                         </span>
                       </div>
                       {useSettingsStore.getState().showWordCount && (
