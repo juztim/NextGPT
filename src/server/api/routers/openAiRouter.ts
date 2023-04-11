@@ -565,7 +565,7 @@ export const OpenAiRouter = createTRPCRouter({
       const response = await openAI.createChatCompletion({
         messages: [
           {
-            content: `Please generate a title for the following sentence like ChatGPT does: ${input.message}`,
+            content: `Please generate a title for the following sentence like ChatGPT does: ${input.message}. Limit the title to 30 characters.`,
             role: "user",
           },
         ],
