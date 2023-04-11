@@ -206,7 +206,7 @@ const Home: NextPage = () => {
       | undefined = activeChat?.messages.map((message) => {
       return {
         content: message.text,
-        role: message.authorId === session.user.id ? "user" : "system",
+        role: message.authorId === session.user.id ? "user" : "assistant",
       };
     }) ?? [{ content: message, role: "user" }];
 
@@ -214,18 +214,18 @@ const Home: NextPage = () => {
 
     messageHistory.unshift({
       content: settingsStore.initialInstructions,
-      role: "user",
+      role: "system",
     });
 
     messageHistory.unshift({
       content: `Please respect the following instructions. Respond in a ${settingsStore.tone}. Use the following writing style: ${settingsStore.writingStyle}. Additionally I want you to format your response as ${settingsStore.format}. Reply in ${settingsStore.outputLanguage}.}`,
-      role: "user",
+      role: "system",
     });
 
     if (selectedCharacter && selectedCharacter.instructions) {
       messageHistory.unshift({
         content: selectedCharacter.instructions,
-        role: "assistant",
+        role: "system",
       });
     }
 
