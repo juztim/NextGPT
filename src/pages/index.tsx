@@ -471,11 +471,11 @@ const Home: NextPage = () => {
                       <span className="icon icon-info"></span>
                     </a>
                   </li>
-                  <li className="nav-item">
-                    <a className="nav-link">
-                      <span className="icon icon-mute"></span>
-                    </a>
-                  </li>
+                  {/*<li className="nav-item">*/}
+                  {/*  <a className="nav-link">*/}
+                  {/*    <span className="icon icon-mute"></span>*/}
+                  {/*  </a>*/}
+                  {/*</li>*/}
                   <li className="nav-item">
                     <a className="nav-link" id="theme">
                       <span className="icon icon-sun"></span>
