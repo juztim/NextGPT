@@ -197,6 +197,10 @@ const Home: NextPage = () => {
     });
 
   const submitNewMessage = async () => {
+    if (message.trim() === "") {
+      return;
+    }
+    if (streamedMessage !== null) return;
     if (!session?.user.apiKey) {
       toast.error("Please enter your OpenAI API key");
       editApiKeyRef.current?.click();
@@ -765,9 +769,7 @@ const Home: NextPage = () => {
                             void submitNewMessage();
                           }}
                           value={message}
-                          disabled={
-                            isSendingMessage || streamedMessage !== null
-                          }
+                          disabled={isSendingMessage}
                         />
 
                         <span
