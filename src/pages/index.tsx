@@ -378,7 +378,7 @@ const Home: NextPage = () => {
   }, [transcript]);
 
   useEffect(() => {
-    innerChatBoxRef.current && autoAnimate(innerChatBoxRef.current);
+    //innerChatBoxRef.current && autoAnimate(innerChatBoxRef.current);
   }, [innerChatBoxRef]);
 
   useEffect(() => {
