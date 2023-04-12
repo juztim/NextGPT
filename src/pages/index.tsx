@@ -289,6 +289,8 @@ const Home: NextPage = () => {
       };
     }) ?? [{ content: message, role: "user" }];
 
+    messageHistory.pop();
+
     messageHistory.push({ content: message, role: "assistant" });
 
     messageHistory.unshift({
@@ -390,7 +392,11 @@ const Home: NextPage = () => {
   }, [chatControlRef]);
 
   useEffect(() => {
-    if (chatPlaceHolderRef.current) {
+    if (
+      chatPlaceHolderRef.current &&
+      streamedMessage &&
+      streamedMessage?.length < 10
+    ) {
       chatPlaceHolderRef.current.scrollIntoView({
         behavior: "auto",
       });
