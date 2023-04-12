@@ -1,8 +1,12 @@
 import PromptLibraryItem from "~/components/promptLibrary/promptLibraryItem";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
+import { useState } from "react";
 
 const PromptLibraryModal = () => {
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [searchFilter, setSearchFilter] = useState<string>("");
+
   const { data } = api.prompt.getAll.useQuery(undefined, {
     onError: (error) => {
       console.log(error);
@@ -44,6 +48,10 @@ const PromptLibraryModal = () => {
                     id="promptCat"
                     className="form-select"
                     aria-label="Choose category"
+                    value={selectedCategory}
+                    onChange={(e) => {
+                      setSelectedCategory(e.target.value);
+                    }}
                   >
                     <option disabled>Select a category</option>
                     <option value="generalandadmin">General & Admin </option>
@@ -64,6 +72,10 @@ const PromptLibraryModal = () => {
                     className="form-control"
                     id="promptSearch"
                     placeholder="Search"
+                    value={searchFilter}
+                    onChange={(e) => {
+                      setSearchFilter(e.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -77,9 +89,15 @@ const PromptLibraryModal = () => {
             </div>
           </div>
           <div className="modal-body mh-400">
-            {data?.map((prompt) => (
-              <PromptLibraryItem key={prompt.id} prompt={prompt} />
-            ))}
+            {data
+              ?.filter((c) => c.name.includes(searchFilter))
+              .filter((c) => {
+                if (selectedCategory === "") return true;
+                return c.category === selectedCategory;
+              })
+              .map((prompt) => (
+                <PromptLibraryItem key={prompt.id} prompt={prompt} />
+              ))}
           </div>
         </div>
       </div>
