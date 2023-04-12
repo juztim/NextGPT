@@ -1,27 +1,44 @@
 /***********************************************
               	  Folder
 ************************************************/
-.folder {
-	.folder-toggle {
-		background: $dark-3;
-		@include br($br);
+.folder-toggle, .edit-name {
+	@include tr($tr);
+	@include br($br);
+	border: 1px solid transparent;
 
+	&.selected {
+		border-color: $white;
+		background: $black;
+	}	
+
+	.icon-chevron-down {
+		@include tr($tr);
+		display: inline-block;
+	}
+
+	.open-folder {
 		.icon-chevron-down {
-			@include tr($tr);
-			display: inline-block;
-		}
-
-		.open-folder {
-			.icon-chevron-down {
-				transform: rotate(-180deg);
-			}
+			transform: rotate(-180deg);
 		}
 	}
 }
 
+.edit-name {
+	background: none !important;
+
+	&.folder-toggle {
+		background: $dark-3 !important;
+	}
+}
+
+
 .top-level-chat {
-	background: $dark-3;
+	background: $dark-3 !important;
 	@include br($br);
+
+	&.selected {
+		background: $black !important;
+	}
 }
 
 /***********************************************

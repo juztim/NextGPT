@@ -1,0 +1,112 @@
+/***********************************************
+              	Public Page Switch
+************************************************/
+.fixed-mode {
+	background: $dark-3;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 1000;
+
+	#theme {
+		font-size: 1.5rem;
+		padding: 10px;
+	}
+}
+
+
+.logo-light {
+	display: none;
+}
+
+/***********************************************
+              	Light Theme
+************************************************/
+.light-theme {
+	#content-holder {
+		color: $dark-3;
+		background: $white;	
+
+		.chat-item-ai {
+			color: $dark-1;
+			background: $light-4;
+			background: rgba($light-4, .5);
+		}
+
+		.chat-ai {
+			.form-control-lg {
+				border-color: $medium;
+				background: $white;
+				color: $dark-3;
+
+				&::placeholder {
+					color: $dark-4;
+				}
+			}
+
+			.input-group-text {
+				background: $white;
+				color: $dark-3;
+				border-color: $medium;
+			}
+		}
+
+		.btn-outline-secondary {
+			color: $dark-3;
+
+			&:before {
+				background: $dark-1 !important;
+			}
+
+			&:focus {
+				color: $dark-3;
+			}
+		}
+
+		.btn-nostyle {
+			color: $dark-3;
+		}
+	}
+
+	.modal {
+		&.show {
+			background: rgba($white, .3);
+		}
+	}
+
+	&.public-page {
+		background: $white;
+		color: $dark-3;
+
+		.hp-logo {
+			&.logo-light {
+				display: block;
+			}
+
+			&.logo-dark {
+				display: none;
+			}
+		}
+
+		.btn-outline-white {
+			color: $dark-3;
+			border-color: $dark-3;
+
+			&:before {
+				background: $dark-1 !important;
+			}
+
+			&:focus {
+				color: $dark-3;
+			}
+		}
+
+		.fixed-mode {
+			background: $white;
+
+			#theme {
+				color: $dark-3;
+			}
+		}
+	}
+}

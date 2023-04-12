@@ -72,7 +72,7 @@
 }
 
 #right-menu {
-	right: 0;
+	right: 0px;
 
 	&:not(.show) {
 		transform: translateX(260px);
@@ -115,6 +115,23 @@
 	@include br(0 2px 2px 0);
 }
 
+
+@media (max-width: 480px) {
+	#right-menu-toggle, #left-menu-toggle {
+		width: 35px;
+		height: 45px;
+	}
+
+	#right-menu-toggle {
+		left: -35px;
+	}
+
+	#left-menu-toggle {
+		right: -35px;
+	}
+}
+
+
 #content-holder {
 	max-width: 100%;
 	margin-top: 50px;
@@ -124,15 +141,8 @@
 	justify-content: space-between;
 
 	@media (min-width: 992px) {
-		&.left-open.right-open {
-			margin-left: 260px;
-			margin-right: 260px;
-		}
-
 		&.left-open {
-			.margin-left {
 				margin-left: 260px;
-			}
 		}
 
 		&.right-open {
@@ -151,4 +161,3 @@
 		}
 	}
 }
-

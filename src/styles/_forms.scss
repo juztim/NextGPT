@@ -139,3 +139,25 @@ input[type="range"].form-range {
 
 	}
 }
+
+/***********************************************
+              Invisible Inputs
+************************************************/
+.invisible-input {
+	position: relative;
+	flex: 1 1 auto;
+	width: 1%;
+	min-width: 0;
+	background: none;
+	border: none;
+	color: $white;
+	margin: 0;
+	padding: 0;
+
+	&:focus {
+		border: none;
+		@include bsh(none);
+		outline-width: 0;
+		outline: none;
+	}
+}

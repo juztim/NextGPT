@@ -12,7 +12,7 @@
 
 [class^="icon-"], [class*=" icon-"], .header .navbar .navbar-nav .dropdown a.dropdown-toggle:after {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'icomoon', serif !important;
+  font-family: 'icomoon' !important;
   speak: never;
   font-style: normal;
   font-weight: normal;
@@ -24,7 +24,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.icon-moon:before {
+  content: "\e932";
+}
 .icon-send:before {
   content: "\e92e";
 }
