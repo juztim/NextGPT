@@ -127,7 +127,7 @@ const Welcome: NextPage = () => {
                           <span className="icon icon-expand-right-double ms-2"></span>
                         </button>
 
-                        <p>Start by logging in or signing up for free!</p>
+                        {/*<p>Start by logging in or signing up for free!</p>*/}
                         {/*<p className="mb-5">*/}
                         {/*  <a*/}
                         {/*    href="#"*/}
@@ -143,26 +143,26 @@ const Welcome: NextPage = () => {
                         {/*  </a>*/}
                         {/*</p>*/}
 
-                        <button
-                          className="btn btn-outline-white btn-lg mb-3"
-                          onClick={() => {
-                            if (status === "authenticated") {
-                              void router.push("/");
-                            } else {
-                              void signIn();
-                            }
-                          }}
-                        >
-                          Get your FutureDesk
-                          <span className="icon icon-expand-right-double ms-2"></span>
-                        </button>
+                        {/*<button*/}
+                        {/*  className="btn btn-outline-white btn-lg mb-3"*/}
+                        {/*  onClick={() => {*/}
+                        {/*    if (status === "authenticated") {*/}
+                        {/*      void router.push("/");*/}
+                        {/*    } else {*/}
+                        {/*      void signIn();*/}
+                        {/*    }*/}
+                        {/*  }}*/}
+                        {/*>*/}
+                        {/*  Get your FutureDesk*/}
+                        {/*  <span className="icon icon-expand-right-double ms-2"></span>*/}
+                        {/*</button>*/}
 
-                        <a
-                          href="#"
-                          className="text-white text-weight-thin text-underline"
-                        >
-                          Learn more
-                        </a>
+                        {/*<a*/}
+                        {/*  href="#"*/}
+                        {/*  className="text-white text-weight-thin text-underline"*/}
+                        {/*>*/}
+                        {/*  Learn more*/}
+                        {/*</a>*/}
                       </div>
                     </div>
                   </div>

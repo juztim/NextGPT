@@ -27,8 +27,8 @@ const CharacterPreview = ({
     <div
       className="mb-2"
       onClick={(e) => {
-        // e.stopPropagation();
-        // onSelectCharacter(character);
+        e.stopPropagation();
+        onSelectCharacter(character);
       }}
       style={{
         display: "flex",

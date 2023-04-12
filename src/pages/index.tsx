@@ -712,6 +712,7 @@ const Home: NextPage = () => {
               }}
               activeCharacter={selectedCharacter}
               onSelectCharacter={(character) => {
+                toast.success("Character selected");
                 setSelectedCharacter(character);
               }}
             />
