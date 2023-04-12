@@ -1,8 +1,12 @@
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 import CharacterLibraryItem from "~/components/promptLibrary/characterLibraryItem";
+import { useState } from "react";
 
 const CharacterLibraryModal = () => {
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [searchFilter, setSearchFilter] = useState<string>("");
+
   const { data } = api.character.getAll.useQuery(undefined, {
     onError: (error) => {
       console.log(error);
@@ -30,7 +34,7 @@ const CharacterLibraryModal = () => {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-              ></button>
+              />
             </div>
 
             <div className="w-100 d-flex align-items-end">
@@ -43,6 +47,10 @@ const CharacterLibraryModal = () => {
                     id="aiCat"
                     className="form-select"
                     aria-label="Choose category"
+                    value={selectedCategory}
+                    onChange={(e) => {
+                      setSelectedCategory(e.target.value);
+                    }}
                   >
                     <option disabled>Select a category</option>
                     <option value="generalandadmin">General & Admin </option>
@@ -63,6 +71,10 @@ const CharacterLibraryModal = () => {
                     className="form-control"
                     id="aiSearch"
                     placeholder="Search"
+                    value={searchFilter}
+                    onChange={(e) => {
+                      setSearchFilter(e.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -76,9 +88,18 @@ const CharacterLibraryModal = () => {
             </div>
           </div>
           <div className="modal-body mh-400">
-            {data?.map((character) => (
-              <CharacterLibraryItem character={character} key={character.id} />
-            ))}
+            {data
+              ?.filter((c) => c.name.includes(searchFilter))
+              .filter((c) => {
+                if (selectedCategory === "") return true;
+                return c.category === selectedCategory;
+              })
+              .map((character) => (
+                <CharacterLibraryItem
+                  character={character}
+                  key={character.id}
+                />
+              ))}
           </div>
         </div>
       </div>
