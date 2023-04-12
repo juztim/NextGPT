@@ -43,6 +43,7 @@ const Home: NextPage = () => {
   const chatControlRef = useRef<HTMLDivElement | null>(null);
   const stopGenerating = useRef(false);
   const activeChatIdRef = useRef<string>("");
+  const editApiKeyRef = useRef<HTMLAnchorElement | null>(null);
 
   const settingsStore = useSettingsStore();
 
@@ -189,6 +190,7 @@ const Home: NextPage = () => {
   const submitNewMessage = async () => {
     if (!session?.user.apiKey) {
       toast.error("Please enter your OpenAI API key");
+      editApiKeyRef.current?.click();
       return;
     }
     if (activeChatId === "") {
@@ -616,6 +618,7 @@ const Home: NextPage = () => {
                     data-bs-toggle="modal"
                     data-bs-target="#apiKey"
                     className="link-with-icon d-flex align-items-center text-xsmall"
+                    ref={editApiKeyRef}
                   >
                     <span className="icon text-accent icon-shild-info me-2 text-big"></span>
                     <span className="text">
