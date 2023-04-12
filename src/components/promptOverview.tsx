@@ -29,6 +29,7 @@ const PromptOverview = ({
   });
 
   const [searchFilter, setSearchFilter] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   return (
     <div id="right-menu" className="show">
@@ -62,20 +63,47 @@ const PromptOverview = ({
           <div className="sticky-top inner-header border-bottom mb-4">
             <div className="row g-2 mb-4">
               <div className="col-12">
-                <div className="input-group me-2">
+                <div className="input-group me-2 mb-2">
                   <span className="input-group-text">
                     <span className="icon icon-search-2"></span>
                   </span>
                   <input
                     className="form-control"
                     type="search"
-                    placeholder="Search Chat"
+                    placeholder="Search Character"
                     aria-label="Search"
                     value={searchFilter}
                     onChange={(e) =>
                       setSearchFilter(e.target.value.toLowerCase())
                     }
                   />
+                </div>
+                <div className="input-group me-2">
+                  <span className="input-group-text">
+                    <span className="icon icon-search-2"></span>
+                  </span>
+                  <select
+                    id="promptCat"
+                    className="form-select"
+                    aria-label="Choose category"
+                    value={selectedCategory}
+                    onChange={(e) => {
+                      setSelectedCategory(e.target.value);
+                    }}
+                  >
+                    <option disabled value="">
+                      Select a category
+                    </option>
+                    <option value="generalandadmin">General & Admin </option>
+                    <option value="marketingandsales">Marketing & Sales</option>
+                    <option value="developmentandit">Development & IT</option>
+                    <option value="contentwriting">Content Writing</option>
+                    <option value="designandart">Design & Art</option>
+                    <option value="createandvideos">Creative & Videos</option>
+                    <option value="lifestyleandentertainment">
+                      Lifestyle & Entertainment
+                    </option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -92,6 +120,7 @@ const PromptOverview = ({
           <div>
             {characters
               ?.filter((c) => c.name.toLowerCase().includes(searchFilter))
+              .filter((c) => c.category === selectedCategory)
               .map((character) => (
                 <CharacterPreview
                   key={character.id}
@@ -107,7 +136,7 @@ const PromptOverview = ({
           <div className="sticky-top inner-header border-bottom mb-4">
             <div className="row g-2 mb-4">
               <div className="col-12">
-                <div className="input-group me-2">
+                <div className="input-group me-2 mb-2">
                   <span className="input-group-text">
                     <span className="icon icon-search-2" />
                   </span>
@@ -121,6 +150,33 @@ const PromptOverview = ({
                       setSearchFilter(e.target.value.toLowerCase())
                     }
                   />
+                </div>
+                <div className="input-group me-2">
+                  <span className="input-group-text">
+                    <span className="icon icon-search-2"></span>
+                  </span>
+                  <select
+                    id="promptCat"
+                    className="form-select"
+                    aria-label="Choose category"
+                    value={selectedCategory}
+                    onChange={(e) => {
+                      setSelectedCategory(e.target.value);
+                    }}
+                  >
+                    <option disabled value="">
+                      Select a category
+                    </option>
+                    <option value="generalandadmin">General & Admin </option>
+                    <option value="marketingandsales">Marketing & Sales</option>
+                    <option value="developmentandit">Development & IT</option>
+                    <option value="contentwriting">Content Writing</option>
+                    <option value="designandart">Design & Art</option>
+                    <option value="createandvideos">Creative & Videos</option>
+                    <option value="lifestyleandentertainment">
+                      Lifestyle & Entertainment
+                    </option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -137,6 +193,7 @@ const PromptOverview = ({
           <div>
             {prompts
               ?.filter((c) => c.name.toLowerCase().includes(searchFilter))
+              .filter((c) => c.category === selectedCategory)
               .map((prompt) => (
                 <PromptPreview
                   key={prompt.id}
