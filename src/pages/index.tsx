@@ -413,7 +413,7 @@ const Home: NextPage = () => {
                     </a>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link">
+                    <a className="nav-link" id="theme">
                       <span className="icon icon-sun"></span>
                     </a>
                   </li>
