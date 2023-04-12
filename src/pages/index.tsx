@@ -261,6 +261,68 @@ const Home: NextPage = () => {
     stopGenerating.current = false;
   };
 
+  const regenerateMessage = async (message: string) => {
+    const messageHistory:
+      | {
+          content: string;
+          role: "user" | "system" | "assistant";
+        }[]
+      | undefined = activeChat?.messages.map((message) => {
+      return {
+        content: message.text,
+        role: message.authorId === session?.user.id ? "user" : "assistant",
+      };
+    }) ?? [{ content: message, role: "user" }];
+
+    messageHistory.push({ content: message, role: "user" });
+
+    messageHistory.unshift({
+      content: settingsStore.initialInstructions,
+      role: "system",
+    });
+
+    messageHistory.unshift({
+      content: `Please respect the following instructions. Respond in a ${settingsStore.tone}. Use the following writing style: ${settingsStore.writingStyle}. Additionally I want you to format your response as ${settingsStore.format}. Reply in ${settingsStore.outputLanguage}.}`,
+      role: "system",
+    });
+
+    if (selectedCharacter && selectedCharacter.instructions) {
+      messageHistory.unshift({
+        content: selectedCharacter.instructions,
+        role: "system",
+      });
+    }
+
+    const stream = await OpenAI(
+      "chat",
+      {
+        model: "gpt-3.5-turbo",
+        messages: messageHistory,
+        temperature: settings?.temperature ?? 0.5,
+      },
+      { apiKey: session?.user.apiKey }
+    );
+
+    let streamedLocalMessage = "";
+    for await (const chunk of yieldStream(stream)) {
+      const text = new TextDecoder("utf-8").decode(chunk);
+
+      if (stopGenerating.current) {
+        break;
+      }
+
+      streamedLocalMessage += text;
+      setStreamedMessage(streamedLocalMessage);
+    }
+
+    addMessage({
+      newMessage: streamedLocalMessage,
+      conversationId: activeChatIdRef.current,
+      botMessage: true,
+    });
+    stopGenerating.current = false;
+  };
+
   const attemptVoiceRecognition = async () => {
     if (listening) {
       SpeechRecognition.stopListening();
@@ -602,6 +664,17 @@ const Home: NextPage = () => {
                     <button
                       className="btn btn-outline-secondary btn-sm d-flex align-items-center mx-1"
                       onClick={() => {
+                        if (streamedMessage === null) {
+                          const lastReply = activeChat?.messages?.filter(
+                            (x) => x.authorId == null
+                          )[0];
+                          if (lastReply) {
+                            void regenerateMessage(lastReply.text);
+                          } else {
+                            toast.error("There is no response to regenerate");
+                          }
+                          return;
+                        }
                         stopGenerating.current = true;
                       }}
                     >
