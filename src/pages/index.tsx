@@ -276,7 +276,7 @@ const Home: NextPage = () => {
       };
     }) ?? [{ content: message, role: "user" }];
 
-    messageHistory.push({ content: message, role: "user" });
+    messageHistory.push({ content: message, role: "assistant" });
 
     messageHistory.unshift({
       content: settingsStore.initialInstructions,
