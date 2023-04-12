@@ -456,6 +456,26 @@ const Home: NextPage = () => {
                         </a>
                       </li>
                       <li>
+                        <a className="dropdown-item" href="#">
+                          Usage
+                        </a>
+                      </li>
+                      <li>
+                        <a className="dropdown-item" href="#">
+                          Members
+                        </a>
+                      </li>
+                      <li>
+                        <a className="dropdown-item" href="#">
+                          Settings
+                        </a>
+                      </li>
+                      <li>
+                        <a className="dropdown-item" href="#">
+                          Customization
+                        </a>
+                      </li>
+                      <li>
                         <a
                           className="dropdown-item"
                           href="#"
@@ -716,8 +736,7 @@ const Home: NextPage = () => {
 
                     <div className="flex-grow-1">
                       <div className="input-group chat-ai">
-                        <input
-                          type="text"
+                        <textarea
                           className="form-control form-control-lg"
                           id="chat-ai"
                           placeholder="Send a message..."
