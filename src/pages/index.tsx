@@ -761,6 +761,7 @@ const Home: NextPage = () => {
                           onChange={handleChange}
                           onKeyDown={(e) => {
                             if (e.key !== "Enter") return;
+                            if (e.shiftKey) return;
                             void submitNewMessage();
                           }}
                           value={message}
