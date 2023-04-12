@@ -739,6 +739,7 @@ const Home: NextPage = () => {
                         <textarea
                           className="form-control form-control-lg"
                           id="chat-ai"
+                          rows={1}
                           placeholder="Send a message..."
                           onChange={(e) => setMessage(e.target.value)}
                           onKeyDown={(e) => {
