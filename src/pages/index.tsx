@@ -27,6 +27,7 @@ import { useRouter } from "next/router";
 import { yieldStream } from "yield-stream";
 import CharacterLibraryModal from "~/components/modals/characterLibraryModal";
 import PromptLibraryModal from "~/components/modals/promptLibraryModal";
+import useAutosizeTextArea from "~/hooks/useAutosizeTextArea";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -44,8 +45,18 @@ const Home: NextPage = () => {
   const stopGenerating = useRef(false);
   const activeChatIdRef = useRef<string>("");
   const editApiKeyRef = useRef<HTMLAnchorElement | null>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [message, setMessage] = useState("");
 
   const settingsStore = useSettingsStore();
+
+  useAutosizeTextArea(textAreaRef.current, message);
+
+  const handleChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = evt.target?.value;
+
+    setMessage(val);
+  };
 
   const {
     transcript,
@@ -184,8 +195,6 @@ const Home: NextPage = () => {
         void ctx.openAi.getAllChats.refetch();
       },
     });
-
-  const [message, setMessage] = useState("");
 
   const submitNewMessage = async () => {
     if (!session?.user.apiKey) {
@@ -738,10 +747,14 @@ const Home: NextPage = () => {
                       <div className="input-group chat-ai">
                         <textarea
                           className="form-control form-control-lg"
-                          id="chat-ai"
+                          style={{
+                            resize: "none",
+                          }}
                           rows={1}
+                          id="chat-ai"
+                          ref={textAreaRef}
                           placeholder="Send a message..."
-                          onChange={(e) => setMessage(e.target.value)}
+                          onChange={handleChange}
                           onKeyDown={(e) => {
                             if (e.key !== "Enter") return;
                             void submitNewMessage();
