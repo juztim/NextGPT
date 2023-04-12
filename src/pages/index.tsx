@@ -665,7 +665,11 @@ const Home: NextPage = () => {
                 {activeChat?.messages?.map((message) => {
                   if (!message.authorId) {
                     return (
-                      <AiChatMessage message={message.text} key={message.id} />
+                      <AiChatMessage
+                        message={message.text}
+                        key={message.id}
+                        controls
+                      />
                     );
                   } else {
                     return (

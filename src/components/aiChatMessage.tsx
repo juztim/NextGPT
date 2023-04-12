@@ -6,9 +6,11 @@ import { toast } from "react-hot-toast";
 const AiChatMessage = ({
   message,
   animate = false,
+  controls = false,
 }: {
   message: string;
   animate?: boolean;
+  controls?: boolean;
 }) => {
   return (
     <div className="chat-item chat-item-ai">
@@ -25,26 +27,28 @@ const AiChatMessage = ({
               <div>{message}</div>
             )}
           </div>
-          <div className="d-flex align-items-center ms-4 float-end">
-            <button
-              className="btn-nostyle"
-              onClick={() => {
-                // use clipboard API to copy text
-                void navigator.clipboard.writeText(message);
-                toast.success("Copied to clipboard");
-              }}
-            >
-              <span>Copy</span>
-            </button>
+          {controls && (
+            <div className="d-flex align-items-center ms-4 float-end">
+              <button
+                className="btn-nostyle"
+                onClick={() => {
+                  // use clipboard API to copy text
+                  void navigator.clipboard.writeText(message);
+                  toast.success("Copied to clipboard");
+                }}
+              >
+                <span>Copy</span>
+              </button>
 
-            <button className="btn-nostyle">
-              <span className="icon icon-like" />
-            </button>
+              <button className="btn-nostyle">
+                <span className="icon icon-like" />
+              </button>
 
-            <button className="btn-nostyle">
-              <span className="icon icon-dislike" />
-            </button>
-          </div>
+              <button className="btn-nostyle">
+                <span className="icon icon-dislike" />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
