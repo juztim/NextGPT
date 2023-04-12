@@ -45,9 +45,16 @@ const PromptLibraryModal = () => {
                     className="form-select"
                     aria-label="Choose category"
                   >
-                    <option selected>Choose category</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
+                    <option disabled>Select a category</option>
+                    <option value="generalandadmin">General & Admin </option>
+                    <option value="marketingandsales">Marketing & Sales</option>
+                    <option value="developmentandit">Development & IT</option>
+                    <option value="contentwriting">Content Writing</option>
+                    <option value="designandart">Design & Art</option>
+                    <option value="createandvideos">Creative & Videos</option>
+                    <option value="lifestyleandentertainment">
+                      Lifestyle & Entertainment
+                    </option>
                   </select>
                 </div>
 
