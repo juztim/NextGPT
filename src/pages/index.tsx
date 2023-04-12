@@ -765,7 +765,9 @@ const Home: NextPage = () => {
                             void submitNewMessage();
                           }}
                           value={message}
-                          disabled={isSendingMessage}
+                          disabled={
+                            isSendingMessage || streamedMessage !== null
+                          }
                         />
 
                         <span
