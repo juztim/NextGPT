@@ -174,7 +174,9 @@ const ChatFolder = ({
                         setRequireEditConfirmation(true);
                       }}
                     >
-                      <span className="icon icon-edit" />
+                      {id !== "ungrouped" && (
+                        <span className="icon icon-edit" />
+                      )}
                     </button>
                     <button
                       className="btn-nostyle px-2"
@@ -184,7 +186,9 @@ const ChatFolder = ({
                         setRequireDeleteConfirmation(true);
                       }}
                     >
-                      <span className="icon icon-delete" />
+                      {id !== "ungrouped" && (
+                        <span className="icon icon-trash" />
+                      )}
                     </button>
                   </>
                 )}
