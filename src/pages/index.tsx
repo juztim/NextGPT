@@ -47,6 +47,7 @@ const Home: NextPage = () => {
   const editApiKeyRef = useRef<HTMLAnchorElement | null>(null);
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const [message, setMessage] = useState("");
+  const [autoScroll, setAutoScroll] = useState(true);
 
   const settingsStore = useSettingsStore();
 
@@ -356,6 +357,14 @@ const Home: NextPage = () => {
     });
   };
 
+  const handleScroll = () => {
+    if (!innerChatBoxRef.current) return;
+
+    const { scrollTop, clientHeight, scrollHeight } = innerChatBoxRef.current;
+
+    setAutoScroll(scrollTop + clientHeight >= scrollHeight);
+  };
+
   // If the user is not logged in, show the login page
   useEffect(() => {
     if (status !== "authenticated" && status !== "loading") {
@@ -392,11 +401,7 @@ const Home: NextPage = () => {
   }, [chatControlRef]);
 
   useEffect(() => {
-    if (
-      chatPlaceHolderRef.current &&
-      streamedMessage &&
-      streamedMessage?.length < 10
-    ) {
+    if (chatPlaceHolderRef.current && streamedMessage && autoScroll) {
       chatPlaceHolderRef.current.scrollIntoView({
         behavior: "auto",
       });
@@ -671,7 +676,11 @@ const Home: NextPage = () => {
 
           <div id="content-holder" className="left-open right-open">
             <div className="content-body">
-              <div className="inner" ref={innerChatBoxRef}>
+              <div
+                className="inner"
+                ref={innerChatBoxRef}
+                onScroll={handleScroll}
+              >
                 {activeChat?.messages?.map((message) => {
                   if (!message.authorId) {
                     return (
