@@ -22,7 +22,7 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import autoAnimate from "@formkit/auto-animate";
 import UndraggableChatPreview from "~/components/undraggableChatPreview";
-import { OpenAI } from "openai-streams";
+import { OpenAI, OpenAIError } from "openai-streams";
 import { useRouter } from "next/router";
 import { yieldStream } from "yield-stream";
 import CharacterLibraryModal from "~/components/modals/characterLibraryModal";
@@ -248,34 +248,44 @@ const Home: NextPage = () => {
       });
     }
 
-    const stream = await OpenAI(
-      "chat",
-      {
-        model: "gpt-3.5-turbo",
-        messages: messageHistory,
-        temperature: settings?.temperature ?? 0.5,
-      },
-      { apiKey: session.user.apiKey }
-    );
+    try {
+      const stream = await OpenAI(
+        "chat",
+        {
+          model: "gpt-3.5-turbo",
+          messages: messageHistory,
+          temperature: settings?.temperature ?? 0.5,
+        },
+        { apiKey: session.user.apiKey }
+      );
 
-    let streamedLocalMessage = "";
-    for await (const chunk of yieldStream(stream)) {
-      const text = new TextDecoder("utf-8").decode(chunk);
+      let streamedLocalMessage = "";
+      for await (const chunk of yieldStream(stream)) {
+        const text = new TextDecoder("utf-8").decode(chunk);
 
-      if (stopGenerating.current) {
-        break;
+        if (stopGenerating.current) {
+          break;
+        }
+
+        streamedLocalMessage += text;
+        setStreamedMessage(streamedLocalMessage);
       }
 
-      streamedLocalMessage += text;
-      setStreamedMessage(streamedLocalMessage);
+      addMessage({
+        newMessage: streamedLocalMessage,
+        conversationId: activeChatIdRef.current,
+        botMessage: true,
+      });
+    } catch (e) {
+      if (e instanceof OpenAIError) {
+        toast.error(e.message);
+      } else {
+        toast.error("Unknown error generating message");
+      }
+      setStreamedMessage(null);
+    } finally {
+      stopGenerating.current = false;
     }
-
-    addMessage({
-      newMessage: streamedLocalMessage,
-      conversationId: activeChatIdRef.current,
-      botMessage: true,
-    });
-    stopGenerating.current = false;
   };
 
   const regenerateMessage = async (message: string) => {
