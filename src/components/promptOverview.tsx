@@ -120,7 +120,10 @@ const PromptOverview = ({
           <div>
             {characters
               ?.filter((c) => c.name.toLowerCase().includes(searchFilter))
-              .filter((c) => c.category === selectedCategory)
+              .filter((c) => {
+                if (!selectedCategory) return true;
+                return c.category === selectedCategory;
+              })
               .map((character) => (
                 <CharacterPreview
                   key={character.id}
@@ -193,7 +196,10 @@ const PromptOverview = ({
           <div>
             {prompts
               ?.filter((c) => c.name.toLowerCase().includes(searchFilter))
-              .filter((c) => c.category === selectedCategory)
+              .filter((c) => {
+                if (!selectedCategory) return true;
+                return c.category === selectedCategory;
+              })
               .map((prompt) => (
                 <PromptPreview
                   key={prompt.id}
