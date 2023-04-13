@@ -433,6 +433,14 @@ const Home: NextPage = () => {
   }, [activeChatId, activeChat?.messages.length, streamedMessage, autoScroll]);
 
   useEffect(() => {
+    if (chatPlaceHolderRef.current) {
+      chatPlaceHolderRef.current.scrollIntoView({
+        behavior: "auto",
+      });
+    }
+  }, [activeChatId]);
+
+  useEffect(() => {
     setConversationWordCount(
       activeChat?.messages
         ? activeChat.messages
