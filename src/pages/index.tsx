@@ -682,7 +682,14 @@ const Home: NextPage = () => {
                 </div>
               </div>
               <div className="menu-body-bottom py-3">
-                <ClearAllChats />
+                <ClearAllChats
+                  onClearChats={() => {
+                    stopGenerating.current = true;
+                    setActiveChatId("");
+                    setStreamedMessage(null);
+                    setMessage("");
+                  }}
+                />
               </div>
             </div>
 

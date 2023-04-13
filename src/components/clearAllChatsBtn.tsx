@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
 
-const ClearAllChats = () => {
+const ClearAllChats = ({ onClearChats }: { onClearChats: () => void }) => {
   const [requireConfirmation, setRequireConfirmation] = useState(false);
 
   const ctx = api.useContext();
@@ -12,6 +12,7 @@ const ClearAllChats = () => {
       console.log("success");
       toast.success("All chats cleared!");
       setRequireConfirmation(false);
+      onClearChats();
       void ctx.openAi.getAllChats.refetch();
       void ctx.openAi.getChat.invalidate();
     },
