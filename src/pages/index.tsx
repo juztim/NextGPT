@@ -293,6 +293,7 @@ const Home: NextPage = () => {
   };
 
   const regenerateMessage = async (message: string) => {
+    toast.success("Regenerating message");
     const messageHistory:
       | {
           content: string;
