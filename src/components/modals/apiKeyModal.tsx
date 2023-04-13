@@ -8,9 +8,15 @@ const ApiKeyModal = () => {
 
   const [newApiKey, setNewApiKey] = useState("");
 
+  const reloadSession = () => {
+    const event = new Event("visibilitychange");
+    document.dispatchEvent(event);
+  };
+
   const { mutate: setApiKey } = api.openAi.setApiKey.useMutation({
     onSuccess: () => {
       toast.success("API Key set successfully");
+      reloadSession();
       closeButtonRef.current?.click();
     },
     onError: () => {
