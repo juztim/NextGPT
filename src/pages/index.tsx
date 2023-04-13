@@ -28,6 +28,7 @@ import { yieldStream } from "yield-stream";
 import CharacterLibraryModal from "~/components/modals/characterLibraryModal";
 import PromptLibraryModal from "~/components/modals/promptLibraryModal";
 import useAutosizeTextArea from "~/hooks/useAutosizeTextArea";
+import JsPdf from "jspdf";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -406,7 +407,7 @@ const Home: NextPage = () => {
         behavior: "auto",
       });
     }
-  }, [activeChatId, activeChat?.messages.length, streamedMessage]);
+  }, [activeChatId, activeChat?.messages.length, streamedMessage, autoScroll]);
 
   useEffect(() => {
     setConversationWordCount(
@@ -756,6 +757,46 @@ const Home: NextPage = () => {
                       <span className="icon icon-delete me-2"></span>
                       <span className="text">Reset Chat</span>
                     </button>
+
+                    {!!activeChat && !!activeChat.name && (
+                      <>
+                        <button
+                          className="btn btn-outline-secondary btn-sm d-flex align-items-center mx-1"
+                          onClick={() => {
+                            const doc = new JsPdf("p", "pt", "a4");
+                            doc.setFontSize(18);
+                            doc.text(activeChat.name ?? "New Chat", 40, 40);
+                            doc.setFontSize(12);
+                            doc.text("Messages", 40, 60);
+                            doc.setFontSize(10);
+                            const messages = activeChat.messages;
+                            let y = 80;
+                            for (let i = 0; i < messages.length; i++) {
+                              const message = messages[i];
+                              const text = message?.text;
+                              if (!text) continue;
+                              const author = message?.authorId ? "You" : "AI";
+                              const textToDisplay = `${author}: ${text}`;
+                              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                              const textLines: string[] = doc.splitTextToSize(
+                                textToDisplay,
+                                500
+                              );
+                              if (y + textLines.length * 10 > 800) {
+                                doc.addPage();
+                              }
+                              doc.text(textLines, 40, y);
+                              y += textLines.length * 10 + 10;
+                            }
+
+                            doc.save(activeChat.name ?? "New Chat" + ".pdf");
+                          }}
+                        >
+                          <span className="icon icon-export me-2"></span>
+                          <span className="text">Export Chat</span>
+                        </button>
+                      </>
+                    )}
                   </div>
                   <div className="d-flex">
                     <span
