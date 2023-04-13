@@ -565,7 +565,7 @@ const SettingsModal = () => {
             </div>
           </div>
 
-          <div className="modal-footer justify-content-start">
+          <div className="modal-footer d-flex justify-content-start">
             <button
               type="button"
               className="btn btn-primary ms-0"
