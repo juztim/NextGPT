@@ -733,7 +733,29 @@ const Home: NextPage = () => {
                   <AiChatMessage message="Welcome to FutureDesk! Type your message here to start a new conversation." />
                 )}
 
-                {streamedMessage && <AiChatMessage message={streamedMessage} />}
+                {!!streamedMessage && (
+                  <AiChatMessage message={streamedMessage} />
+                )}
+                {!!selectedCharacter && (
+                  <>
+                    <div
+                      style={{
+                        width: "100%",
+                      }}
+                      className="d-flex justify-content-center align-items-center p-4"
+                    >
+                      <div
+                        style={{
+                          background: "#7436DA",
+                          padding: "10px 20px",
+                          borderRadius: "10px",
+                        }}
+                      >
+                        You are chatting with {selectedCharacter.name}
+                      </div>
+                    </div>
+                  </>
+                )}
                 <div
                   style={{
                     float: "left",
