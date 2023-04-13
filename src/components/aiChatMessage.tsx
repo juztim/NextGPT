@@ -1,15 +1,17 @@
 ﻿import Image from "next/image";
-import { TypeAnimation } from "react-type-animation";
+import ReactMarkdown from "react-markdown";
+
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+
 import AvatarChat from "~/images/avatar-chat.jpg";
 import { toast } from "react-hot-toast";
 
 const AiChatMessage = ({
   message,
-  animate = false,
   controls = false,
 }: {
   message: string;
-  animate?: boolean;
   controls?: boolean;
 }) => {
   return (
@@ -20,12 +22,32 @@ const AiChatMessage = ({
             <div className="image me-4">
               <Image src={AvatarChat} alt="Avatar Chat" className="img-fluid" />
             </div>
-
-            {animate ? (
-              <TypeAnimation cursor={false} speed={75} sequence={[message]} />
-            ) : (
-              <div>{message}</div>
-            )}
+            <div className="text">
+              <ReactMarkdown
+                components={{
+                  code({ inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || "");
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        language={match[1]}
+                        /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/ban-ts-comment */
+                        // @ts-ignore
+                        style={materialDark as never}
+                        {...props}
+                      >
+                        {String(children).replace(/\n$/, "")}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                    );
+                  },
+                }}
+              >
+                {message}
+              </ReactMarkdown>
+            </div>
           </div>
           {controls && (
             <div className="d-flex align-items-center ms-4 float-end">
