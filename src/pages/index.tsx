@@ -775,7 +775,9 @@ const Home: NextPage = () => {
                               const message = messages[i];
                               const text = message?.text;
                               if (!text) continue;
-                              const author = message?.authorId ? "You" : "AI";
+                              const author = message?.authorId
+                                ? "You"
+                                : "FutureDesk";
                               const textToDisplay = `${author}: ${text}`;
                               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                               const textLines: string[] = doc.splitTextToSize(
