@@ -291,7 +291,15 @@ const Home: NextPage = () => {
       };
     }) ?? [{ content: message, role: "user" }];
 
-    messageHistory.pop();
+    // we want to remove all assistant messages until the last user message
+    const lastUserMessageIndex = messageHistory
+      .map((message) => message.role)
+      .lastIndexOf("user");
+
+    messageHistory.splice(
+      lastUserMessageIndex + 1,
+      messageHistory.length - lastUserMessageIndex - 1
+    );
 
     messageHistory.push({ content: message, role: "assistant" });
 
