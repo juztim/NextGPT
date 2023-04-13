@@ -200,9 +200,13 @@ const Home: NextPage = () => {
 
   const submitNewMessage = async () => {
     if (message.trim() === "") {
+      console.log("Message is empty");
       return;
     }
-    if (streamedMessage !== null) return;
+    if (streamedMessage !== null) {
+      console.log("Message is already being generated");
+      return;
+    }
     if (!session?.user.apiKey) {
       toast.error("Please enter your OpenAI API key");
       editApiKeyRef.current?.click();
@@ -769,7 +773,7 @@ const Home: NextPage = () => {
                       onClick={() => {
                         clearChat({ id: activeChatId });
                         stopGenerating.current = true;
-                        setStreamedMessage("");
+                        setStreamedMessage(null);
                       }}
                     >
                       <span className="icon icon-delete me-2"></span>
