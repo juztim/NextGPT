@@ -13,8 +13,20 @@ const CreatePromptModal = () => {
     category: "",
   });
 
-  const { mutate: createPrompt } = api.openAi.createPrompt.useMutation({
+  const { mutate: addPromptToList } = api.prompt.addToList.useMutation({
     onSuccess: () => {
+      toast.success("Added prompt to list!");
+      void ctx.prompt.getAdded.refetch();
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("Error adding prompt to list!");
+      toast.error(error.message);
+    },
+  });
+
+  const { mutate: createPrompt } = api.openAi.createPrompt.useMutation({
+    onSuccess: (data) => {
       toast.success("Prompt created successfully!");
       setNewPrompt({
         title: "",
@@ -24,6 +36,7 @@ const CreatePromptModal = () => {
       });
       modalCloseButton.current?.click();
       void ctx.openAi.getAllPrompts.refetch();
+      addPromptToList({ id: data.id });
     },
     onError: (error) => {
       const titleError = error.data?.zodError?.fieldErrors.title;
@@ -54,6 +67,7 @@ const CreatePromptModal = () => {
         !categoryError
       ) {
         toast.error("Error creating character!");
+        console.error(error);
       }
     },
   });

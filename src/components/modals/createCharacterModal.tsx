@@ -14,51 +14,67 @@ const CreateCharacterModal = () => {
 
   const ctx = api.useContext();
 
-  const { mutate: createCharacter } = api.openAi.createCharacter.useMutation({
+  const { mutate: addCharacterToList } = api.character.addToList.useMutation({
     onSuccess: () => {
-      console.log("success");
-      toast.success("Character created!");
-      setNewCharacter({
-        name: "",
-        description: "",
-        instructions: "",
-        category: "",
-      });
-      closeButtonRef.current?.click();
-      void ctx.character.getAll.refetch();
+      toast.success("Added character to list!");
+      void ctx.character.getAdded.refetch();
     },
     onError: (error) => {
-      const titleError = error.data?.zodError?.fieldErrors.name;
-      const descriptionError = error.data?.zodError?.fieldErrors.description;
-      const instructionsError = error.data?.zodError?.fieldErrors.instructions;
-      const categoryError = error.data?.zodError?.fieldErrors.category;
-
-      if (titleError && titleError[0]) {
-        toast.error(titleError[0]);
-      }
-
-      if (descriptionError && descriptionError[0]) {
-        toast.error(descriptionError[0]);
-      }
-
-      if (instructionsError && instructionsError[0]) {
-        toast.error(instructionsError[0]);
-      }
-
-      if (categoryError && categoryError[0]) {
-        toast.error(categoryError[0]);
-      }
-
-      if (
-        !titleError &&
-        !descriptionError &&
-        !instructionsError &&
-        !categoryError
-      ) {
-        toast.error("Error creating character!");
-      }
+      console.error(error);
+      toast.error("Error adding character to list!");
+      toast.error(error.message);
     },
   });
+
+  const { mutate: createCharacter, isLoading: isCreating } =
+    api.openAi.createCharacter.useMutation({
+      onSuccess: (data) => {
+        console.log("success");
+        toast.success("Character created!");
+        setNewCharacter({
+          name: "",
+          description: "",
+          instructions: "",
+          category: "",
+        });
+        closeButtonRef.current?.click();
+        void ctx.character.getAll.refetch();
+        addCharacterToList({ id: data.id });
+      },
+      onError: (error) => {
+        const titleError = error.data?.zodError?.fieldErrors.name;
+        const descriptionError = error.data?.zodError?.fieldErrors.description;
+        const instructionsError =
+          error.data?.zodError?.fieldErrors.instructions;
+        const categoryError = error.data?.zodError?.fieldErrors.category;
+
+        if (titleError && titleError[0]) {
+          toast.error(titleError[0]);
+        }
+
+        if (descriptionError && descriptionError[0]) {
+          toast.error(descriptionError[0]);
+        }
+
+        if (instructionsError && instructionsError[0]) {
+          toast.error(instructionsError[0]);
+        }
+
+        if (categoryError && categoryError[0]) {
+          toast.error(categoryError[0]);
+        }
+
+        if (
+          !titleError &&
+          !descriptionError &&
+          !instructionsError &&
+          !categoryError
+        ) {
+          toast.error("Error creating character!");
+          console.error(error);
+        }
+      },
+    });
 
   return (
     <div
@@ -174,6 +190,7 @@ const CreateCharacterModal = () => {
                   onClick={() => {
                     createCharacter(newCharacter);
                   }}
+                  disabled={isCreating}
                 >
                   Create
                 </button>
