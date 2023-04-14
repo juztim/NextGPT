@@ -714,6 +714,26 @@ const Home: NextPage = () => {
           </div>
 
           <div id="content-holder" className="left-open right-open">
+            {!!selectedCharacter && (
+              <>
+                <div
+                  style={{
+                    width: "100%",
+                  }}
+                  className="d-flex justify-content-center align-items-center p-4"
+                >
+                  <div
+                    style={{
+                      background: "#7436DA",
+                      padding: "10px 20px",
+                      borderRadius: "10px",
+                    }}
+                  >
+                    You are chatting with {selectedCharacter.name}
+                  </div>
+                </div>
+              </>
+            )}
             <div className="content-body">
               <div
                 className="inner"
@@ -743,26 +763,7 @@ const Home: NextPage = () => {
                 {!!streamedMessage && (
                   <AiChatMessage message={streamedMessage} />
                 )}
-                {!!selectedCharacter && (
-                  <>
-                    <div
-                      style={{
-                        width: "100%",
-                      }}
-                      className="d-flex justify-content-center align-items-center p-4"
-                    >
-                      <div
-                        style={{
-                          background: "#7436DA",
-                          padding: "10px 20px",
-                          borderRadius: "10px",
-                        }}
-                      >
-                        You are chatting with {selectedCharacter.name}
-                      </div>
-                    </div>
-                  </>
-                )}
+
                 <div
                   style={{
                     float: "left",
