@@ -73,4 +73,24 @@ export const PromptRouter = createTRPCRouter({
 
       return true;
     }),
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const character = await ctx.prisma.prompt.findFirst({
+        where: {
+          id: input.id,
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (!character) {
+        throw new Error("Prompt not found");
+      }
+
+      await ctx.prisma.prompt.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
 });
