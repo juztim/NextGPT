@@ -38,10 +38,6 @@ const Welcome: NextPage = () => {
                     <div className="col-12 col-md-4 col-xl-3 d-flex justify-content-center">
                       <ul className="list-unstyled">
                         <li>
-                          <span className="icon icon-lock" />
-                          No login hassle
-                        </li>
-                        <li>
                           <span className="icon icon-folder-file" />
                           Chat Folders - Easy sort
                         </li>
@@ -92,11 +88,7 @@ const Welcome: NextPage = () => {
                         </li>
                         <li>
                           <span className="icon icon-phonelink" />
-                          Multy-device compatibility
-                        </li>
-                        <li>
-                          <span className="icon icon-upload" />
-                          Self-host enable
+                          Multi-device compatibility
                         </li>
                         <li>
                           <span className="icon icon-select-all" />
