@@ -74,7 +74,7 @@ const CharacterLibraryModal = () => {
                     placeholder="Search"
                     value={searchFilter}
                     onChange={(e) => {
-                      setSearchFilter(e.target.value);
+                      setSearchFilter(e.target.value.toLowerCase());
                     }}
                   />
                 </div>
@@ -90,7 +90,7 @@ const CharacterLibraryModal = () => {
           </div>
           <div className="modal-body mh-400">
             {data
-              ?.filter((c) => c.name.includes(searchFilter))
+              ?.filter((c) => c.name.toLowerCase().includes(searchFilter))
               .filter((c) => {
                 if (selectedCategory === "") return true;
                 return c.category === selectedCategory;
