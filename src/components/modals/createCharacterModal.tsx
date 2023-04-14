@@ -142,6 +142,7 @@ const CreateCharacterModal = () => {
                 onChange={(e) =>
                   setNewCharacter({ ...newCharacter, name: e.target.value })
                 }
+                maxLength={20}
               />
             </div>
             <div className="mb-3">
@@ -160,6 +161,7 @@ const CreateCharacterModal = () => {
                     description: e.target.value,
                   })
                 }
+                maxLength={128}
               ></textarea>
             </div>
             <div className="mb-3">

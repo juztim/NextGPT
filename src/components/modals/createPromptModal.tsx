@@ -144,6 +144,7 @@ const CreatePromptModal = () => {
                     setNewPrompt({ ...newPrompt, title: e.target.value });
                   }}
                   value={newPrompt.title}
+                  maxLength={20}
                 />
               </div>
               <div className="mb-3">
@@ -159,6 +160,7 @@ const CreatePromptModal = () => {
                     setNewPrompt({ ...newPrompt, description: e.target.value });
                   }}
                   value={newPrompt.description}
+                  maxLength={128}
                 />
               </div>
               <div className="mb-3">
