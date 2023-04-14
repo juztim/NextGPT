@@ -720,7 +720,7 @@ const Home: NextPage = () => {
                   style={{
                     width: "100%",
                   }}
-                  className="d-flex justify-content-center align-items-center p-4"
+                  className="d-flex justify-content-center align-items-center p-4 sticky-top"
                 >
                   <div
                     style={{
@@ -730,6 +730,17 @@ const Home: NextPage = () => {
                     }}
                   >
                     You are chatting with {selectedCharacter.name}
+                    <button
+                      className="btn-nostyle"
+                      style={{
+                        paddingLeft: "10px",
+                      }}
+                      onClick={() => {
+                        setSelectedCharacter(undefined);
+                      }}
+                    >
+                      Reset
+                    </button>
                   </div>
                 </div>
               </>
