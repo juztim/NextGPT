@@ -73,6 +73,39 @@ export const PromptRouter = createTRPCRouter({
 
       return true;
     }),
+  removeFromList: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const prompt = await ctx.prisma.prompt.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (!prompt) {
+        throw new Error("Prompt not found");
+      }
+
+      const promptJoin = await ctx.prisma.promptJoin.findFirst({
+        where: {
+          promptId: input.id,
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (!promptJoin) {
+        throw new Error("Prompt not added");
+      }
+
+      await ctx.prisma.promptJoin.delete({
+        where: {
+          id: promptJoin.id,
+        },
+      });
+
+      return true;
+    }),
+
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {

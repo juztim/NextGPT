@@ -11,15 +11,19 @@ const PromptPreview = ({
 }) => {
   const ctx = api.useContext();
 
-  const { mutate: deletePrompt } = api.openAi.deletePrompt.useMutation({
-    onSuccess: () => {
-      toast.success("Prompt deleted");
-      void ctx.openAi.getAllPrompts.refetch();
-    },
-    onError: (error) => {
-      toast.error("Error deleting prompt");
-    },
-  });
+  const { mutate: removePrompt, isLoading: isRemoving } =
+    api.prompt.removeFromList.useMutation({
+      onSuccess: () => {
+        toast.success("Prompt removed");
+        void ctx.prompt.getAll.refetch();
+        void ctx.prompt.getAdded.refetch();
+      },
+      onError: (error) => {
+        toast.error("Error removing prompt");
+        toast.error(error.message);
+        console.error(error);
+      },
+    });
 
   return (
     <div
@@ -47,10 +51,10 @@ const PromptPreview = ({
             position: "absolute",
             right: "20px",
           }}
-          disabled
+          disabled={isRemoving}
           onClick={(e) => {
             e.stopPropagation();
-            //deletePrompt({ id: prompt.id });
+            removePrompt({ id: prompt.id });
           }}
         >
           <span className="icon icon-delete" />

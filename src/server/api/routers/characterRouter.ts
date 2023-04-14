@@ -73,6 +73,38 @@ export const CharacterRouter = createTRPCRouter({
 
       return true;
     }),
+  removeFromList: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const character = await ctx.prisma.character.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (!character) {
+        throw new Error("Character not found");
+      }
+
+      const characterJoin = await ctx.prisma.characterJoin.findFirst({
+        where: {
+          characterId: input.id,
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (!characterJoin) {
+        throw new Error("Character not added");
+      }
+
+      await ctx.prisma.characterJoin.delete({
+        where: {
+          id: characterJoin.id,
+        },
+      });
+
+      return true;
+    }),
 
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
