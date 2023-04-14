@@ -99,7 +99,9 @@ const CreateCharacterModal = () => {
                   })
                 }
               >
-                <option disabled>Select a category</option>
+                <option disabled value="">
+                  Select a category
+                </option>
                 <option value="generalandadmin">General & Admin </option>
                 <option value="marketingandsales">Marketing & Sales</option>
                 <option value="developmentandit">Development & IT</option>
