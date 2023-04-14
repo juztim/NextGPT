@@ -12,6 +12,19 @@ import "~/styles/custom.scss";
 import Script from "next/script";
 import { Toaster } from "react-hot-toast";
 import Head from "next/head";
+import { log } from "next-axiom";
+
+if (process.env.NODE_ENV === "production") {
+  console.error = (message: string, ...args) => {
+    log.error(message, args);
+  };
+  console.warn = (message: string, ...args) => {
+    log.warn(message, args);
+  };
+  console.info = (message: string, ...args) => {
+    log.info(message, args);
+  };
+}
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
