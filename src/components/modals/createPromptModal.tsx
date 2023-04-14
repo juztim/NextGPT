@@ -134,7 +134,7 @@ const CreatePromptModal = () => {
               </div>
               <div className="mb-3">
                 <label htmlFor="prompt-desc" className="form-label">
-                  Description (optional):
+                  Description:
                 </label>
                 <textarea
                   className="form-control"
