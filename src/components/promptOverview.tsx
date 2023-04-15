@@ -90,6 +90,10 @@ const PromptOverview = ({
                     onChange={(e) => {
                       setSelectedCategory(e.target.value);
                     }}
+                    style={{
+                      background: "#202123",
+                      color: "gray",
+                    }}
                   >
                     <option disabled value="">
                       Select a category
@@ -166,6 +170,10 @@ const PromptOverview = ({
                     value={selectedCategory}
                     onChange={(e) => {
                       setSelectedCategory(e.target.value);
+                    }}
+                    style={{
+                      background: "#202123",
+                      color: "gray",
                     }}
                   >
                     <option disabled value="">
