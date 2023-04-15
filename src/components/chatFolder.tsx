@@ -187,7 +187,7 @@ const ChatFolder = ({
                       }}
                     >
                       {id !== "ungrouped" && (
-                        <span className="icon icon-trash" />
+                        <span className="icon icon-delete" />
                       )}
                     </button>
                   </>
