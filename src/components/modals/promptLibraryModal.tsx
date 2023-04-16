@@ -2,6 +2,7 @@ import PromptLibraryItem from "~/components/promptLibrary/promptLibraryItem";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
+import { Virtuoso } from "react-virtuoso";
 
 const PromptLibraryModal = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -89,16 +90,25 @@ const PromptLibraryModal = () => {
               </a>
             </div>
           </div>
-          <div className="modal-body mh-400">
-            {data
-              ?.filter((c) => c.name.toLowerCase().includes(searchFilter))
-              .filter((c) => {
-                if (selectedCategory === "") return true;
-                return c.category === selectedCategory;
-              })
-              .map((prompt) => (
-                <PromptLibraryItem key={prompt.id} prompt={prompt} />
-              ))}
+          <div className="modal-body">
+            {/*{data*/}
+            {/*  ?.filter((c) => c.name.toLowerCase().includes(searchFilter))*/}
+            {/*  .filter((c) => {*/}
+            {/*    if (selectedCategory === "") return true;*/}
+            {/*    return c.category === selectedCategory;*/}
+            {/*  })*/}
+            {/*  .map((prompt) => (*/}
+            {/*    <PromptLibraryItem key={prompt.id} prompt={prompt} />*/}
+            {/*  ))}*/}
+            {data && (
+              <Virtuoso
+                style={{ height: "400px" }}
+                data={data}
+                itemContent={(index, prompt) => {
+                  return <PromptLibraryItem key={prompt.id} prompt={prompt} />;
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
