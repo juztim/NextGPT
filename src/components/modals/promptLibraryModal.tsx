@@ -94,7 +94,21 @@ const PromptLibraryModal = () => {
             {data && (
               <Virtuoso
                 style={{ height: "400px" }}
-                data={data}
+                data={data
+                  .filter((prompt) => {
+                    if (selectedCategory === "") {
+                      return true;
+                    }
+                    return prompt.category === selectedCategory;
+                  })
+                  .filter((prompt) => {
+                    if (searchFilter === "") {
+                      return true;
+                    }
+                    return prompt.instructions
+                      .toLowerCase()
+                      .includes(searchFilter);
+                  })}
                 itemContent={(index, prompt) => {
                   return <PromptLibraryItem key={prompt.id} prompt={prompt} />;
                 }}
