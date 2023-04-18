@@ -32,6 +32,8 @@ import JsPdf from "jspdf";
 import { NavDropdown } from "react-bootstrap";
 import AboutModal from "~/components/modals/about";
 import FAQModal from "~/components/modals/faq";
+import TermsModal from "~/components/modals/terms";
+import PrivacyModal from "~/components/modals/privacy";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -1036,6 +1038,20 @@ const Home: NextPage = () => {
 
           <FAQModal
             show={showInfoModal === "FAQ"}
+            onHide={() => {
+              setShowInfoModal(undefined);
+            }}
+          />
+
+          <TermsModal
+            show={showInfoModal === "Terms"}
+            onHide={() => {
+              setShowInfoModal(undefined);
+            }}
+          />
+
+          <PrivacyModal
+            show={showInfoModal === "Privacy"}
             onHide={() => {
               setShowInfoModal(undefined);
             }}
