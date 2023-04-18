@@ -113,6 +113,20 @@ const Home: NextPage = () => {
     },
   });
 
+  const { mutate: createImage } = api.prodia.create.useMutation({
+    onError(error) {
+      console.log(error);
+      toast.error("Error generating image");
+    },
+    onSuccess(imageUrl) {
+      addMessage({
+        newMessage: `![Generated Image](${imageUrl})`,
+        botMessage: true,
+        conversationId: activeChatId,
+      });
+    },
+  });
+
   const { mutate: addMessage, isLoading: isSendingMessage } =
     api.openAi.addMessage.useMutation({
       onError: (e) => {
@@ -204,6 +218,21 @@ const Home: NextPage = () => {
       },
     });
 
+  const generateImage = () => {
+    const prompt = message.toLowerCase().split("imagine")[1];
+    if (!prompt || prompt.trim() === "") {
+      toast.error("Please enter a prompt");
+      return;
+    }
+    addMessage({
+      newMessage: message,
+      conversationId: activeChatId,
+    });
+    createImage({
+      prompt: prompt.trim(),
+    });
+  };
+
   const submitNewMessage = async () => {
     if (message.trim() === "") {
       console.log("Message is empty");
@@ -221,6 +250,13 @@ const Home: NextPage = () => {
     if (activeChatId === "") {
       await createChat();
     }
+
+    if (message.toLowerCase().startsWith("imagine")) {
+      void generateImage();
+      return;
+    }
+
+    console.log(message);
 
     addMessage({
       newMessage: message,
