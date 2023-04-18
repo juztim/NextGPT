@@ -279,18 +279,18 @@ const Home: NextPage = () => {
 
     messageHistory.unshift({
       content: settingsStore.initialInstructions,
-      role: "system",
+      role: "user",
     });
 
     messageHistory.unshift({
       content: `Please respect the following instructions. Respond in a ${settingsStore.tone}. Use the following writing style: ${settingsStore.writingStyle}. Additionally I want you to format your response as ${settingsStore.format}. Reply in ${settingsStore.outputLanguage}.}`,
-      role: "system",
+      role: "user",
     });
 
     if (selectedCharacter && selectedCharacter.instructions) {
       messageHistory.unshift({
         content: selectedCharacter.instructions,
-        role: "system",
+        role: "user",
       });
     }
 
