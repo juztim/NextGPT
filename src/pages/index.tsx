@@ -29,6 +29,9 @@ import CharacterLibraryModal from "~/components/modals/characterLibraryModal";
 import PromptLibraryModal from "~/components/modals/promptLibraryModal";
 import useAutosizeTextArea from "~/hooks/useAutosizeTextArea";
 import JsPdf from "jspdf";
+import { NavDropdown } from "react-bootstrap";
+import AboutModal from "~/components/modals/about";
+import FAQModal from "~/components/modals/faq";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -49,6 +52,7 @@ const Home: NextPage = () => {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const [message, setMessage] = useState("");
   const [autoScroll, setAutoScroll] = useState(true);
+  const [showInfoModal, setShowInfoModal] = useState<string>();
 
   const settingsStore = useSettingsStore();
 
@@ -320,18 +324,18 @@ const Home: NextPage = () => {
 
     messageHistory.unshift({
       content: settingsStore.initialInstructions,
-      role: "system",
+      role: "user",
     });
 
     messageHistory.unshift({
       content: `Please respect the following instructions. Respond in a ${settingsStore.tone}. Use the following writing style: ${settingsStore.writingStyle}. Additionally I want you to format your response as ${settingsStore.format}. Reply in ${settingsStore.outputLanguage}.}`,
-      role: "system",
+      role: "user",
     });
 
     if (selectedCharacter && selectedCharacter.instructions) {
       messageHistory.unshift({
         content: selectedCharacter.instructions,
-        role: "system",
+        role: "user",
       });
     }
 
@@ -392,6 +396,8 @@ const Home: NextPage = () => {
   // If the user is not logged in, show the login page
   useEffect(() => {
     if (status !== "authenticated" && status !== "loading") {
+      // log out the entire url
+      console.log(window.location.href);
       void router.push("/welcome");
     }
   }, [status, router]);
@@ -481,7 +487,7 @@ const Home: NextPage = () => {
               <a className="navbar-brand d-inline-flex" href="#">
                 <Image
                   src={Logo}
-                  alt="GPT Skin Logo"
+                  alt="Futuredesk Logo"
                   className="logo img-fluid"
                 />
               </a>
@@ -543,9 +549,54 @@ const Home: NextPage = () => {
                     </ul>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link">
-                      <span className="icon icon-info"></span>
-                    </a>
+                    <NavDropdown
+                      title={
+                        <div className="nav-item">
+                          <span
+                            className="icon icon-info"
+                            style={{
+                              fontSize: "1.3rem",
+                            }}
+                          />
+                        </div>
+                      }
+                    >
+                      <NavDropdown.Item
+                        onClick={() => {
+                          setShowInfoModal("About");
+                        }}
+                      >
+                        <span>About</span>
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        onClick={() => {
+                          setShowInfoModal("FAQ");
+                        }}
+                      >
+                        <span>FAQ</span>
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        onClick={() => {
+                          setShowInfoModal("Terms");
+                        }}
+                      >
+                        <span>Terms</span>
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        onClick={() => {
+                          setShowInfoModal("Privacy");
+                        }}
+                      >
+                        <span>Privacy</span>
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        onClick={() => {
+                          setShowInfoModal("Contact");
+                        }}
+                      >
+                        <span>Contact</span>
+                      </NavDropdown.Item>
+                    </NavDropdown>
                   </li>
                   {/*<li className="nav-item">*/}
                   {/*  <a className="nav-link">*/}
@@ -977,6 +1028,18 @@ const Home: NextPage = () => {
           <SettingsModal />
 
           <ApiKeyModal />
+
+          <AboutModal
+            show={showInfoModal === "About"}
+            onHide={() => setShowInfoModal(undefined)}
+          />
+
+          <FAQModal
+            show={showInfoModal === "FAQ"}
+            onHide={() => {
+              setShowInfoModal(undefined);
+            }}
+          />
         </div>
       </DragDropContext>
     </>
