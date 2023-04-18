@@ -54,6 +54,7 @@ const CharacterLibraryModal = () => {
                   >
                     <option disabled>Select a category</option>
                     <option value="">All</option>
+                    <option value="custom">Custom </option>
                     <option value="generalandadmin">General & Admin </option>
                     <option value="marketingandsales">Marketing & Sales</option>
                     <option value="developmentandit">Development & IT</option>
@@ -93,6 +94,9 @@ const CharacterLibraryModal = () => {
               ?.filter((c) => c.name.toLowerCase().includes(searchFilter))
               .filter((c) => {
                 if (selectedCategory === "") return true;
+                if (selectedCategory === "custom") {
+                  return c.userId !== null;
+                }
                 return c.category === selectedCategory;
               })
               .map((character) => (

@@ -4,7 +4,6 @@ import PromptPreview from "./promptPreview";
 import { toast } from "react-hot-toast";
 import type { Character, Prompt } from "@prisma/client";
 import { useState } from "react";
-import { useSession } from "next-auth/react";
 
 const PromptOverview = ({
   onOpenPrompt,
@@ -29,7 +28,6 @@ const PromptOverview = ({
     },
   });
 
-  const { data } = useSession();
   const [searchFilter, setSearchFilter] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
@@ -131,7 +129,7 @@ const PromptOverview = ({
               .filter((c) => {
                 if (!selectedCategory) return true;
                 if (selectedCategory === "custom") {
-                  return c.userId === data?.user.id;
+                  return c.userId !== null;
                 }
                 return c.category === selectedCategory;
               })
@@ -216,7 +214,7 @@ const PromptOverview = ({
               .filter((c) => {
                 if (!selectedCategory) return true;
                 if (selectedCategory === "custom") {
-                  return c.userId === data?.user.id;
+                  return c.userId !== null;
                 }
                 return c.category === selectedCategory;
               })

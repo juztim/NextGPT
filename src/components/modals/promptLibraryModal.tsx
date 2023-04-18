@@ -55,6 +55,7 @@ const PromptLibraryModal = () => {
                     }}
                   >
                     <option disabled>Select a category</option>
+                    <option value="custom">Custom </option>
                     <option value="">All</option>
                     <option value="generalandadmin">General & Admin </option>
                     <option value="marketingandsales">Marketing & Sales</option>
@@ -98,6 +99,9 @@ const PromptLibraryModal = () => {
                   .filter((prompt) => {
                     if (selectedCategory === "") {
                       return true;
+                    }
+                    if (selectedCategory === "custom") {
+                      return prompt.userId !== null;
                     }
                     return prompt.category === selectedCategory;
                   })
