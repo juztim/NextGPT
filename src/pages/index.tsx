@@ -263,6 +263,8 @@ const Home: NextPage = () => {
       conversationId: activeChatIdRef.current,
     });
 
+    resetTranscript();
+
     const messageHistory:
       | {
           content: string;
