@@ -983,9 +983,11 @@ const Home: NextPage = () => {
                           placeholder="Send a message..."
                           onChange={handleChange}
                           onKeyDown={(e) => {
-                            if (e.key !== "Enter") return;
                             if (e.shiftKey) return;
-                            void submitNewMessage();
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              void submitNewMessage();
+                            }
                           }}
                           value={message}
                           disabled={isSendingMessage}
