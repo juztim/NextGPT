@@ -113,19 +113,20 @@ const Home: NextPage = () => {
     },
   });
 
-  const { mutate: createImage } = api.prodia.create.useMutation({
-    onError(error) {
-      console.log(error);
-      toast.error("Error generating image");
-    },
-    onSuccess(imageUrl) {
-      addMessage({
-        newMessage: `![Generated Image](${imageUrl})`,
-        botMessage: true,
-        conversationId: activeChatId,
-      });
-    },
-  });
+  const { mutate: createImage, isLoading: generatingImage } =
+    api.prodia.create.useMutation({
+      onError(error) {
+        console.log(error);
+        toast.error("Error generating image");
+      },
+      onSuccess(imageUrl) {
+        addMessage({
+          newMessage: `![Generated Image](${imageUrl})`,
+          botMessage: true,
+          conversationId: activeChatId,
+        });
+      },
+    });
 
   const { mutate: addMessage, isLoading: isSendingMessage } =
     api.openAi.addMessage.useMutation({
@@ -864,6 +865,10 @@ const Home: NextPage = () => {
 
                 {!!streamedMessage && (
                   <AiChatMessage message={streamedMessage} />
+                )}
+
+                {generatingImage && (
+                  <AiChatMessage message="Generating image..." />
                 )}
 
                 <div
