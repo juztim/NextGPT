@@ -219,7 +219,7 @@ const Home: NextPage = () => {
     });
 
   const generateImage = () => {
-    const prompt = message.toLowerCase().split("imagine")[1];
+    const prompt = message.toLowerCase().split("/imagine")[1];
     if (!prompt || prompt.trim() === "") {
       toast.error("Please enter a prompt");
       return;
@@ -251,7 +251,7 @@ const Home: NextPage = () => {
       await createChat();
     }
 
-    if (message.toLowerCase().startsWith("imagine")) {
+    if (message.toLowerCase().startsWith("/imagine")) {
       void generateImage();
       return;
     }
