@@ -12,12 +12,12 @@ export const ProdiaRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       prodia.key("4be08c13-40df-4e7f-99f1-003a070567de");
       let job = await prodia.createJob({
-        aspect_ratio: "square",
-        sampler: "Euler",
-        model: "sdv1_4.ckpt [7460a6fa]",
+        aspect_ratio: "portrait",
+        sampler: "DPM++ 2M Karras",
+        model: "deliberate_v2.safetensors [10ec4b29]",
         prompt: input.prompt,
-        negative_prompt: "",
-        seed: 100,
+        negative_prompt:
+          "worst quality, low quality, normal quality, lowres, low resolution, cropped, out of frame, sketch, poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, mutated hands and fingers, disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, jpeg artifacts, signature, watermark, username, blurry, poorly drawn hands, poorly drawn limbs, bad anatomy, deformed, amateur drawing, odd",
         steps: 30,
         cfg_scale: 7,
       });
