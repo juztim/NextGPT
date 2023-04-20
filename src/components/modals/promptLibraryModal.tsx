@@ -3,10 +3,12 @@ import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { Virtuoso } from "react-virtuoso";
+import { useSession } from "next-auth/react";
 
 const PromptLibraryModal = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchFilter, setSearchFilter] = useState<string>("");
+  const { data: session } = useSession();
 
   const { data } = api.prompt.getAll.useQuery(undefined, {
     onError: (error) => {
@@ -82,13 +84,14 @@ const PromptLibraryModal = () => {
                   />
                 </div>
               </div>
-              <a
+              <button
                 data-bs-toggle="modal"
                 data-bs-target="#create-prompt"
                 className="btn btn-link p-3"
+                disabled={!session?.user.premium}
               >
                 +Create
-              </a>
+              </button>
             </div>
           </div>
           <div className="modal-body">

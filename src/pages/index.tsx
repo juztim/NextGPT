@@ -477,7 +477,13 @@ const Home: NextPage = () => {
         behavior: "auto",
       });
     }
-  }, [activeChatId, activeChat?.messages.length, streamedMessage, autoScroll, generatingImage]);
+  }, [
+    activeChatId,
+    activeChat?.messages.length,
+    streamedMessage,
+    autoScroll,
+    generatingImage,
+  ]);
 
   useEffect(() => {
     if (chatPlaceHolderRef.current) {
@@ -930,6 +936,7 @@ const Home: NextPage = () => {
                       <>
                         <button
                           className="btn btn-outline-secondary btn-sm d-flex align-items-center mx-1"
+                          disabled={!session?.user.premium}
                           onClick={() => {
                             const doc = new JsPdf("p", "pt", "a4");
                             doc.setFontSize(18);

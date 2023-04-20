@@ -2,10 +2,14 @@ import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 import CharacterLibraryItem from "~/components/promptLibrary/characterLibraryItem";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import PromptLibraryItem from "~/components/promptLibrary/promptLibraryItem";
+import { Virtuoso } from "react-virtuoso";
 
 const CharacterLibraryModal = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchFilter, setSearchFilter] = useState<string>("");
+  const { data: session } = useSession();
 
   const { data } = api.character.getAll.useQuery(undefined, {
     onError: (error) => {
@@ -80,31 +84,46 @@ const CharacterLibraryModal = () => {
                   />
                 </div>
               </div>
-              <a
+              <button
                 data-bs-toggle="modal"
                 data-bs-target="#create-character"
                 className="btn btn-link p-3"
+                disabled={!session?.user.premium}
               >
                 +Create
-              </a>
+              </button>
             </div>
           </div>
           <div className="modal-body mh-400">
-            {data
-              ?.filter((c) => c.name.toLowerCase().includes(searchFilter))
-              .filter((c) => {
-                if (selectedCategory === "") return true;
-                if (selectedCategory === "custom") {
-                  return c.userId !== null;
-                }
-                return c.category === selectedCategory;
-              })
-              .map((character) => (
-                <CharacterLibraryItem
-                  character={character}
-                  key={character.id}
-                />
-              ))}
+            {data && (
+              <Virtuoso
+                style={{ height: "400px" }}
+                data={data
+                  .filter((character) => {
+                    if (selectedCategory === "") {
+                      return true;
+                    }
+                    if (selectedCategory === "custom") {
+                      return character.userId !== null;
+                    }
+                    return character.category === selectedCategory;
+                  })
+                  .filter((c) => {
+                    if (searchFilter === "") {
+                      return true;
+                    }
+                    return c.instructions?.toLowerCase().includes(searchFilter);
+                  })}
+                itemContent={(index, character) => {
+                  return (
+                    <CharacterLibraryItem
+                      key={character.id}
+                      character={character}
+                    />
+                  );
+                }}
+              />
+            )}
           </div>
         </div>
       </div>

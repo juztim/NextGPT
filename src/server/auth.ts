@@ -22,11 +22,13 @@ declare module "next-auth" {
     user: {
       id: string;
       apiKey: string;
+      premium: boolean;
     } & DefaultSession["user"];
   }
 
   interface User {
     apiKey: string;
+    premium: boolean;
   }
 }
 
@@ -41,6 +43,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = user.id;
         session.user.apiKey = user.apiKey;
+        session.user.premium = user.premium;
       }
       return session;
     },
