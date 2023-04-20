@@ -3,7 +3,6 @@ import { toast } from "react-hot-toast";
 import CharacterLibraryItem from "~/components/promptLibrary/characterLibraryItem";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import PromptLibraryItem from "~/components/promptLibrary/promptLibraryItem";
 import { Virtuoso } from "react-virtuoso";
 
 const CharacterLibraryModal = () => {
