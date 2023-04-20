@@ -431,7 +431,7 @@ const Home: NextPage = () => {
 
     const { scrollTop, clientHeight, scrollHeight } = innerChatBoxRef.current;
 
-    setAutoScroll(scrollTop + clientHeight >= scrollHeight);
+    setAutoScroll(scrollTop + clientHeight + 50 >= scrollHeight);
   };
 
   // If the user is not logged in, show the login page
@@ -472,12 +472,12 @@ const Home: NextPage = () => {
   }, [chatControlRef]);
 
   useEffect(() => {
-    if (chatPlaceHolderRef.current && streamedMessage && autoScroll) {
+    if (chatPlaceHolderRef.current && autoScroll) {
       chatPlaceHolderRef.current.scrollIntoView({
         behavior: "auto",
       });
     }
-  }, [activeChatId, activeChat?.messages.length, streamedMessage, autoScroll]);
+  }, [activeChatId, activeChat?.messages.length, streamedMessage, autoScroll, generatingImage]);
 
   useEffect(() => {
     if (chatPlaceHolderRef.current) {
