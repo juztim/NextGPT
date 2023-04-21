@@ -215,6 +215,7 @@ const SettingsModal = () => {
                       <option value="chinese">Chinese</option>
                       <option value="japanese">Japanese</option>
                       <option value="russian">Russian</option>
+                      <option value="portuguese">Portuguese</option>
                     </select>
                   </div>
 
