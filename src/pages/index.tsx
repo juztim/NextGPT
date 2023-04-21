@@ -35,6 +35,7 @@ import FAQModal from "~/components/modals/faq";
 import TermsModal from "~/components/modals/terms";
 import PrivacyModal from "~/components/modals/privacy";
 import useEnsurePremium from "~/hooks/useEnsurePremium";
+import UpsellModal from "~/components/modals/upsellModal";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -1084,6 +1085,8 @@ const Home: NextPage = () => {
           <SettingsModal />
 
           <ApiKeyModal />
+
+          <UpsellModal />
 
           <AboutModal
             show={showInfoModal === "About"}

@@ -119,8 +119,13 @@ const PromptOverview = ({
               data-bs-toggle="modal"
               data-bs-target="#aiLib"
             >
-              <span className="icon icon-plus me-2" />
-              <span className="text">Add Character</span>
+              <span
+                className="icon icon-plus me-2"
+                style={{
+                  color: "White",
+                }}
+              />
+              <span className="text text-white">Add Character</span>
             </button>
           </div>
           <div>
@@ -204,8 +209,20 @@ const PromptOverview = ({
               data-bs-toggle="modal"
               data-bs-target="#promptLib"
             >
-              <span className="icon icon-plus me-2" />
-              <span className="text">Add Prompt</span>
+              <span
+                className="icon icon-plus me-2"
+                style={{
+                  color: "White",
+                }}
+              />
+              <span
+                className="text"
+                style={{
+                  color: "White",
+                }}
+              >
+                Add Prompt
+              </span>
             </button>
           </div>
           <div>

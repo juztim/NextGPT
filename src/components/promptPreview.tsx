@@ -57,7 +57,12 @@ const PromptPreview = ({
             removePrompt({ id: prompt.id });
           }}
         >
-          <span className="icon icon-delete" />
+          <span
+            className="icon icon-delete"
+            style={{
+              color: "White",
+            }}
+          />
         </button>
       </label>
     </div>

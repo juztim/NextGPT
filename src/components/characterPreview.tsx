@@ -63,7 +63,12 @@ const CharacterPreview = ({
           removeCharacter({ id: character.id });
         }}
       >
-        <span className="icon icon-delete" />
+        <span
+          className="icon icon-delete"
+          style={{
+            color: "white",
+          }}
+        />
       </button>
     </div>
   );
