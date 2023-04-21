@@ -72,7 +72,7 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        domain: ".futuredesk.io",
+        domain: "futuredesk.io",
         secure: useSecureCookies,
       },
     },
