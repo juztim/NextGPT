@@ -297,6 +297,14 @@ a {
 		}
 	}
 
+	&.btn-xl {
+		padding: 15px 50px;
+
+		.icon {
+			font-size: 1.5rem;
+		}
+	}
+
 	&:hover:before, &:focus:before, &:active:before {
 	  	-webkit-transform: scale(2);
 	  	transform: scale(2);
@@ -465,6 +473,31 @@ a {
 			margin-right: 5px;
 		}
 	}
+}
+
+#valuePrepPop {
+	li {
+		display: flex;
+		align-items: center;
+		margin-bottom: 10px;
+		font-weight: 300;
+
+		.icon {
+			margin-right: 5px;
+			color: $main-col;
+		}
+	}
+}
+
+.old-price {
+	text-decoration: line-through;
+	font-size: 1.3rem;
+	font-weight: 300;
+}
+.new-price {
+	color: $main-col;
+	font-size: 2.2rem;
+	font-weight: 600;
 }
 
 .accordion-item {
