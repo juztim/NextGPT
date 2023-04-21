@@ -227,7 +227,11 @@ export const OpenAiRouter = createTRPCRouter({
         userId: ctx.session.user.id,
       },
       include: {
-        conversations: true,
+        conversations: {
+          orderBy: {
+            updatedAt: "desc",
+          },
+        },
       },
     });
 
