@@ -541,6 +541,7 @@ const Home: NextPage = () => {
     <>
       <DndContext
         collisionDetection={rectIntersection}
+        sensors={sensors}
         onDragEnd={(e) => {
           console.log("drag end");
           const chatId = e.active?.id.toString();
