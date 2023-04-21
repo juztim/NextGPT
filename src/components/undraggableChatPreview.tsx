@@ -1,6 +1,5 @@
 import type { Conversation } from "@prisma/client";
 import { useEffect, useRef, useState } from "react";
-import { Draggable } from "react-beautiful-dnd";
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
 
