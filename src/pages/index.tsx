@@ -34,6 +34,7 @@ import AboutModal from "~/components/modals/about";
 import FAQModal from "~/components/modals/faq";
 import TermsModal from "~/components/modals/terms";
 import PrivacyModal from "~/components/modals/privacy";
+import useEnsurePremium from "~/hooks/useEnsurePremium";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -55,6 +56,7 @@ const Home: NextPage = () => {
   const [message, setMessage] = useState("");
   const [autoScroll, setAutoScroll] = useState(true);
   const [showInfoModal, setShowInfoModal] = useState<string>();
+  const { ensurePremium } = useEnsurePremium();
 
   const settingsStore = useSettingsStore();
 
@@ -936,8 +938,8 @@ const Home: NextPage = () => {
                       <>
                         <button
                           className="btn btn-outline-secondary btn-sm d-flex align-items-center mx-1"
-                          disabled={!session?.user.premium}
                           onClick={() => {
+                            if (!ensurePremium()) return;
                             const doc = new JsPdf("p", "pt", "a4");
                             doc.setFontSize(18);
                             doc.text(activeChat.name ?? "New Chat", 40, 40);
