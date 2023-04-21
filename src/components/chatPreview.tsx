@@ -1,8 +1,9 @@
 import type { Conversation } from "@prisma/client";
 import { useEffect, useRef, useState } from "react";
-import { Draggable } from "react-beautiful-dnd";
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
+import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
 
 const ChatPreview = ({
   conversation,
@@ -32,6 +33,20 @@ const ChatPreview = ({
     },
   });
 
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: conversation.id,
+    data: {
+      title: conversation.name,
+      index: index,
+      folder: conversation.folderId,
+      parent,
+    },
+  });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+  };
+
   useEffect(() => {
     chatNameInputRef.current?.focus();
   }, [editingChatName]);
@@ -41,103 +56,99 @@ const ChatPreview = ({
   }, [conversation.name]);
 
   return (
-    <Draggable draggableId={conversation.id} index={index}>
-      {(provided) => (
+    <div
+      className="pt-3 px-3 pb-2"
+      style={{ cursor: "pointer", ...style }}
+      {...listeners}
+      {...attributes}
+      ref={setNodeRef}
+    >
+      <div className="row g-1">
         <div
-          className="pt-3 px-3 pb-2"
-          style={{ cursor: "pointer" }}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
+          className="col-9"
+          onClick={(e) => {
+            e.stopPropagation();
+            onChatOpen(conversation.id);
+          }}
         >
-          <div className="row g-1">
-            <div
-              className="col-9"
-              onClick={(e) => {
-                e.stopPropagation();
-                onChatOpen(conversation.id);
-              }}
-            >
+          <span
+            className={`icon icon-${
+              conversation.favored ? "star" : "chat"
+            } me-2`}
+            style={{
+              cursor: "pointer",
+              color: conversation.favored ? "yellow" : "white",
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              updateChat({
+                id: conversation.id,
+                favorite: !conversation.favored,
+              });
+            }}
+          />
+          <input
+            type="text"
+            className="text"
+            value={chatName}
+            style={{
+              background: "transparent",
+              color: "white",
+              border: "none",
+              width: "inherit",
+              pointerEvents: editingChatName ? "auto" : "none",
+            }}
+            disabled={!editingChatName}
+            ref={chatNameInputRef}
+            onChange={(e) => setChatName(e.target.value.trim())}
+          />
+        </div>
+        <div className="col-3 d-flex align-items-center justify-content-end">
+          {editingChatName ? (
+            <>
               <span
-                className={`icon icon-${
-                  conversation.favored ? "star" : "chat"
-                } me-2`}
+                className="icon icon-x me-3"
                 style={{
+                  color: "red",
                   cursor: "pointer",
-                  color: conversation.favored ? "yellow" : "white",
                 }}
                 onClick={(e) => {
                   e.stopPropagation();
-                  updateChat({
-                    id: conversation.id,
-                    favorite: !conversation.favored,
-                  });
+                  setEditingChatName(false);
                 }}
               />
-              <input
-                type="text"
-                className="text"
-                value={chatName}
+              <span
+                className="icon icon-check me-3"
                 style={{
-                  background: "transparent",
-                  color: "white",
-                  border: "none",
-                  width: "inherit",
-                  pointerEvents: editingChatName ? "auto" : "none",
+                  color: "green",
+                  cursor: "pointer",
                 }}
-                disabled={!editingChatName}
-                ref={chatNameInputRef}
-                onChange={(e) => setChatName(e.target.value.trim())}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  updateChat({ id: conversation.id, name: chatName });
+                  setEditingChatName(false);
+                }}
               />
-            </div>
-            <div className="col-3 d-flex align-items-center justify-content-end">
-              {editingChatName ? (
-                <>
-                  <span
-                    className="icon icon-x me-3"
-                    style={{
-                      color: "red",
-                      cursor: "pointer",
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setEditingChatName(false);
-                    }}
-                  />
-                  <span
-                    className="icon icon-check me-3"
-                    style={{
-                      color: "green",
-                      cursor: "pointer",
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      updateChat({ id: conversation.id, name: chatName });
-                      setEditingChatName(false);
-                    }}
-                  />
-                </>
-              ) : (
-                <>
-                  <button className="btn-nostyle px-2">
-                    <span
-                      className="icon icon-edit"
-                      onClick={() => setEditingChatName(!editingChatName)}
-                    />
-                  </button>
-                  <button className="btn-nostyle px-2">
-                    <span
-                      className="icon icon-delete"
-                      onClick={() => onDeleteChat(conversation.id)}
-                    />
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
+            </>
+          ) : (
+            <>
+              <button className="btn-nostyle px-2">
+                <span
+                  className="icon icon-edit"
+                  onClick={() => setEditingChatName(!editingChatName)}
+                />
+              </button>
+              <button className="btn-nostyle px-2">
+                <span
+                  className="icon icon-delete"
+                  onClick={() => onDeleteChat(conversation.id)}
+                />
+              </button>
+            </>
+          )}
         </div>
-      )}
-    </Draggable>
+      </div>
+    </div>
   );
 };
 

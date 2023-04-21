@@ -2,8 +2,8 @@ import type { Conversation } from "@prisma/client";
 import ChatPreview from "./chatPreview";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
-import { Droppable } from "react-beautiful-dnd";
 import { useEffect, useRef, useState } from "react";
+import { useDroppable } from "@dnd-kit/core";
 
 declare module "react" {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
@@ -37,6 +37,9 @@ const ChatFolder = ({
   const [requireDeleteConfirmation, setRequireDeleteConfirmation] =
     useState(false);
   const [requireEditConfirmation, setRequireEditConfirmation] = useState(false);
+  const { setNodeRef } = useDroppable({
+    id: id,
+  });
 
   const { mutate: updateFolder } = api.openAi.updateFolder.useMutation({
     onSuccess: () => {
@@ -68,161 +71,146 @@ const ChatFolder = ({
   }, [editingFolderName, requireEditConfirmation]);
 
   return (
-    <Droppable droppableId={id}>
-      {(provided) => (
-        <div
-          className="folder mb-2"
-          {...provided.droppableProps}
-          ref={provided.innerRef}
-        >
-          <div className="folder-toggle p-3">
-            <div className="row g-1">
-              <div
-                className="col-9 folder-trigger"
-                data-bs-toggle="collapse"
-                href={`#folder-${index}`}
-                role="button"
-                aria-expanded="true"
-                aria-controls={`folder-${index}`}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <span className="icon icon-folder me-2" />
+    <div className="folder mb-2" ref={setNodeRef}>
+      <div className="folder-toggle p-3">
+        <div className="row g-1">
+          <div
+            className="col-9 folder-trigger"
+            data-bs-toggle="collapse"
+            href={`#folder-${index}`}
+            role="button"
+            aria-expanded="true"
+            aria-controls={`folder-${index}`}
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <span className="icon icon-folder me-2" />
 
-                <input
-                  type="text"
-                  className="text"
-                  value={folderName}
-                  style={{
-                    background: "transparent",
-                    color: "white",
-                    border: "none",
-                    width: "inherit",
-                    pointerEvents: editingFolderName ? "auto" : "none",
-                  }}
-                  disabled={!editingFolderName}
-                  ref={folderNameInputRef}
-                  onChange={(e) => setFolderName(e.target.value)}
-                />
-                <span className="icon icon-chevron-down" />
-                <span className="text-muted">({conversations?.length})</span>
-              </div>
-              <div className="col-3 d-flex align-items-center justify-content-end">
-                {requireDeleteConfirmation ? (
-                  <>
-                    <button
-                      className="btn-nostyle px-2"
-                      disabled={id === "ungrouped"}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteFolder({ id });
-                      }}
-                    >
-                      <span
-                        className="icon icon-check"
-                        style={{ color: "green" }}
-                      />
-                    </button>
-                    <button
-                      className="btn-nostyle px-2"
-                      disabled={id === "ungrouped"}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setRequireDeleteConfirmation(false);
-                      }}
-                    >
-                      <span className="icon icon-x" style={{ color: "red" }} />
-                    </button>
-                  </>
-                ) : requireEditConfirmation ? (
-                  <>
-                    <button
-                      className="btn-nostyle px-2"
-                      disabled={id === "ungrouped"}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        updateFolder({ id, name: folderName });
-                      }}
-                    >
-                      <span
-                        className="icon icon-check"
-                        style={{ color: "green" }}
-                      />
-                    </button>
-                    <button
-                      className="btn-nostyle px-2"
-                      disabled={id === "ungrouped"}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setRequireEditConfirmation(false);
-                        setEditingFolderName(false);
-                      }}
-                    >
-                      <span className="icon icon-x" style={{ color: "red" }} />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      className="btn-nostyle px-2"
-                      disabled={id === "ungrouped"}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setEditingFolderName(true);
-                        setRequireEditConfirmation(true);
-                      }}
-                    >
-                      {id !== "ungrouped" && (
-                        <span className="icon icon-edit" />
-                      )}
-                    </button>
-                    <button
-                      className="btn-nostyle px-2"
-                      disabled={id === "ungrouped"}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setRequireDeleteConfirmation(true);
-                      }}
-                    >
-                      {id !== "ungrouped" && (
-                        <span className="icon icon-delete" />
-                      )}
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
+            <input
+              type="text"
+              className="text"
+              value={folderName}
+              style={{
+                background: "transparent",
+                color: "white",
+                border: "none",
+                width: "inherit",
+                pointerEvents: editingFolderName ? "auto" : "none",
+              }}
+              disabled={!editingFolderName}
+              ref={folderNameInputRef}
+              onChange={(e) => setFolderName(e.target.value)}
+            />
+            <span className="icon icon-chevron-down" />
+            <span className="text-muted">({conversations?.length})</span>
           </div>
-          <div className="folder-chat collapse" id={`folder-${index}`}>
-            {conversations
-              ?.filter((c) => {
-                if (searchFilter === "") {
-                  return true;
-                }
-                if (c.name == null) {
-                  return false;
-                }
-                return c.name
-                  .toLowerCase()
-                  .includes(searchFilter.toLowerCase());
-              })
-              .map((conversation, index) => (
-                <ChatPreview
-                  key={conversation.id}
-                  conversation={conversation}
-                  onChatOpen={onChatOpen}
-                  onDeleteChat={onChatDelete}
-                  refreshChats={refreshChats}
-                  index={index}
-                />
-              ))}
-            {provided.placeholder}
+          <div className="col-3 d-flex align-items-center justify-content-end">
+            {requireDeleteConfirmation ? (
+              <>
+                <button
+                  className="btn-nostyle px-2"
+                  disabled={id === "ungrouped"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteFolder({ id });
+                  }}
+                >
+                  <span
+                    className="icon icon-check"
+                    style={{ color: "green" }}
+                  />
+                </button>
+                <button
+                  className="btn-nostyle px-2"
+                  disabled={id === "ungrouped"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setRequireDeleteConfirmation(false);
+                  }}
+                >
+                  <span className="icon icon-x" style={{ color: "red" }} />
+                </button>
+              </>
+            ) : requireEditConfirmation ? (
+              <>
+                <button
+                  className="btn-nostyle px-2"
+                  disabled={id === "ungrouped"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    updateFolder({ id, name: folderName });
+                  }}
+                >
+                  <span
+                    className="icon icon-check"
+                    style={{ color: "green" }}
+                  />
+                </button>
+                <button
+                  className="btn-nostyle px-2"
+                  disabled={id === "ungrouped"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setRequireEditConfirmation(false);
+                    setEditingFolderName(false);
+                  }}
+                >
+                  <span className="icon icon-x" style={{ color: "red" }} />
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="btn-nostyle px-2"
+                  disabled={id === "ungrouped"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setEditingFolderName(true);
+                    setRequireEditConfirmation(true);
+                  }}
+                >
+                  {id !== "ungrouped" && <span className="icon icon-edit" />}
+                </button>
+                <button
+                  className="btn-nostyle px-2"
+                  disabled={id === "ungrouped"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setRequireDeleteConfirmation(true);
+                  }}
+                >
+                  {id !== "ungrouped" && <span className="icon icon-delete" />}
+                </button>
+              </>
+            )}
           </div>
         </div>
-      )}
-    </Droppable>
+      </div>
+      <div className="folder-chat collapse" id={`folder-${index}`}>
+        {conversations
+          ?.filter((c) => {
+            if (searchFilter === "") {
+              return true;
+            }
+            if (c.name == null) {
+              return false;
+            }
+            return c.name.toLowerCase().includes(searchFilter.toLowerCase());
+          })
+          .map((conversation, index) => (
+            <ChatPreview
+              key={conversation.id}
+              conversation={conversation}
+              onChatOpen={onChatOpen}
+              onDeleteChat={onChatDelete}
+              refreshChats={refreshChats}
+              index={index}
+            />
+          ))}
+      </div>
+    </div>
   );
 };
 

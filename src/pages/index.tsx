@@ -8,7 +8,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import ChatFolder from "~/components/chatFolder";
 import AiChatMessage from "~/components/aiChatMessage";
-import { DragDropContext } from "react-beautiful-dnd";
 import PromptOverview from "~/components/promptOverview";
 import CreateCharacterModal from "~/components/modals/createCharacterModal";
 import CreatePromptModal from "~/components/modals/createPromptModal";
@@ -36,6 +35,7 @@ import TermsModal from "~/components/modals/terms";
 import PrivacyModal from "~/components/modals/privacy";
 import useEnsurePremium from "~/hooks/useEnsurePremium";
 import UpsellModal from "~/components/modals/upsellModal";
+import { DndContext, rectIntersection } from "@dnd-kit/core";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -517,20 +517,23 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <DragDropContext
+      <DndContext
+        collisionDetection={rectIntersection}
         onDragEnd={(e) => {
-          if (e.destination) {
-            const folder =
-              e.destination.droppableId == "ungrouped"
-                ? undefined
-                : e.destination.droppableId;
+          console.log("drag end");
+          const chatId = e.active?.id.toString();
+          const folderId = e.over?.id.toString();
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          const oldFolderId = e.active.data.current?.folder ?? "ungrouped";
+          if (chatId && folderId) {
+            if (folderId === oldFolderId) return;
+            if (e.active.data.current?.folder === folderId) return;
             moveChat({
-              id: e.draggableId,
-              folderId: folder,
+              folderId: folderId === "ungrouped" ? undefined : folderId,
+              id: chatId,
             });
           }
         }}
-        onDragStart={() => undefined}
       >
         <header className="header fixed-top">
           <nav className="navbar">
@@ -1115,7 +1118,7 @@ const Home: NextPage = () => {
             }}
           />
         </div>
-      </DragDropContext>
+      </DndContext>
     </>
   );
 };
