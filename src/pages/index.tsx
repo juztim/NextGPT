@@ -35,7 +35,14 @@ import TermsModal from "~/components/modals/terms";
 import PrivacyModal from "~/components/modals/privacy";
 import useEnsurePremium from "~/hooks/useEnsurePremium";
 import UpsellModal from "~/components/modals/upsellModal";
-import { DndContext, rectIntersection } from "@dnd-kit/core";
+import {
+  DndContext,
+  MouseSensor,
+  rectIntersection,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -430,6 +437,21 @@ const Home: NextPage = () => {
     });
   };
 
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      delay: 250,
+      tolerance: 5,
+    },
+  });
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 250,
+      tolerance: 5,
+    },
+  });
+
+  const sensors = useSensors(mouseSensor, touchSensor);
+
   const handleScroll = () => {
     if (!innerChatBoxRef.current) return;
 
@@ -519,6 +541,7 @@ const Home: NextPage = () => {
     <>
       <DndContext
         collisionDetection={rectIntersection}
+        sensors={sensors}
         onDragEnd={(e) => {
           console.log("drag end");
           const chatId = e.active?.id.toString();
