@@ -212,7 +212,7 @@ const SettingsModal = () => {
                       {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
                       {languages.map((language) => (
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-                        <option value={language.code} key={language.code}>
+                        <option value={language.name} key={language.code}>
                           {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
                           {language.name}
                         </option>

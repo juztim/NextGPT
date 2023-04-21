@@ -147,7 +147,7 @@ const Home: NextPage = () => {
         if (data?.firstMessage) {
           void generateTitle({ id: data.conversationId, message });
         }
-        setMessage("");
+
         await ctx.openAi.getChat.refetch({ id: activeChatId });
         if (data?.botMessage) {
           setStreamedMessage(null);
@@ -232,6 +232,7 @@ const Home: NextPage = () => {
       newMessage: message,
       conversationId: activeChatId,
     });
+    setMessage("");
     createImage({
       prompt: prompt.trim(),
     });
@@ -260,12 +261,12 @@ const Home: NextPage = () => {
       return;
     }
 
-    console.log(message);
-
     addMessage({
       newMessage: message,
       conversationId: activeChatIdRef.current,
     });
+
+    setMessage("");
 
     resetTranscript();
 
