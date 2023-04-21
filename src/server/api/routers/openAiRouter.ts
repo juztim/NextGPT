@@ -177,6 +177,15 @@ export const OpenAiRouter = createTRPCRouter({
           },
         });
 
+        await ctx.prisma.conversation.update({
+          where: {
+            id: input.conversationId,
+          },
+          data: {
+            updatedAt: new Date(),
+          },
+        });
+
         return {
           firstMessage: existingConversation.messages.length === 0,
           conversationId: input.conversationId,
@@ -207,6 +216,9 @@ export const OpenAiRouter = createTRPCRouter({
       where: {
         userId: ctx.session.user.id,
         folderId: null,
+      },
+      orderBy: {
+        updatedAt: "desc",
       },
     });
 
