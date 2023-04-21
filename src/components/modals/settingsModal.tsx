@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useSettingsStore } from "~/stores/settingsStore";
 import { api } from "~/utils/api";
+import languages from "~/languages.json";
 
 const SettingsModal = () => {
   const [newSettings, setNewSettings] = useState({
@@ -208,14 +209,14 @@ const SettingsModal = () => {
                         });
                       }}
                     >
-                      <option value="english">English</option>
-                      <option value="german">German</option>
-                      <option value="spanish">Spanish</option>
-                      <option value="french">French</option>
-                      <option value="chinese">Chinese</option>
-                      <option value="japanese">Japanese</option>
-                      <option value="russian">Russian</option>
-                      <option value="portuguese">Portuguese</option>
+                      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
+                      {languages.map((language) => (
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+                        <option value={language.code} key={language.code}>
+                          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
+                          {language.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
