@@ -519,7 +519,7 @@ const SettingsModal = () => {
                     }}
                   />
                   <div className="d-flex justify-content-between">
-                    <span>Unintelligible</span>
+                    <span>Chaotic</span>
                     <span>Imaginative</span>
                     <span>Accurate</span>
                   </div>
