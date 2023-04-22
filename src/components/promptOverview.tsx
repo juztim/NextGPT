@@ -4,6 +4,7 @@ import PromptPreview from "./promptPreview";
 import { toast } from "react-hot-toast";
 import type { Character, Prompt } from "@prisma/client";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 const PromptOverview = ({
   onOpenPrompt,
@@ -14,11 +15,13 @@ const PromptOverview = ({
   onSelectCharacter: (character: Character) => void;
   activeCharacter?: Character;
 }) => {
+  const { data: session } = useSession();
   const { data: prompts } = api.prompt.getAdded.useQuery(undefined, {
     onError: (error) => {
       console.log(error);
       toast.error("Error fetching prompts!");
     },
+    enabled: !!session,
   });
 
   const { data: characters } = api.character.getAdded.useQuery(undefined, {
@@ -26,6 +29,7 @@ const PromptOverview = ({
       console.log(error);
       toast.error("Error fetching characters!");
     },
+    enabled: !!session,
   });
 
   const [searchFilter, setSearchFilter] = useState("");

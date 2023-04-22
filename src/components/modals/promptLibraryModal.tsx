@@ -15,6 +15,7 @@ const PromptLibraryModal = () => {
       console.log(error);
       toast.error("Error loading prompts");
     },
+    enabled: !!session,
   });
 
   return (

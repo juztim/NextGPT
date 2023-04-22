@@ -15,6 +15,7 @@ const CharacterLibraryModal = () => {
       console.log(error);
       toast.error("Error loading characters");
     },
+    enabled: !!session,
   });
   return (
     <div

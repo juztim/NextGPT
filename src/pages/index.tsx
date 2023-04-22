@@ -100,6 +100,7 @@ const Home: NextPage = () => {
         showWordCount: data?.showWordCount ?? false,
       });
     },
+    enabled: !!session,
   });
 
   const { mutate: deleteChat } = api.openAi.delete.useMutation({
@@ -169,6 +170,7 @@ const Home: NextPage = () => {
       console.log(err);
       toast.error("Error loading chats");
     },
+    enabled: !!session,
   });
 
   const { data: activeChat } = api.openAi.getChat.useQuery(
@@ -178,6 +180,7 @@ const Home: NextPage = () => {
         console.log(err);
         toast.error("Error loading chat");
       },
+      enabled: !!activeChatId && !!session,
     }
   );
 
