@@ -483,6 +483,10 @@ export const OpenAiRouter = createTRPCRouter({
             .number()
             .min(0, "Temperature must be at least 0")
             .max(1, "Temperature must be at most 1"),
+          topP: z
+            .number()
+            .min(0, "Top P must be at least 0")
+            .max(1, "Top P must be at most 1"),
           tone: z.string(),
           format: z.string(),
           writingStyle: z.string(),
@@ -505,6 +509,7 @@ export const OpenAiRouter = createTRPCRouter({
           },
           data: {
             temperature: input.settings.temperature,
+            topP: input.settings.topP,
             tone: input.settings.tone,
             format: input.settings.format,
             writingStyle: input.settings.writingStyle,
@@ -517,6 +522,7 @@ export const OpenAiRouter = createTRPCRouter({
       return ctx.prisma.settings.create({
         data: {
           temperature: input.settings.temperature,
+          topP: input.settings.topP,
           tone: input.settings.tone,
           format: input.settings.format,
           writingStyle: input.settings.writingStyle,
