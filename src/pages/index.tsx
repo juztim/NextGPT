@@ -301,7 +301,7 @@ const Home: NextPage = () => {
     });
 
     messageHistory.unshift({
-      content: `Please respect the following instructions. Respond in a ${settingsStore.tone}. Use the following writing style: ${settingsStore.writingStyle}. Additionally I want you to format your response as ${settingsStore.format}. Reply in ${settingsStore.outputLanguage}.}`,
+      content: `Please respect the following instructions. Respond in a ${settingsStore.tone}. Use the following writing style: ${settingsStore.writingStyle}. Additionally I want you to format your response as ${settingsStore.format}. Reply in the following language: ${settingsStore.outputLanguage}.}`,
       role: "user",
     });
 
