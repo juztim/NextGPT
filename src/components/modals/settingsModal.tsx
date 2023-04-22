@@ -7,6 +7,7 @@ import languages from "~/languages.json";
 const SettingsModal = () => {
   const [newSettings, setNewSettings] = useState({
     temperature: 0,
+    topP: 0,
     tone: "",
     format: "",
     writingStyle: "",
@@ -32,6 +33,7 @@ const SettingsModal = () => {
   useEffect(() => {
     setNewSettings({
       temperature: settings.temperature,
+      topP: settings.topP,
       tone: settings.tone,
       format: settings.format,
       writingStyle: settings.writingStyle,
@@ -449,7 +451,7 @@ const SettingsModal = () => {
                   </div>
                 </div>
 
-                <div className="section">
+                <div className="section mb-5" >
                   <h5 className="text-normal fw-bold">
                     Temperature: {newSettings.temperature}
                   </h5>
@@ -484,6 +486,42 @@ const SettingsModal = () => {
                     <span>Precise</span>
                     <span>Neutral</span>
                     <span>Creative</span>
+                  </div>
+                </div>
+
+                <div className="section">
+                  <h5 className="text-normal fw-bold">
+                      Top P: {newSettings.topP}
+                  </h5>
+
+                  <div>
+                      <a href="#" className="link text-small">
+                        Reset to default
+                      </a>
+                  </div>
+                  <p className="text-muted text-small mt-2">
+                    Higher values like 0.8 will make the output more diverse and unpredictable,
+                    while lower values like 0.2 will make the output more focused and
+                    deterministic.
+                  </p>
+                  <input
+                    type="range"
+                    className="form-range"
+                    min="0"
+                    max="100"
+                    id="topP"
+                    defaultValue={newSettings.topP * 100}
+                    onChange={(e) => {
+                      setNewSettings({
+                        ...newSettings,
+                        topP: Number(e.target.value) / 100,
+                      });
+                    }}
+                  />
+                  <div className="d-flex justify-content-between">
+                    <span>Chaotic</span>
+                    <span>Imaginative</span>
+                    <span>Accurate</span>
                   </div>
                 </div>
               </div>
