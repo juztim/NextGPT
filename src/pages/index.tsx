@@ -154,7 +154,7 @@ const Home: NextPage = () => {
       },
       onSuccess: async (data) => {
         if (data?.firstMessage) {
-          void generateTitle({ id: data.conversationId, message });
+          void generateTitle({ id: data.conversationId, message: data.firstMessageContent });
         }
 
         await ctx.openAi.getChat.refetch({ id: activeChatId });

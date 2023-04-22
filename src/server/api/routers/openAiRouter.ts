@@ -188,6 +188,7 @@ export const OpenAiRouter = createTRPCRouter({
 
         return {
           firstMessage: existingConversation.messages.length === 0,
+          firstMessageContent: input.newMessage,
           conversationId: input.conversationId,
           botMessage: input.botMessage,
         };
