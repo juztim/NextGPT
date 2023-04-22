@@ -14,6 +14,18 @@ const AiChatMessage = ({
   message: string;
   controls?: boolean;
 }) => {
+  const renderers = {
+    image: ({
+      alt,
+      src,
+      title,
+    }: {
+      alt?: string;
+      src?: string;
+      title?: string;
+    }) => <img alt={alt} src={src} title={title} style={{ maxWidth: 475 }} />,
+  };
+
   return (
     <div className="chat-item chat-item-ai">
       <div className="row justify-content-center py-5">
@@ -43,6 +55,7 @@ const AiChatMessage = ({
                       </code>
                     );
                   },
+                  img: renderers.image,
                 }}
               >
                 {message}
