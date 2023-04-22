@@ -92,6 +92,7 @@ const Home: NextPage = () => {
       settingsStore.saveSettings({
         format: data?.format ?? "",
         temperature: data?.temperature ?? 0.5,
+        topP: data?.topP ?? 0.9,
         tone: data?.tone ?? "",
         writingStyle: data?.writingStyle ?? "",
         outputLanguage: data?.outputLanguage ?? "",
@@ -315,6 +316,7 @@ const Home: NextPage = () => {
           model: "gpt-3.5-turbo",
           messages: messageHistory,
           temperature: settings?.temperature ?? 0.5,
+          top_p: settings?.topP ?? 0.9,
         },
         { apiKey: session.user.apiKey }
       );
