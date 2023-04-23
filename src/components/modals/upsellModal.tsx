@@ -1,5 +1,6 @@
 import { Modal, ModalHeader } from "react-bootstrap";
 import { useModalStore } from "~/stores/modalStore";
+import getStripe from "~/hooks/useStripe";
 
 const UpsellModal = () => {
   const modalStore = useModalStore();
@@ -129,7 +130,25 @@ const UpsellModal = () => {
         <div className="modal-footer">
           <div className="row">
             <div className="col-12 d-flex flex-column align-items-center justify-content-center">
-              <button type="button" className="btn btn-primary btn-xl">
+              <button
+                type="button"
+                className="btn btn-primary btn-xl"
+                onClick={async () => {
+                  const stripe = await getStripe();
+                  if (!stripe) return;
+                  await stripe.redirectToCheckout({
+                    lineItems: [
+                      {
+                        price: "price_1N05ILCPEDeP9SMvEv68ZGww",
+                        quantity: 1,
+                      },
+                    ],
+                    cancelUrl: window.location.href,
+                    successUrl: `${window.location.href}?success=true`,
+                    mode: "payment",
+                  });
+                }}
+              >
                 BUY NOW
               </button>
             </div>

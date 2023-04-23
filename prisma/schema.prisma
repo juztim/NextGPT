@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["jsonProtocol"]
 }
 
@@ -47,6 +47,7 @@ model User {
   image               String?
   apiKey              String?
   premium             Boolean              @default(false)
+  stripeCustomerId    String?
   accounts            Account[]
   sessions            Session[]
   messages            Message[]
