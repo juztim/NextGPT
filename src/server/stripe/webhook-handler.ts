@@ -88,7 +88,9 @@ export const handleCheckoutComplete = async ({
     console.log("[STRIPE] Not a premium subscription: " + product.id);
     return;
   }
-  // update user with subscription data
+
+  console.log("[STRIPE] User " + userId + " subscribed to premium plan");
+
   await prisma.user.update({
     where: {
       id: userId,
