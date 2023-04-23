@@ -48,7 +48,7 @@ export const getOrCreateStripeCustomerIdForUser = async ({
   }
 };
 
-export const handleInvoicePaid = async ({
+export const handlePaymentIntentSuccess = async ({
   event,
   stripe,
   prisma,
