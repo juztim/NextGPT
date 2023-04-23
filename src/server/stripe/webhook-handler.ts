@@ -74,8 +74,15 @@ export const handleCheckoutComplete = async ({
     !checkoutSession.metadata.userId
   )
     return;
-  const product = checkoutSession.line_items.data[0];
+  const product = checkoutSession.line_items.data[0].price?.product;
   const userId = checkoutSession.metadata.userId;
+
+  if (!product || typeof product === "string") {
+    console.error(
+      "[STRIPE] No product found for checkout session: " + checkoutSessionId
+    );
+    return;
+  }
 
   if (product.id !== env.PREMIUM_PLAN_ID) {
     console.log("[STRIPE] Not a premium subscription: " + product.id);
