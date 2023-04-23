@@ -1,22 +1,12 @@
+import { Modal, ModalHeader } from "react-bootstrap";
+import { useModalStore } from "~/stores/modalStore";
+
 const UpsellModal = () => {
+  const modalStore = useModalStore();
   return (
-    <div
-      className="modal modal-lg fade"
-      id="buyNow"
-      tabIndex={-1}
-      aria-labelledby="buy-now-title"
-      aria-hidden="true"
-    >
-      <div className="modal-dialog">
+    <Modal show={modalStore.activeModal === "upsell"} onHide={() => modalStore.setActiveModal(undefined)}>
         <div className="modal-content">
-          <div className="modal-header px-4 pt-4 pb-0">
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            />
-          </div>
+          <ModalHeader closeButton className="px-4 pt-4 pb-0" />
 
           <div className="modal-body">
             <h4 className="text-center" id="buy-now-title">
@@ -143,8 +133,7 @@ const UpsellModal = () => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 };
 
