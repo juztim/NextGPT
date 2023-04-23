@@ -1,9 +1,17 @@
 import { Modal, ModalHeader } from "react-bootstrap";
 import { useModalStore } from "~/stores/modalStore";
-import getStripe from "~/hooks/useStripe";
+import { api } from "~/utils/api";
+import { toast } from "react-hot-toast";
 
 const UpsellModal = () => {
   const modalStore = useModalStore();
+  const { mutateAsync: createCheckout } =
+    api.stripe.createCheckoutSession.useMutation({
+      onError: (error) => {
+        console.error(error);
+        toast.error("Something went wrong");
+      },
+    });
   return (
     <Modal
       show={modalStore.activeModal === "upsell"}
@@ -134,19 +142,7 @@ const UpsellModal = () => {
                 type="button"
                 className="btn btn-primary btn-xl"
                 onClick={async () => {
-                  const stripe = await getStripe();
-                  if (!stripe) return;
-                  await stripe.redirectToCheckout({
-                    lineItems: [
-                      {
-                        price: "price_1N05ILCPEDeP9SMvEv68ZGww",
-                        quantity: 1,
-                      },
-                    ],
-                    cancelUrl: window.location.href,
-                    successUrl: `${window.location.href}?success=true`,
-                    mode: "payment",
-                  });
+                  await createCheckout();
                 }}
               >
                 BUY NOW
