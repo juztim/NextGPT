@@ -29,6 +29,7 @@ const server = z.object({
   STRIPE_PRIVATE_KEY: z.string(),
   STRIPE_WEBHOOK_SECRET: z.string(),
   PREMIUM_PLAN_ID: z.string(),
+  PREMIUM_PRICE_ID: z.string(),
 });
 
 /**
@@ -60,6 +61,7 @@ const processEnv = {
   STRIPE_PRIVATE_KEY: process.env.STRIPE_PRIVATE_KEY,
   STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
   PREMIUM_PLAN_ID: process.env.PREMIUM_PLAN_ID,
+  PREMIUM_PRICE_ID: process.env.PREMIUM_PRICE_ID,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 

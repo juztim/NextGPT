@@ -64,10 +64,7 @@ export const handlePaymentIntentSuccess = async ({
   const userId = product.metadata?.userId;
 
   if (product.id !== env.PREMIUM_PLAN_ID) {
-    console.log("Not a premium subscription");
-    console.log(product.id);
-    console.log(product);
-    return;
+    console.log("Not a premium subscription: " + product.id);
   }
   // update user with subscription data
   await prisma.user.update({
