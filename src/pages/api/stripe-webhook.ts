@@ -3,7 +3,7 @@ import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
 import type Stripe from "stripe";
 import { buffer } from "micro";
-import { handlePaymentIntentSuccess } from "~/server/stripe/webhook-handler";
+import { handleCheckoutComplete } from "~/server/stripe/webhook-handler";
 import { stripe } from "~/server/stripe/client";
 
 // Stripe requires the raw body to construct the event.
@@ -30,8 +30,8 @@ export default async function handler(
 
       // Handle the event
       switch (event.type) {
-        case "payment_intent.succeeded":
-          await handlePaymentIntentSuccess({
+        case "checkout.session.completed":
+          await handleCheckoutComplete({
             event,
             stripe,
             prisma,

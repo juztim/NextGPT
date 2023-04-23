@@ -49,7 +49,7 @@ export const getOrCreateStripeCustomerIdForUser = async ({
   }
 };
 
-export const handlePaymentIntentSuccess = async ({
+export const handleCheckoutComplete = async ({
   event,
   stripe,
   prisma,
@@ -58,13 +58,28 @@ export const handlePaymentIntentSuccess = async ({
   stripe: Stripe;
   prisma: PrismaClient;
 }) => {
-  const invoice = event.data.object as Stripe.Invoice;
-  if (!invoice.lines || !invoice.lines.data[0]) return;
-  const product = invoice.lines.data[0];
-  const userId = product.metadata?.userId;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const checkoutSessionId: string = event.data.object.id as string;
+  const checkoutSession = await stripe.checkout.sessions.retrieve(
+    checkoutSessionId,
+    {
+      expand: ["line_items"],
+    }
+  );
+  if (
+    !checkoutSession.line_items ||
+    !checkoutSession.line_items.data[0] ||
+    !checkoutSession.metadata ||
+    !checkoutSession.metadata.userId
+  )
+    return;
+  const product = checkoutSession.line_items.data[0];
+  const userId = checkoutSession.metadata.userId;
 
   if (product.id !== env.PREMIUM_PLAN_ID) {
-    console.log("Not a premium subscription: " + product.id);
+    console.log("[STRIPE] Not a premium subscription: " + product.id);
+    return;
   }
   // update user with subscription data
   await prisma.user.update({

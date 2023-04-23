@@ -27,6 +27,7 @@ export const stripeRouter = createTRPCRouter({
       mode: "payment",
       line_items: [
         {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           price: env.PREMIUM_PRICE_ID,
           quantity: 1,
         },
@@ -35,6 +36,11 @@ export const stripeRouter = createTRPCRouter({
       cancel_url: `${baseUrl}/dashboard?checkoutCanceled=true`,
       metadata: {
         userId: session.user?.id,
+      },
+      payment_intent_data: {
+        metadata: {
+          userId: session.user?.id,
+        },
       },
     });
 
