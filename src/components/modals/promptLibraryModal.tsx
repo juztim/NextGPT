@@ -4,13 +4,14 @@ import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { Virtuoso } from "react-virtuoso";
 import { useSession } from "next-auth/react";
-import { useModalStore } from "~/stores/modalStore";
+import useEnsurePremium from "~/hooks/useEnsurePremium";
 
 const PromptLibraryModal = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchFilter, setSearchFilter] = useState<string>("");
   const { data: session } = useSession();
-  const modalStore = useModalStore();
+  const {ensurePremium} = useEnsurePremium();
+
 
   const { data } = api.prompt.getAll.useQuery(undefined, {
     onError: (error) => {
@@ -92,9 +93,7 @@ const PromptLibraryModal = () => {
                 data-bs-target="#create-prompt"
                 className="btn btn-link p-3"
                 onClick={() => {
-                  if (!session?.user.premium) {
-                    modalStore.setActiveModal("upsell");
-                  }
+                  ensurePremium();
                 }}
               >
                 +Create

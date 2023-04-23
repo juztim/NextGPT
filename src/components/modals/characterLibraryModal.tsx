@@ -4,14 +4,13 @@ import CharacterLibraryItem from "~/components/promptLibrary/characterLibraryIte
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { Virtuoso } from "react-virtuoso";
-import { useModalStore } from "~/stores/modalStore";
+import useEnsurePremium from "~/hooks/useEnsurePremium";
 
 const CharacterLibraryModal = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchFilter, setSearchFilter] = useState<string>("");
   const { data: session } = useSession();
-  const modalStore = useModalStore();
-
+  const {ensurePremium} = useEnsurePremium();
   const { data } = api.character.getAll.useQuery(undefined, {
     onError: (error) => {
       console.log(error);
@@ -91,9 +90,7 @@ const CharacterLibraryModal = () => {
                 data-bs-target="#create-character"
                 className="btn btn-link p-3"
                 onClick={() => {
-                  if (!session?.user.premium) {
-                    modalStore.setActiveModal("upsell");
-                  }
+                  ensurePremium();
                 }}
               >
                 +Create
