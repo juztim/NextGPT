@@ -61,6 +61,7 @@ export const handleCheckoutComplete = async ({
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const checkoutSessionId: string = event.data.object.id as string;
+  console.log("[STRIPE] Checkout session completed: " + checkoutSessionId);
   const checkoutSession = await stripe.checkout.sessions.retrieve(
     checkoutSessionId,
     {
@@ -72,8 +73,13 @@ export const handleCheckoutComplete = async ({
     !checkoutSession.line_items.data[0] ||
     !checkoutSession.metadata ||
     !checkoutSession.metadata.userId
-  )
+  ) {
+    console.error(
+      "[STRIPE] No line items or metadata found for checkout session: " +
+        checkoutSessionId
+    );
     return;
+  }
   const product = checkoutSession.line_items.data[0].price?.product;
   const userId = checkoutSession.metadata.userId;
 
