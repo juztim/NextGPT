@@ -1,5 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
 import type Stripe from "stripe";
+import { env } from "~/env.mjs";
 
 // retrieves a Stripe customer id for a given user if it exists or creates a new one
 export const getOrCreateStripeCustomerIdForUser = async ({
@@ -62,7 +63,7 @@ export const handlePaymentIntentSuccess = async ({
   const product = invoice.lines.data[0];
   const userId = product.metadata?.userId;
 
-  if (product.id !== "prod_NlcXipkMeSCTBg") {
+  if (product.id !== env.PREMIUM_PLAN_ID) {
     console.log("Not a premium subscription");
     console.log(product.id);
     console.log(product);
