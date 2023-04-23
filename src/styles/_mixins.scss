@@ -6,9 +6,9 @@ $round: 100px;
 $circle: 100%;
 
 @mixin br($br) {
-	border-radius: $br !important;
-	-moz-border-radius: $br !important;
-	-webkit-border-radius: $br !important;
+  border-radius: $br !important;
+  -moz-border-radius: $br !important;
+  -webkit-border-radius: $br !important;
 }
 
 /***********************************************
@@ -16,35 +16,35 @@ $circle: 100%;
 ************************************************/
 $tr: all 0.3s linear;
 
-@mixin tr($tr){
-	-webkit-transition: $tr !important;
-  	-moz-transition: $tr !important;
-  	-o-transition: $tr !important;
-  	transition: $tr !important;
+@mixin tr($tr) {
+  -webkit-transition: $tr !important;
+  -moz-transition: $tr !important;
+  -o-transition: $tr !important;
+  transition: $tr !important;
 }
 
 /***********************************************
 			      Box Shadow
 ************************************************/
-$bsh: 3px 2px 3px 0px rgba(0,0,0,0.16);
-$inset: inset 0px 2px 1px 0 rgba(0,0,0,.16);
-$blue: 0px 0px 30px 10px #eef7fe; 
+$bsh: 3px 2px 3px 0px rgba(0, 0, 0, 0.16);
+$inset: inset 0px 2px 1px 0 rgba(0, 0, 0, 0.16);
+$blue: 0px 0px 30px 10px #eef7fe;
 
-@mixin bsh($bsh){
-	-webkit-box-shadow: $bsh;
-	box-shadow: $bsh;
+@mixin bsh($bsh) {
+  -webkit-box-shadow: $bsh;
+  box-shadow: $bsh;
 }
 
 /***********************************************
               	Flip
 ************************************************/
 @mixin flip {
-	transition: transform 0.6s;
-  	transform-style: preserve-3d;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
 
-  	&:hover {
-  		transform: rotateY(180deg);
-  	}
+  &:hover {
+    transform: rotateY(180deg);
+  }
 }
 
 /***********************************************
@@ -53,9 +53,9 @@ $blue: 0px 0px 30px 10px #eef7fe;
 $trX: 0;
 
 @mixin trX($trX) {
-	-webkit-transform: translateX($trX);
-    -moz-transform: translateX($trX);
-    -ms-transform: translateX($trX);
-    -o-transform: translateX($trX);
-    transform: translateX($trX);
+  -webkit-transform: translateX($trX);
+  -moz-transform: translateX($trX);
+  -ms-transform: translateX($trX);
+  -o-transform: translateX($trX);
+  transform: translateX($trX);
 }

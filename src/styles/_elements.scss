@@ -1,105 +1,105 @@
 /***********************************************
               	  Folder
 ************************************************/
-.folder-toggle, .edit-name {
-	@include tr($tr);
-	@include br($br);
-	border: 1px solid transparent;
+.folder-toggle,
+.edit-name {
+  @include tr($tr);
+  @include br($br);
+  border: 1px solid transparent;
 
-	&.selected {
-		border-color: $white;
-		background: $black;
-	}	
+  &.selected {
+    border-color: $white;
+    background: $black;
+  }
 
-	.icon-chevron-down {
-		@include tr($tr);
-		display: inline-block;
-	}
+  .icon-chevron-down {
+    @include tr($tr);
+    display: inline-block;
+  }
 
-	.open-folder {
-		.icon-chevron-down {
-			transform: rotate(-180deg);
-		}
-	}
+  .open-folder {
+    .icon-chevron-down {
+      transform: rotate(-180deg);
+    }
+  }
 }
 
 .edit-name {
-	background: none !important;
+  background: none !important;
 
-	&.folder-toggle {
-		background: $dark-3 !important;
-	}
+  &.folder-toggle {
+    background: $dark-3 !important;
+  }
 }
 
-
 .top-level-chat {
-	background: $dark-3 !important;
-	@include br($br);
+  background: $dark-3 !important;
+  @include br($br);
 
-	&.selected {
-		background: $black !important;
-	}
+  &.selected {
+    background: $black !important;
+  }
 }
 
 /***********************************************
                 	Tabs
 ************************************************/
 .nav-pills {
-	.nav-link {
-		color: rgba($light-2, .6);
-		display: inline-flex;
-		align-items: center;
-		margin: 0 10px;
-		@include br(0);
-		padding: 0;
-		border-bottom: 2px solid transparent;
+  .nav-link {
+    color: rgba($light-2, 0.6);
+    display: inline-flex;
+    align-items: center;
+    margin: 0 10px;
+    @include br(0);
+    padding: 0;
+    border-bottom: 2px solid transparent;
 
-		&:hover {
-			color: $white;
-		}
+    &:hover {
+      color: $white;
+    }
 
-		.icon {
-			margin-right: 5px;
-			font-size: 1.2rem;
-		}
+    .icon {
+      margin-right: 5px;
+      font-size: 1.2rem;
+    }
 
-		&.active {
-			background: none;
-			border-bottom: 2px solid $main-col;
-		}
-	}
+    &.active {
+      background: none;
+      border-bottom: 2px solid $main-col;
+    }
+  }
 
-	.nav-item:first-child {
-		.nav-link {
-			margin-left: 0;
-		}
-	}
+  .nav-item:first-child {
+    .nav-link {
+      margin-left: 0;
+    }
+  }
 }
 
 /***********************************************
               	Chat Item
 ************************************************/
 .chat-item {
-	.image {
-		flex-shrink: 0;
+  .image {
+    flex-shrink: 0;
 
-		img {
-			@include br(2px);
-		}
-	}
+    img {
+      @include br(2px);
+    }
+  }
 
-	&.chat-item-ai {
-		background: $dark-1;
-	}
+  &.chat-item-ai {
+    background: $dark-1;
+  }
 }
 
 /***********************************************
               	Progress Bar
 ************************************************/
 .progress {
-	background: $accent-2;
+  background: $accent-2;
 
-	.progress-bar {
-		background: $dark-1;
-	}
+  .progress-bar {
+    background: $dark-1;
+  }
 }

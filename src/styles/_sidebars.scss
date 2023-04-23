@@ -2,7 +2,8 @@
               	Side Menus
 ************************************************/
 
-#right-menu, #left-menu {
+#right-menu,
+#left-menu {
   background: $dark-4;
   height: calc(100vh - 50px);
   position: fixed;
@@ -19,145 +20,145 @@
   flex-direction: column;
   justify-content: space-between;
 
-	.menu-body {
-		overflow: hidden;
-		display: flex;
-		flex-direction: column;
+  .menu-body {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
-		.inner {
-			flex-grow: 1;
-			overflow-y: auto;
-			overflow-x: hidden;
-			position: relative;
+    .inner {
+      flex-grow: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
 
-			.inner-header {
-				background: $dark-4;
-			}
-		}
-	}
+      .inner-header {
+        background: $dark-4;
+      }
+    }
+  }
 
-	.menu-body {
-		flex-grow: 1;
-	}
-  
+  .menu-body {
+    flex-grow: 1;
+  }
+
   #right-menu-toggle {
-		.icon {
-			@include tr($tr);
-			transform: rotate(180deg);
-		}
-	}
+    .icon {
+      @include tr($tr);
+      transform: rotate(180deg);
+    }
+  }
 
-	#left-menu-toggle {
-		.icon {
-			@include tr($tr);
-			transform: rotate(-180deg);
-		}
-	}
+  #left-menu-toggle {
+    .icon {
+      @include tr($tr);
+      transform: rotate(-180deg);
+    }
+  }
 
   &.show {
-  	transform: translateZ(0px);
+    transform: translateZ(0px);
 
-  	#right-menu-toggle {
-  		.icon {
-  			transform: rotate(0);
-  		}
-  	}
+    #right-menu-toggle {
+      .icon {
+        transform: rotate(0);
+      }
+    }
 
-  	#left-menu-toggle {
-  		.icon {
-  			transform: rotate(0);
-  		}
-  	}
+    #left-menu-toggle {
+      .icon {
+        transform: rotate(0);
+      }
+    }
   }
 }
 
 #right-menu {
-	right: 0px;
+  right: 0px;
 
-	&:not(.show) {
-		transform: translateX(260px);
-	}
+  &:not(.show) {
+    transform: translateX(260px);
+  }
 }
 
 #left-menu {
-	left: 0;
+  left: 0;
 
-	&:not(.show) {
-		transform: translateX(-260px);
-	}
+  &:not(.show) {
+    transform: translateX(-260px);
+  }
 }
 
-#right-menu-toggle, #left-menu-toggle {
-	width: 30px;
-	height: 30px;
-	position: absolute;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background: $dark-4;
-	cursor: pointer;
-	@include tr($tr);
+#right-menu-toggle,
+#left-menu-toggle {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $dark-4;
+  cursor: pointer;
+  @include tr($tr);
 
-	&:hover {
-		color: rgba($white, .6);
-	}
+  &:hover {
+    color: rgba($white, 0.6);
+  }
 }
 
 #right-menu-toggle {
-	top: 30%;
-	left: -30px;
-	@include br(2px 0 0 2px);
+  top: 30%;
+  left: -30px;
+  @include br(2px 0 0 2px);
 }
 
 #left-menu-toggle {
-	top: 5%;
-	right: -30px;
-	@include br(0 2px 2px 0);
+  top: 5%;
+  right: -30px;
+  @include br(0 2px 2px 0);
 }
-
 
 @media (max-width: 480px) {
-	#right-menu-toggle, #left-menu-toggle {
-		width: 35px;
-		height: 45px;
-	}
+  #right-menu-toggle,
+  #left-menu-toggle {
+    width: 35px;
+    height: 45px;
+  }
 
-	#right-menu-toggle {
-		left: -35px;
-	}
+  #right-menu-toggle {
+    left: -35px;
+  }
 
-	#left-menu-toggle {
-		right: -35px;
-	}
+  #left-menu-toggle {
+    right: -35px;
+  }
 }
 
-
 #content-holder {
-	max-width: 100%;
-	margin-top: 50px;
-	height: calc(100vh - 70px);
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+  max-width: 100%;
+  margin-top: 50px;
+  height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-	@media (min-width: 992px) {
-		&.left-open {
-				margin-left: 260px;
-		}
+  @media (min-width: 992px) {
+    &.left-open {
+      margin-left: 260px;
+    }
 
-		&.right-open {
-			margin-right: 260px;
-		}
-	}
+    &.right-open {
+      margin-right: 260px;
+    }
+  }
 
-	.content-body {
-		flex-grow: 1;
-		overflow: hidden;
+  .content-body {
+    flex-grow: 1;
+    overflow: hidden;
 
-		.inner {
-			overflow-y: auto;
-			overflow-x: hidden;
-			height: 100%;
-		}
-	}
+    .inner {
+      overflow-y: auto;
+      overflow-x: hidden;
+      height: 100%;
+    }
+  }
 }

@@ -451,7 +451,7 @@ const SettingsModal = () => {
                   </div>
                 </div>
 
-                <div className="section mb-5" >
+                <div className="section mb-5">
                   <h5 className="text-normal fw-bold">
                     Temperature: {newSettings.temperature}
                   </h5>
@@ -491,18 +491,18 @@ const SettingsModal = () => {
 
                 <div className="section">
                   <h5 className="text-normal fw-bold">
-                      Top P: {newSettings.topP}
+                    Top P: {newSettings.topP}
                   </h5>
 
                   <div>
-                      <a href="#" className="link text-small">
-                        Reset to default
-                      </a>
+                    <a href="#" className="link text-small">
+                      Reset to default
+                    </a>
                   </div>
                   <p className="text-muted text-small mt-2">
-                    Higher values like 0.8 will make the output more diverse and unpredictable,
-                    while lower values like 0.2 will make the output more focused and
-                    deterministic.
+                    Higher values like 0.8 will make the output more diverse and
+                    unpredictable, while lower values like 0.2 will make the
+                    output more focused and deterministic.
                   </p>
                   <input
                     type="range"

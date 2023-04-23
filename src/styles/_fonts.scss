@@ -2,46 +2,46 @@
                Inter Regular
 ************************************************/
 @font-face {
-    font-family: 'Inter';
-    src: url('../fonts/subset-Inter-Regular.eot');
-    src: local('Inter Regular'), local('Inter-Regular'),
-        url('../fonts/subset-Inter-Regular.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/subset-Inter-Regular.woff2') format('woff2'),
-        url('../fonts/subset-Inter-Regular.woff') format('woff'),
-        url('../fonts/subset-Inter-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Inter";
+  src: url("../fonts/subset-Inter-Regular.eot");
+  src: local("Inter Regular"), local("Inter-Regular"),
+    url("../fonts/subset-Inter-Regular.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/subset-Inter-Regular.woff2") format("woff2"),
+    url("../fonts/subset-Inter-Regular.woff") format("woff"),
+    url("../fonts/subset-Inter-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 /***********************************************
                Inter Medium
 ************************************************/
 @font-face {
-    font-family: 'Inter';
-    src: url('../fonts/subset-Inter-Medium.eot');
-    src: local('Inter Medium'), local('Inter-Medium'),
-        url('../fonts/subset-Inter-Medium.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/subset-Inter-Medium.woff2') format('woff2'),
-        url('../fonts/subset-Inter-Medium.woff') format('woff'),
-        url('../fonts/subset-Inter-Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Inter";
+  src: url("../fonts/subset-Inter-Medium.eot");
+  src: local("Inter Medium"), local("Inter-Medium"),
+    url("../fonts/subset-Inter-Medium.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/subset-Inter-Medium.woff2") format("woff2"),
+    url("../fonts/subset-Inter-Medium.woff") format("woff"),
+    url("../fonts/subset-Inter-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 
 /***********************************************
                Inter Bold
 ************************************************/
 @font-face {
-    font-family: 'Inter';
-    src: url('../fonts/subset-Inter-Bold.eot');
-    src: local('Inter Bold'), local('Inter-Bold'),
-        url('../fonts/subset-Inter-Bold.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/subset-Inter-Bold.woff2') format('woff2'),
-        url('../fonts/subset-Inter-Bold.woff') format('woff'),
-        url('../fonts/subset-Inter-Bold.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Inter";
+  src: url("../fonts/subset-Inter-Bold.eot");
+  src: local("Inter Bold"), local("Inter-Bold"),
+    url("../fonts/subset-Inter-Bold.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/subset-Inter-Bold.woff2") format("woff2"),
+    url("../fonts/subset-Inter-Bold.woff") format("woff"),
+    url("../fonts/subset-Inter-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
 }

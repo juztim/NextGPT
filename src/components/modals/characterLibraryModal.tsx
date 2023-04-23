@@ -10,7 +10,7 @@ const CharacterLibraryModal = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchFilter, setSearchFilter] = useState<string>("");
   const { data: session } = useSession();
-  const {ensurePremium} = useEnsurePremium();
+  const { ensurePremium } = useEnsurePremium();
   const { data } = api.character.getAll.useQuery(undefined, {
     onError: (error) => {
       console.log(error);
