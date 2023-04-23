@@ -11,6 +11,13 @@ const UpsellModal = () => {
         console.error(error);
         toast.error("Something went wrong");
       },
+      onSuccess: ({ checkoutUrl }) => {
+        if (!checkoutUrl) {
+          toast.error("Something went wrong");
+          return;
+        }
+        window.open(checkoutUrl, "_blank");
+      },
     });
   return (
     <Modal
