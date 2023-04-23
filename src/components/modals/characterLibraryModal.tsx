@@ -4,11 +4,13 @@ import CharacterLibraryItem from "~/components/promptLibrary/characterLibraryIte
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { Virtuoso } from "react-virtuoso";
+import { useModalStore } from "~/stores/modalStore";
 
 const CharacterLibraryModal = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchFilter, setSearchFilter] = useState<string>("");
   const { data: session } = useSession();
+  const modalStore = useModalStore();
 
   const { data } = api.character.getAll.useQuery(undefined, {
     onError: (error) => {
@@ -85,10 +87,14 @@ const CharacterLibraryModal = () => {
                 </div>
               </div>
               <button
-                data-bs-toggle="modal"
+                data-bs-toggle={session?.user.premium ? "modal" : ""}
                 data-bs-target="#create-character"
                 className="btn btn-link p-3"
-                disabled={!session?.user.premium}
+                onClick={() => {
+                  if (!session?.user.premium) {
+                    modalStore.setActiveModal("upsell");
+                  }
+                }}
               >
                 +Create
               </button>

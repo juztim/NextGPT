@@ -4,11 +4,13 @@ import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { Virtuoso } from "react-virtuoso";
 import { useSession } from "next-auth/react";
+import { useModalStore } from "~/stores/modalStore";
 
 const PromptLibraryModal = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchFilter, setSearchFilter] = useState<string>("");
   const { data: session } = useSession();
+  const modalStore = useModalStore();
 
   const { data } = api.prompt.getAll.useQuery(undefined, {
     onError: (error) => {
@@ -86,10 +88,14 @@ const PromptLibraryModal = () => {
                 </div>
               </div>
               <button
-                data-bs-toggle="modal"
+                data-bs-toggle={session?.user.premium ? "modal" : ""}
                 data-bs-target="#create-prompt"
                 className="btn btn-link p-3"
-                disabled={!session?.user.premium}
+                onClick={() => {
+                  if (!session?.user.premium) {
+                    modalStore.setActiveModal("upsell");
+                  }
+                }}
               >
                 +Create
               </button>
