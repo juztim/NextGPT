@@ -61,7 +61,6 @@ export const handleCheckoutComplete = async ({
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const checkoutSessionId: string = event.data.object.id as string;
-  console.log("[STRIPE] Checkout session completed: " + checkoutSessionId);
   const checkoutSession = await stripe.checkout.sessions.retrieve(
     checkoutSessionId,
     {
@@ -74,28 +73,19 @@ export const handleCheckoutComplete = async ({
     !checkoutSession.metadata ||
     !checkoutSession.metadata.userId
   ) {
-    console.error(
-      "[STRIPE] No line items or metadata found for checkout session: " +
-        checkoutSessionId
-    );
     return;
   }
-  const product = checkoutSession.line_items.data[0].price?.product;
+  const productId = checkoutSession.line_items.data[0].price?.product;
+  const product = await stripe.products.retrieve(productId as string);
   const userId = checkoutSession.metadata.userId;
 
-  if (!product || typeof product === "string") {
-    console.error(
-      "[STRIPE] No product found for checkout session: " + checkoutSessionId
-    );
+  if (!product) {
     return;
   }
 
   if (product.id !== env.PREMIUM_PLAN_ID) {
-    console.log("[STRIPE] Not a premium subscription: " + product.id);
     return;
   }
-
-  console.log("[STRIPE] User " + userId + " subscribed to premium plan");
 
   await prisma.user.update({
     where: {
