@@ -32,7 +32,7 @@ const ChatFolder = ({
   searchFilter: string;
 }) => {
   const [editingFolderName, setEditingFolderName] = useState(false);
-  const [folderName, setFolderName] = useState(title ?? "New Chat");
+  const [folderName, setFolderName] = useState(title ?? "New Folder");
   const folderNameInputRef = useRef<HTMLInputElement | null>(null);
   const [requireDeleteConfirmation, setRequireDeleteConfirmation] =
     useState(false);

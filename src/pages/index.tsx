@@ -43,6 +43,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -65,6 +66,7 @@ const Home: NextPage = () => {
   const [autoScroll, setAutoScroll] = useState(true);
   const [showInfoModal, setShowInfoModal] = useState<string>();
   const { ensurePremium } = useEnsurePremium();
+  const intl = useIntl();
 
   const settingsStore = useSettingsStore();
 
@@ -577,9 +579,11 @@ const Home: NextPage = () => {
                 />
               </a>
               <span>
-                {activeChat?.name
-                  ? `${activeChat.name} (${activeChat.messages.length} messages)`
-                  : "Start a new Chat"}
+                {activeChat?.name ? (
+                  `${activeChat.name} (${activeChat.messages.length} messages)`
+                ) : (
+                  <FormattedMessage id="page.chat.header.start" />
+                )}
               </span>
               <div className="d-flex align-items-center">
                 <ul className="d-flex flex-row navbar-nav">
@@ -714,7 +718,7 @@ const Home: NextPage = () => {
                     disabled={creatingNewChat}
                   >
                     <span className="icon icon-plus"></span>
-                    New Chat
+                    <FormattedMessage id="page.chat.sidebarLeft.new" />
                   </button>
                 </div>
                 <div className="col-3 d-flex align-items-center justify-content-center">
@@ -741,7 +745,9 @@ const Home: NextPage = () => {
                     <input
                       className="form-control"
                       type="search"
-                      placeholder="Search Chat"
+                      placeholder={intl.formatMessage({
+                        id: "page.chat.sidebarLeft.search",
+                      })}
                       aria-label="Search"
                       value={searchFilter}
                       onChange={(e) => setSearchFilter(e.target.value)}
@@ -793,7 +799,9 @@ const Home: NextPage = () => {
                 </div>
                 <div>
                   <ChatFolder
-                    title="General"
+                    title={intl.formatMessage({
+                      id: "page.chat.sidebarLeft.generalFolder",
+                    })}
                     onChatOpen={setActiveChatId}
                     conversations={chats?.ungroupedChats}
                     index={9999}
@@ -841,7 +849,7 @@ const Home: NextPage = () => {
                   >
                     <span className="icon text-accent icon-shild-info me-2 text-big"></span>
                     <span className="text">
-                      {session?.user.apiKey ? "Edit" : "Enter"} OpenAI Key
+                      <FormattedMessage id="page.chat.sidebarLeft.editApiKeys" />
                     </span>
                   </a>
                 </div>
@@ -904,7 +912,11 @@ const Home: NextPage = () => {
                 })}
 
                 {activeChatId == "" && (
-                  <AiChatMessage message="Welcome to FutureDesk! Type your message here to start a new conversation." />
+                  <AiChatMessage
+                    message={intl.formatMessage({
+                      id: "page.chat.main.welcome",
+                    })}
+                  />
                 )}
 
                 {!!streamedMessage && (
@@ -953,8 +965,12 @@ const Home: NextPage = () => {
                       />
                       <span className="text">
                         {streamedMessage === null || streamedMessage === ""
-                          ? "Regenerate response"
-                          : "Stop Generating"}
+                          ? intl.formatMessage({
+                              id: "page.chat.main.actions.regenerate",
+                            })
+                          : intl.formatMessage({
+                              id: "page.chat.main.actions.generate.stop",
+                            })}
                       </span>
                     </button>
 
@@ -967,7 +983,9 @@ const Home: NextPage = () => {
                       }}
                     >
                       <span className="icon icon-delete me-2"></span>
-                      <span className="text">Reset Chat</span>
+                      <span className="text">
+                        <FormattedMessage id="page.chat.main.actions.reset" />
+                      </span>
                     </button>
 
                     {!!activeChat && !!activeChat.name && (
@@ -1008,7 +1026,9 @@ const Home: NextPage = () => {
                           }}
                         >
                           <span className="icon icon-export me-2"></span>
-                          <span className="text">Export Chat</span>
+                          <span className="text">
+                            <FormattedMessage id="page.chat.main.actions.export" />
+                          </span>
                         </button>
                       </>
                     )}
@@ -1032,7 +1052,9 @@ const Home: NextPage = () => {
                           rows={1}
                           id="chat-ai"
                           ref={textAreaRef}
-                          placeholder="Send a message..."
+                          placeholder={intl.formatMessage({
+                            id: "page.chat.main.input.placeholder",
+                          })}
                           onChange={handleChange}
                           onKeyDown={(e) => {
                             if (e.shiftKey) return;
