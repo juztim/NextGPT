@@ -1,0 +1,23 @@
+{
+  "page.chat.header.start": "Nowy czat",
+  "page.chat.sidebarLeft.new": "Nowy czat",
+  "page.chat.sidebarLeft.search": "Wyszukaj w czatach",
+  "page.chat.sidebarLeft.generalFolder": "Ogólne",
+  "page.chat.sidebarLeft.clearAll": "Wyczyść wszystkie czaty",
+  "page.chat.sidebarLeft.clearAll.confirm": "Jesteś pewien?",
+  "page.chat.sidebarLeft.editApiKeys": "Edytuj klucze API",
+  "page.chat.main.welcome": "Witaj w FutureDesk! Napisz wiadomość tutaj aby rozpocząć nową konwersację",
+  "page.chat.main.actions.regenerate": "Wygeneruj odpowiedź ponownie",
+  "page.chat.main.actions.generate.stop": "Zatrzymaj generację",
+  "page.chat.main.actions.reset": "Zresetuj czat",
+  "page.chat.main.actions.export": "Eksportuj czat",
+  "page.chat.main.input.placeholder": "Wyślij wiadomość",
+  "page.chat.sidebarRight.tabs.aiCharacters.title": "Postacie SI",
+  "page.chat.sidebarRight.tabs.aiCharacters.search": "Wyszukaj postacie",
+  "page.chat.sidebarRight.tabs.aiCharacters.selectCategory": "Wybierz kategorie",
+  "page.chat.sidebarRight.tabs.aiCharacters.add": "Dodaj postać",
+  "page.chat.sidebarRight.tabs.prompts.title": "Instrukcje",
+  "page.chat.sidebarRight.tabs.prompts.search": "Wyszukaj instrukcje",
+  "page.chat.sidebarRight.tabs.prompts.selectCategory": "Wybierz kategorie",
+  "page.chat.sidebarRight.tabs.prompts.add": "Dodaj instrukcje"
+}
