@@ -35,6 +35,7 @@ import TermsModal from "~/components/modals/terms";
 import PrivacyModal from "~/components/modals/privacy";
 import useEnsurePremium from "~/hooks/useEnsurePremium";
 import UpsellModal from "~/components/modals/upsellModal";
+import {isMobile} from 'react-device-detect';
 import {
   DndContext,
   MouseSensor,
@@ -1058,7 +1059,7 @@ const Home: NextPage = () => {
                           onChange={handleChange}
                           onKeyDown={(e) => {
                             if (e.shiftKey) return;
-                            if (e.key === "Enter") {
+                            if (e.key === "Enter" && !isMobile) {
                               e.preventDefault();
                               void submitNewMessage();
                             }
