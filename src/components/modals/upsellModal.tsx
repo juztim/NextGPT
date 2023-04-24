@@ -35,6 +35,15 @@ const UpsellModal = () => {
             <div className="old-price mx-2">$59</div>
             <div className="new-price mx-2">$19</div>
           </div>
+          <div className="d-flex align-items-center justify-content-center">
+            <span
+              style={{
+                color: "green",
+              }}
+            >
+              Launch discounted price. Deal ends soon
+            </span>
+          </div>
 
           <div id="valuePrepPop" className="row justify-content-center py-4">
             <div className="col-12 col-md-6 col-xl-5 d-flex justify-content-center">
