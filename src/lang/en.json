@@ -1,0 +1,23 @@
+{
+  "page.chat.header.start": "New Chat",
+  "page.chat.sidebarLeft.new": "New Chat",
+  "page.chat.sidebarLeft.search": "Search Chats",
+  "page.chat.sidebarLeft.generalFolder": "General",
+  "page.chat.sidebarLeft.clearAll": "Clear all chats",
+  "page.chat.sidebarLeft.clearAll.confirm": "Are you sure?",
+  "page.chat.sidebarLeft.editApiKeys": "Edit API Keys",
+  "page.chat.main.welcome": "Welcome to FutureDesk! Type your message here to start a new conversation.",
+  "page.chat.main.actions.regenerate": "Regenerate Response",
+  "page.chat.main.actions.generate.stop": "Stop generating",
+  "page.chat.main.actions.reset": "Reset Chat",
+  "page.chat.main.actions.export": "Export Chat",
+  "page.chat.main.input.placeholder": "Send a message...",
+  "page.chat.sidebarRight.tabs.aiCharacters.title": "AI Characters",
+  "page.chat.sidebarRight.tabs.aiCharacters.search": "Search Character",
+  "page.chat.sidebarRight.tabs.aiCharacters.selectCategory": "Select a category",
+  "page.chat.sidebarRight.tabs.aiCharacters.add": "Add Character",
+  "page.chat.sidebarRight.tabs.prompts.title": "Prompts",
+  "page.chat.sidebarRight.tabs.prompts.search": "Search Prompt",
+  "page.chat.sidebarRight.tabs.prompts.selectCategory": "Select a category",
+  "page.chat.sidebarRight.tabs.prompts.add": "Add Prompt"
+}

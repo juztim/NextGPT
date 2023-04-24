@@ -13,6 +13,10 @@ import Script from "next/script";
 import { Toaster } from "react-hot-toast";
 import Head from "next/head";
 import { log } from "next-axiom";
+import { IntlProvider } from "react-intl";
+import { useRouter } from "next/router";
+import de from "~/lang/de.json";
+import en from "~/lang/en.json";
 
 if (process.env.NODE_ENV === "production") {
   console.error = (message: string, ...args) => {
@@ -26,10 +30,17 @@ if (process.env.NODE_ENV === "production") {
   };
 }
 
+const messages = {
+  en,
+  de,
+};
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const { locale: browserLocale } = useRouter();
+
   return (
     <>
       <Head>
@@ -57,11 +68,16 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <SessionProvider session={session}>
-        <Toaster position="top-center" />
-        <Component {...pageProps} />
-        <Analytics />
-      </SessionProvider>
+      {/* eslint-disable @typescript-eslint/no-unsafe-assignment */}
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/* @ts-ignore */}
+      <IntlProvider locale={browserLocale} messages={messages[browserLocale]}>
+        <SessionProvider session={session}>
+          <Toaster position="top-center" />
+          <Component {...pageProps} />
+          <Analytics />
+        </SessionProvider>
+      </IntlProvider>
       <Script src="/js/jquery-3.6.3.min.js" strategy="beforeInteractive" />
       <Script src="/js/bootstrap.bundle.min.js" strategy="beforeInteractive" />
       <Script src="/js/custom.js" strategy="beforeInteractive" />

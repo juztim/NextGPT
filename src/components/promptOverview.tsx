@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import type { Character, Prompt } from "@prisma/client";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const PromptOverview = ({
   onOpenPrompt,
@@ -34,6 +35,7 @@ const PromptOverview = ({
 
   const [searchFilter, setSearchFilter] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const intl = useIntl();
 
   return (
     <div id="right-menu" className="show">
@@ -50,13 +52,13 @@ const PromptOverview = ({
               href="#ai-characters"
             >
               <span className="icon icon-face" />
-              AI Characters
+              <FormattedMessage id="page.chat.sidebarRight.tabs.aiCharacters.title" />
             </a>
           </li>
           <li className="nav-item">
             <a className="nav-link" data-bs-toggle="pill" href="#prompts">
               <span className="icon icon-propt" />
-              Prompts
+              <FormattedMessage id="page.chat.sidebarRight.tabs.prompts.title" />
             </a>
           </li>
         </ul>
@@ -74,7 +76,9 @@ const PromptOverview = ({
                   <input
                     className="form-control"
                     type="search"
-                    placeholder="Search Character"
+                    placeholder={intl.formatMessage({
+                      id: "page.chat.sidebarRight.tabs.aiCharacters.search",
+                    })}
                     aria-label="Search"
                     value={searchFilter}
                     onChange={(e) =>
@@ -100,7 +104,7 @@ const PromptOverview = ({
                     }}
                   >
                     <option disabled value="">
-                      Select a category
+                      <FormattedMessage id="page.chat.sidebarRight.tabs.aiCharacters.selectCategory" />
                     </option>
                     <option value="">All</option>
                     <option value="custom">Custom </option>
@@ -129,7 +133,9 @@ const PromptOverview = ({
                   color: "White",
                 }}
               />
-              <span className="text text-white">Add Character</span>
+              <span className="text text-white">
+                <FormattedMessage id="page.chat.sidebarRight.tabs.aiCharacters.add" />
+              </span>
             </button>
           </div>
           <div>
@@ -164,7 +170,9 @@ const PromptOverview = ({
                   <input
                     className="form-control"
                     type="search"
-                    placeholder="Search Prompt"
+                    placeholder={intl.formatMessage({
+                      id: "page.chat.sidebarRight.tabs.prompts.search",
+                    })}
                     aria-label="Search"
                     value={searchFilter}
                     onChange={(e) =>
@@ -190,7 +198,7 @@ const PromptOverview = ({
                     }}
                   >
                     <option disabled value="">
-                      Select a category
+                      <FormattedMessage id="page.chat.sidebarRight.tabs.prompts.selectCategory" />
                     </option>
                     <option value="">All</option>
                     <option value="custom">Custom </option>
@@ -225,7 +233,7 @@ const PromptOverview = ({
                   color: "White",
                 }}
               >
-                Add Prompt
+                <FormattedMessage id="page.chat.sidebarRight.tabs.prompts.add" />
               </span>
             </button>
           </div>
