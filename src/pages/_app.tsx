@@ -17,6 +17,7 @@ import { IntlProvider } from "react-intl";
 import { useRouter } from "next/router";
 import de from "~/lang/de.json";
 import en from "~/lang/en.json";
+import pl from "~/lang/pl.json";
 
 if (process.env.NODE_ENV === "production") {
   console.error = (message: string, ...args) => {
@@ -33,6 +34,7 @@ if (process.env.NODE_ENV === "production") {
 const messages = {
   en,
   de,
+  pl,
 };
 
 const MyApp: AppType<{ session: Session | null }> = ({
