@@ -1,0 +1,23 @@
+{
+  "page.chat.header.start": "Neue Unterhaltung",
+  "page.chat.main.actions.export": "Unterhaltung exportieren",
+  "page.chat.main.actions.generate.stop": "Generierung stoppen",
+  "page.chat.main.actions.regenerate": "Antwort neu generieren",
+  "page.chat.main.actions.reset": "Unterhaltung zurücksetzen",
+  "page.chat.main.input.placeholder": "Nachricht senden...",
+  "page.chat.main.welcome": "Willkommen bei FutureDesk! Schreibe deine Nachricht hier hin um eine neue Unterhaltung zu starten.",
+  "page.chat.sidebarLeft.clearAll": "Alle Unterhaltungen löschen",
+  "page.chat.sidebarLeft.clearAll.confirm": "Sicher?",
+  "page.chat.sidebarLeft.editApiKeys": "API Schlüssel verwalten",
+  "page.chat.sidebarLeft.generalFolder": "Allgemein",
+  "page.chat.sidebarLeft.new": "Neue Unterhaltung",
+  "page.chat.sidebarLeft.search": "Unterhaltung suchen",
+  "page.chat.sidebarRight.tabs.aiCharacters.add": "Charakter hinzufügen",
+  "page.chat.sidebarRight.tabs.aiCharacters.search": "Charakter suchen",
+  "page.chat.sidebarRight.tabs.aiCharacters.selectCategory": "Kategorie auswählen",
+  "page.chat.sidebarRight.tabs.aiCharacters.title": "KI Charaktere",
+  "page.chat.sidebarRight.tabs.prompts.add": "Prompt hinzufügen",
+  "page.chat.sidebarRight.tabs.prompts.search": "Prompt suchen",
+  "page.chat.sidebarRight.tabs.prompts.selectCategory": "Kategorie auswählen",
+  "page.chat.sidebarRight.tabs.prompts.title": "Prompts"
+}

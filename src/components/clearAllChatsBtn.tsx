@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
+import { FormattedMessage } from "react-intl";
 
 const ClearAllChats = ({ onClearChats }: { onClearChats: () => void }) => {
   const [requireConfirmation, setRequireConfirmation] = useState(false);
@@ -62,9 +63,9 @@ const ClearAllChats = ({ onClearChats }: { onClearChats: () => void }) => {
         <span className="icon icon-delete me-3" />
       )}
       {requireConfirmation ? (
-        <span>Are you sure?</span>
+        <FormattedMessage id="page.chat.sidebarLeft.clearAll.confirm" />
       ) : (
-        <span>Clear all chats</span>
+        <FormattedMessage id="page.chat.sidebarLeft.clearAll" />
       )}
     </button>
   );
