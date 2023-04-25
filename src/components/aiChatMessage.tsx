@@ -78,7 +78,6 @@ const AiChatMessage = ({
               <button
                 className="btn-nostyle"
                 onClick={() => {
-                  // use clipboard API to copy text
                   window.open(
                     "https://twitter.com/intent/tweet?text=" +
                       encodeURIComponent(
