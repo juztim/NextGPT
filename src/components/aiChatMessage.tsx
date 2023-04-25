@@ -75,6 +75,21 @@ const AiChatMessage = ({
                 <span>Copy</span>
               </button>
 
+              <button
+                className="btn-nostyle"
+                onClick={() => {
+                  // use clipboard API to copy text
+                  window.open(
+                    "https://twitter.com/intent/tweet?text=" +
+                      encodeURIComponent(
+                        `FutureDesk: ${message}\n #ai #chatbot #futuredesk`
+                      )
+                  );
+                }}
+              >
+                <span>Share</span>
+              </button>
+
               <button className="btn-nostyle">
                 <span className="icon icon-like" />
               </button>
