@@ -99,6 +99,9 @@ const Home: NextPage = () => {
         format: data?.format ?? "",
         temperature: data?.temperature ?? 0.5,
         topP: data?.topP ?? 0.9,
+        maxLength: data?.maxLength,
+        presencePenalty: data?.presencePenalty ?? 0,
+        frequencyPenalty: data?.frequencyPenalty ?? 0,
         tone: data?.tone ?? "",
         writingStyle: data?.writingStyle ?? "",
         outputLanguage: data?.outputLanguage ?? "",
@@ -329,6 +332,9 @@ const Home: NextPage = () => {
           messages: messageHistory,
           temperature: settings?.temperature ?? 0.5,
           top_p: settings?.topP ?? 0.9,
+          max_tokens: settings?.maxLength,
+          presence_penalty: settings?.presencePenalty ?? 0,
+          frequency_penalty: settings?.frequencyPenalty ?? 0,
         },
         { apiKey: session.user.apiKey }
       );
@@ -453,13 +459,13 @@ const Home: NextPage = () => {
 
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
-      delay: 250,
+      delay: 200,
       tolerance: 5,
     },
   });
   const touchSensor = useSensor(TouchSensor, {
     activationConstraint: {
-      delay: 250,
+      delay: 200,
       tolerance: 5,
     },
   });

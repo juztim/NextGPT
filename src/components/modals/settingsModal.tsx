@@ -8,6 +8,9 @@ const SettingsModal = () => {
   const [newSettings, setNewSettings] = useState({
     temperature: 0,
     topP: 0,
+    maxLength: 0,
+    presencePenalty: 0,
+    frequencyPenalty: 0,
     tone: "",
     format: "",
     writingStyle: "",
@@ -34,6 +37,9 @@ const SettingsModal = () => {
     setNewSettings({
       temperature: settings.temperature,
       topP: settings.topP,
+      maxLength: settings.maxLength,
+      presencePenalty: settings.presencePenalty,
+      frequencyPenalty: settings.frequencyPenalty,
       tone: settings.tone,
       format: settings.format,
       writingStyle: settings.writingStyle,
@@ -401,9 +407,13 @@ const SettingsModal = () => {
                     </a>
                   </div>
 
-                  <div>
-                    <a className="link text-small">Reset to default</a>
-                  </div>
+                  {newSettings.initialInstructions
+                    ?
+                      <div>
+                        <a className="link text-small">Reset to default</a>
+                      </div>
+                    : null
+                  }
 
                   <div
                     style={{
@@ -456,11 +466,14 @@ const SettingsModal = () => {
                     Temperature: {newSettings.temperature}
                   </h5>
 
-                  <div>
-                    <a href="#" className="link text-small">
-                      Reset to default
-                    </a>
-                  </div>
+                  {newSettings.temperature
+                    ? <div>
+                        <a href="#" className="link text-small">
+                          Reset to default (1)
+                        </a>
+                      </div>
+                    : null
+                  }
 
                   <p className="text-muted text-small mt-2">
                     Higher values like 0.8 will make the output more random,
@@ -472,13 +485,14 @@ const SettingsModal = () => {
                     type="range"
                     className="form-range"
                     min="0"
-                    max="100"
+                    max="10"
+                    step="0.01"
                     id="temperature"
-                    defaultValue={newSettings.temperature * 100}
+                    defaultValue={newSettings.temperature}
                     onChange={(e) => {
                       setNewSettings({
                         ...newSettings,
-                        temperature: Number(e.target.value) / 100,
+                        temperature: Number(e.target.value),
                       });
                     }}
                   />
@@ -489,16 +503,19 @@ const SettingsModal = () => {
                   </div>
                 </div>
 
-                <div className="section">
+                <div className="section mb-5">
                   <h5 className="text-normal fw-bold">
                     Top P: {newSettings.topP}
                   </h5>
 
-                  <div>
-                    <a href="#" className="link text-small">
-                      Reset to default
-                    </a>
-                  </div>
+                  {newSettings.topP
+                    ? <div>
+                        <a href="#" className="link text-small">
+                          Reset to default (0.9)
+                        </a>
+                      </div>
+                    : null
+                  }
                   <p className="text-muted text-small mt-2">
                     Higher values like 0.8 will make the output more diverse and
                     unpredictable, while lower values like 0.2 will make the
@@ -508,13 +525,14 @@ const SettingsModal = () => {
                     type="range"
                     className="form-range"
                     min="0"
-                    max="100"
+                    max="1"
+                    step="0.01"
                     id="topP"
-                    defaultValue={newSettings.topP * 100}
+                    defaultValue={newSettings.topP}
                     onChange={(e) => {
                       setNewSettings({
                         ...newSettings,
-                        topP: Number(e.target.value) / 100,
+                        topP: Number(e.target.value),
                       });
                     }}
                   />
@@ -522,6 +540,127 @@ const SettingsModal = () => {
                     <span>Chaotic</span>
                     <span>Imaginative</span>
                     <span>Accurate</span>
+                  </div>
+                </div>
+
+                <div className="section mb-5">
+                  <h5 className="text-normal fw-bold">
+                    Maximum length: {newSettings.maxLength ? newSettings.maxLength : "No limit"}
+                  </h5>
+
+                  {newSettings.maxLength
+                    ?
+                      <div>
+                        <a href="#" className="link text-small">
+                          Reset to default (No limit)
+                        </a>
+                      </div>
+                    : null
+                  }
+
+                  <p className="text-muted text-small mt-2">
+                    Maximum length controls the maximum length of the response generated by the chatbot.
+                    It specifies the amount of information to provide in the response.
+                    By adjusting the value of maximum length, responses can be shorter or longer.
+                  </p>
+                  <input
+                    type="range"
+                    className="form-range"
+                    min="1"
+                    max="4096"
+                    id="maxLength"
+                    defaultValue={newSettings.maxLength}
+                    onChange={(e) => {
+                      setNewSettings({
+                        ...newSettings,
+                        maxLength: Number(e.target.value),
+                      });
+                    }}
+                  />
+                  <div className="d-flex justify-content-between">
+                    <span>Short</span>
+                    <span>Balanced</span>
+                    <span>Long</span>
+                  </div>
+                </div>
+
+                <div className="section mb-5">
+                  <h5 className="text-normal fw-bold">
+                    Presence penalty: {newSettings.presencePenalty}
+                  </h5>
+
+                  {newSettings.presencePenalty
+                      ? <div>
+                          <a href="#" className="link text-small">
+                            Reset to default (0)
+                          </a>
+                        </div>
+                      : null
+                  }
+                  <p className="text-muted text-small mt-2">
+                    Number between -2.0 and 2.0.
+                    Positive values penalize new tokens based on whether they appear in the text so far,
+                    increasing the model's likelihood to talk about new topics.
+                  </p>
+                  <input
+                    type="range"
+                    className="form-range"
+                    min="-2.0"
+                    max="2.0"
+                    step="0.01"
+                    id="presencePenalty"
+                    defaultValue={newSettings.presencePenalty}
+                    onChange={(e) => {
+                      setNewSettings({
+                        ...newSettings,
+                        presencePenalty: Number(e.target.value),
+                      });
+                    }}
+                  />
+                  <div className="d-flex justify-content-between">
+                    <span>Restrictive</span>
+                    <span>Balanced</span>
+                    <span>Lenient</span>
+                  </div>
+                </div>
+
+                <div className="section mb-5">
+                  <h5 className="text-normal fw-bold">
+                    Frequency penalty: {newSettings.frequencyPenalty}
+                  </h5>
+
+                  {newSettings.frequencyPenalty
+                    ? <div>
+                        <a href="#" className="link text-small">
+                          Reset to default (0)
+                        </a>
+                      </div>
+                    : null
+                  }
+                  <p className="text-muted text-small mt-2">
+                    Number between -2.0 and 2.0.
+                    Positive values penalize new tokens based on their existing frequency in the text so far,
+                    decreasing the model's likelihood to repeat the same line verbatim.
+                  </p>
+                  <input
+                    type="range"
+                    className="form-range"
+                    min="-2.0"
+                    max="2.0"
+                    step="0.01"
+                    id="frequencyPenalty"
+                    defaultValue={newSettings.frequencyPenalty}
+                    onChange={(e) => {
+                      setNewSettings({
+                        ...newSettings,
+                        frequencyPenalty: Number(e.target.value),
+                      });
+                    }}
+                  />
+                  <div className="d-flex justify-content-between">
+                    <span>Repetitive</span>
+                    <span>Balanced</span>
+                    <span>Varied</span>
                   </div>
                 </div>
               </div>

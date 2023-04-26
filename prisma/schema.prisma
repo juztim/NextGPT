@@ -147,6 +147,9 @@ model Settings {
   userId              String
   temperature         Float    @default(0.5)
   topP                Float    @default(0.9)
+  maxLength           Float
+  presencePenalty     Float    @default(0)
+  frequencyPenalty    Float    @default(0)
   writingStyle        String   @default("casual")
   tone                String   @default("friendly")
   format              String   @default("short")
