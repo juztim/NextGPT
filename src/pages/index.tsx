@@ -35,7 +35,7 @@ import TermsModal from "~/components/modals/terms";
 import PrivacyModal from "~/components/modals/privacy";
 import useEnsurePremium from "~/hooks/useEnsurePremium";
 import UpsellModal from "~/components/modals/upsellModal";
-import {isMobile} from 'react-device-detect';
+import { isMobile } from "react-device-detect";
 import {
   DndContext,
   MouseSensor,
@@ -45,6 +45,8 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useModalStore } from "~/stores/modalStore";
+import ContactUsModal from "~/components/modals/contactUs";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -70,6 +72,7 @@ const Home: NextPage = () => {
   const intl = useIntl();
 
   const settingsStore = useSettingsStore();
+  const modalStore = useModalStore();
 
   useAutosizeTextArea(textAreaRef.current, message);
 
@@ -681,7 +684,7 @@ const Home: NextPage = () => {
                       </NavDropdown.Item>
                       <NavDropdown.Item
                         onClick={() => {
-                          setShowInfoModal("Contact");
+                          modalStore.setActiveModal("Contact");
                         }}
                       >
                         <span>Contact</span>
@@ -1171,6 +1174,8 @@ const Home: NextPage = () => {
               setShowInfoModal(undefined);
             }}
           />
+
+          <ContactUsModal />
         </div>
       </DndContext>
     </>

@@ -4,6 +4,7 @@ import { CharacterRouter } from "~/server/api/routers/characterRouter";
 import { PromptRouter } from "~/server/api/routers/promptRouter";
 import { ProdiaRouter } from "~/server/api/routers/prodiaRouter";
 import { stripeRouter } from "~/server/api/routers/stripeRouter";
+import { FeedbackRouter } from "~/server/api/routers/feedbackRouter";
 
 /**
  * This is the primary router for your server.
@@ -16,6 +17,7 @@ export const appRouter = createTRPCRouter({
   prompt: PromptRouter,
   prodia: ProdiaRouter,
   stripe: stripeRouter,
+  feedback: FeedbackRouter,
 });
 
 // export type definition of API
