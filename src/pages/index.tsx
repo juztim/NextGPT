@@ -35,7 +35,7 @@ import TermsModal from "~/components/modals/terms";
 import PrivacyModal from "~/components/modals/privacy";
 import useEnsurePremium from "~/hooks/useEnsurePremium";
 import UpsellModal from "~/components/modals/upsellModal";
-import {isMobile} from 'react-device-detect';
+import { isMobile } from "react-device-detect";
 import {
   DndContext,
   MouseSensor,
@@ -319,26 +319,40 @@ const Home: NextPage = () => {
     }
 
     try {
-      const stream = await OpenAI(
-        "chat",
-        {
-          model: "gpt-3.5-turbo",
-          messages: messageHistory,
-          temperature: settings?.temperature ?? 0.5,
-          top_p: settings?.topP ?? 0.9,
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        { apiKey: session.user.apiKey }
-      );
+        body: JSON.stringify({
+          messageHistory,
+          temperature: settingsStore.temperature,
+          topP: settingsStore.topP,
+          apiKey: session.user.apiKey,
+        }),
+      });
+      const data = response.body;
 
+      if (!data) {
+        toast.error("Error generating message");
+        return;
+      }
+
+      const reader = data.getReader();
+      const decoder = new TextDecoder("utf-8");
       let streamedLocalMessage = "";
-      for await (const chunk of yieldStream(stream)) {
-        const text = new TextDecoder("utf-8").decode(chunk);
+      let done = false;
+
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunk = decoder.decode(value);
 
         if (stopGenerating.current) {
           break;
         }
 
-        streamedLocalMessage += text;
+        streamedLocalMessage += chunk;
         setStreamedMessage(streamedLocalMessage);
       }
 
@@ -579,7 +593,20 @@ const Home: NextPage = () => {
                   className="logo img-fluid"
                 />
               </a>
-              <span>
+              <span
+                onClick={async () => {
+                  console.log("clicked");
+                  await fetch("/api/generate", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      conversationId: activeChatId,
+                    }),
+                  });
+                }}
+              >
                 {activeChat?.name ? (
                   `${activeChat.name} (${activeChat.messages.length} messages)`
                 ) : (
