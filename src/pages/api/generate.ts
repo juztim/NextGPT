@@ -5,13 +5,22 @@ export const config = {
 };
 
 export default async function handler(req: Request): Promise<Response> {
-  const { messageHistory, temperature, topP, apiKey } = (await req.json()) as {
+  const {
+    messageHistory,
+    temperature,
+    topP,
+    apiKey,
+    frequencyPenalty,
+    presencePenalty,
+  } = (await req.json()) as {
     messageHistory: {
       content: string;
       role: "user" | "system" | "assistant";
     }[];
     temperature?: number;
     topP?: number;
+    presencePenalty?: number;
+    frequencyPenalty?: number;
     apiKey: string;
   };
 
@@ -22,6 +31,8 @@ export default async function handler(req: Request): Promise<Response> {
       messages: messageHistory,
       temperature: temperature ?? 0.5,
       top_p: topP ?? 0.9,
+      presence_penalty: presencePenalty ?? 0,
+      frequency_penalty: frequencyPenalty ?? 0,
     },
     { apiKey: apiKey }
   );

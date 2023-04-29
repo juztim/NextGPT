@@ -335,7 +335,9 @@ const Home: NextPage = () => {
           temperature: settingsStore.temperature,
           topP: settingsStore.topP,
           apiKey: session.user.apiKey,
-        })
+          frequencyPenalty: settingsStore.frequencyPenalty,
+          presencePenalty: settingsStore.presencePenalty,
+        }),
       });
       const data = response.body;
 
