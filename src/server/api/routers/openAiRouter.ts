@@ -488,9 +488,7 @@ export const OpenAiRouter = createTRPCRouter({
             .number()
             .min(0, "Top P must be at least 0")
             .max(1, "Top P must be at most 1"),
-          maxLength: z
-            .number()
-            .min(1, "Maximum length must be at least 1"),
+          maxLength: z.number().optional(),
           presencePenalty: z
             .number()
             .min(-2.0, "Presence penalty must be at least -2.0")

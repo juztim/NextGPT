@@ -5,10 +5,21 @@ import { api } from "~/utils/api";
 import languages from "~/languages.json";
 
 const SettingsModal = () => {
-  const [newSettings, setNewSettings] = useState({
+  const [newSettings, setNewSettings] = useState<{
+    temperature: number;
+    topP: number;
+    maxLength?: number;
+    presencePenalty: number;
+    frequencyPenalty: number;
+    tone: string;
+    format: string;
+    writingStyle: string;
+    outputLanguage: string;
+    initialInstructions: string;
+    showWordCount: boolean;
+  }>({
     temperature: 0,
     topP: 0,
-    maxLength: 0,
     presencePenalty: 0,
     frequencyPenalty: 0,
     tone: "",
@@ -37,7 +48,7 @@ const SettingsModal = () => {
     setNewSettings({
       temperature: settings.temperature,
       topP: settings.topP,
-      maxLength: settings.maxLength,
+      maxLength: settings.maxLength ?? 0,
       presencePenalty: settings.presencePenalty,
       frequencyPenalty: settings.frequencyPenalty,
       tone: settings.tone,
@@ -547,7 +558,15 @@ const SettingsModal = () => {
 
                   {newSettings.maxLength ? (
                     <div>
-                      <a href="#" className="link text-small">
+                      <a
+                        className="link text-small"
+                        onClick={() => {
+                          setNewSettings({
+                            ...newSettings,
+                            maxLength: undefined,
+                          });
+                        }}
+                      >
                         Reset to default (No limit)
                       </a>
                     </div>

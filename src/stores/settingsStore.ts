@@ -3,7 +3,7 @@ import { create } from "zustand";
 type SettingsStoreData = {
   temperature: number;
   topP: number;
-  maxLength: number;
+  maxLength?: number;
   presencePenalty: number;
   frequencyPenalty: number;
   tone: string;
@@ -25,7 +25,7 @@ type SettingsStoreData = {
   saveSettings: (settings: {
     temperature: number;
     topP: number;
-    maxLength: number | undefined;
+    maxLength?: number;
     presencePenalty: number;
     frequencyPenalty: number;
     tone: string;
@@ -41,7 +41,6 @@ export const useSettingsStore = create<SettingsStoreData>((set) => {
   return {
     temperature: 0,
     topP: 0,
-    maxLength: 0,
     presencePenalty: 0,
     frequencyPenalty: 0,
     tone: "neutral",
@@ -51,7 +50,8 @@ export const useSettingsStore = create<SettingsStoreData>((set) => {
     setTopP: (topP: number) => set({ topP }),
     setMaxLength: (maxLength: number) => set({ maxLength }),
     setPresencePenalty: (presencePenalty: number) => set({ presencePenalty }),
-    setFrequencyPenalty: (frequencyPenalty: number) => set({ frequencyPenalty }),
+    setFrequencyPenalty: (frequencyPenalty: number) =>
+      set({ frequencyPenalty }),
     setTone: (tone: string) => set({ tone }),
     setFormat: (format: string) => set({ format }),
     setWritingStyle: (writingStyle: string) => set({ writingStyle }),
@@ -64,7 +64,7 @@ export const useSettingsStore = create<SettingsStoreData>((set) => {
     saveSettings: (settings: {
       temperature: number;
       topP: number;
-      maxLength: number | undefined;
+      maxLength?: number;
       presencePenalty: number;
       frequencyPenalty: number;
       tone: string;
