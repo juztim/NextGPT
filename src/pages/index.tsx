@@ -325,29 +325,40 @@ const Home: NextPage = () => {
     }
 
     try {
-      const stream = await OpenAI(
-        "chat",
-        {
-          model: "gpt-3.5-turbo",
-          messages: messageHistory,
-          temperature: settings?.temperature ?? 0.5,
-          top_p: settings?.topP ?? 0.9,
-          max_tokens: settings?.maxLength,
-          presence_penalty: settings?.presencePenalty ?? 0,
-          frequency_penalty: settings?.frequencyPenalty ?? 0,
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        { apiKey: session.user.apiKey }
-      );
+        body: JSON.stringify({
+          messageHistory,
+          temperature: settingsStore.temperature,
+          topP: settingsStore.topP,
+          apiKey: session.user.apiKey,
+        })
+      });
+      const data = response.body;
 
+      if (!data) {
+        toast.error("Error generating message");
+        return;
+      }
+
+      const reader = data.getReader();
+      const decoder = new TextDecoder("utf-8");
       let streamedLocalMessage = "";
-      for await (const chunk of yieldStream(stream)) {
-        const text = new TextDecoder("utf-8").decode(chunk);
+      let done = false;
+
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunk = decoder.decode(value);
 
         if (stopGenerating.current) {
           break;
         }
 
-        streamedLocalMessage += text;
+        streamedLocalMessage += chunk;
         setStreamedMessage(streamedLocalMessage);
       }
 

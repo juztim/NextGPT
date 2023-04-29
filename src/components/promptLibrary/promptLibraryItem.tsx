@@ -2,10 +2,12 @@ import type { Prompt } from "@prisma/client";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react";
+import useEnsurePremium from "~/hooks/useEnsurePremium";
 
 const PromptLibraryItem = ({ prompt }: { prompt: Prompt }) => {
   const ctx = api.useContext();
   const session = useSession();
+  const { ensurePremium } = useEnsurePremium();
 
   const { mutate: add, isLoading: isAdding } = api.prompt.addToList.useMutation(
     {
@@ -57,6 +59,7 @@ const PromptLibraryItem = ({ prompt }: { prompt: Prompt }) => {
           <button
             className="btn btn-link p-1"
             onClick={() => {
+              if (!ensurePremium()) return;
               add({ id: prompt.id });
             }}
             disabled={isAdding || isRemoving}

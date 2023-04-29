@@ -2,10 +2,12 @@ import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
 import { type Character } from "@prisma/client";
 import { useSession } from "next-auth/react";
+import useEnsurePremium from "~/hooks/useEnsurePremium";
 
 const CharacterLibraryItem = ({ character }: { character: Character }) => {
   const ctx = api.useContext();
   const { data } = useSession();
+  const { ensurePremium } = useEnsurePremium();
 
   const { mutate: add, isLoading: isAdding } =
     api.character.addToList.useMutation({
@@ -56,6 +58,7 @@ const CharacterLibraryItem = ({ character }: { character: Character }) => {
           <button
             className="btn btn-link p-1"
             onClick={() => {
+              if (!ensurePremium()) return;
               add({ id: character.id });
             }}
             disabled={isAdding || isRemoving}

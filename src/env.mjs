@@ -35,6 +35,7 @@ const server = z.object({
   SMTP_USER: z.string(),
   SMTP_PASSWORD: z.string(),
   SMTP_FROM: z.string(),
+  OPENAI_API_KEY: z.string(),
 });
 
 /**
@@ -67,6 +68,7 @@ const processEnv = {
   STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
   PREMIUM_PLAN_ID: process.env.PREMIUM_PLAN_ID,
   PREMIUM_PRICE_ID: process.env.PREMIUM_PRICE_ID,
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   SMTP_HOST: process.env.SMTP_HOST,
   SMTP_PORT: process.env.SMTP_PORT,
   SMTP_USER: process.env.SMTP_USER,
