@@ -72,15 +72,7 @@ const AiChatMessage = ({
                   toast.success("Copied to clipboard");
                 }}
               >
-                <span>Copy</span>
-              </button>
-
-              <button className="btn-nostyle">
-                <span className="icon icon-like" />
-              </button>
-
-              <button className="btn-nostyle">
-                <span className="icon icon-dislike" />
+                <span className="icon icon-clipboard" />
               </button>
             </div>
           )}
