@@ -337,6 +337,7 @@ const Home: NextPage = () => {
           apiKey: session.user.apiKey,
           frequencyPenalty: settingsStore.frequencyPenalty,
           presencePenalty: settingsStore.presencePenalty,
+          maxLen: settingsStore.maxLength,
         }),
       });
       const data = response.body;

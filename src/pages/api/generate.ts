@@ -12,6 +12,7 @@ export default async function handler(req: Request): Promise<Response> {
     apiKey,
     frequencyPenalty,
     presencePenalty,
+    maxLength,
   } = (await req.json()) as {
     messageHistory: {
       content: string;
@@ -21,6 +22,7 @@ export default async function handler(req: Request): Promise<Response> {
     topP?: number;
     presencePenalty?: number;
     frequencyPenalty?: number;
+    maxLength?: number;
     apiKey: string;
   };
 
@@ -33,6 +35,7 @@ export default async function handler(req: Request): Promise<Response> {
       top_p: topP ?? 0.9,
       presence_penalty: presencePenalty ?? 0,
       frequency_penalty: frequencyPenalty ?? 0,
+      max_tokens: maxLength,
     },
     { apiKey: apiKey }
   );
