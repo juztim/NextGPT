@@ -20,11 +20,10 @@ export const FeedbackRouter = createTRPCRouter({
           user: env.SMTP_USER,
           pass: env.SMTP_PASSWORD,
         },
-        from: env.SMTP_FROM,
       });
 
       return await transporter.sendMail({
-        from: env.SMTP_FROM,
+        from: `"Feedback" <${env.SMTP_FROM}>`,
         subject: `New Feedback (${input.type})`,
         html: `
             <p>${input.feedback}</p>
