@@ -373,8 +373,8 @@ const Home: NextPage = () => {
       if (e instanceof OpenAIError) {
         toast.error(e.message);
       } else {
-        toast.error(" Unknown error generating message");
-        throw e;
+        toast.error("Unknown error generating message");
+        toast.error(JSON.stringify(e));
       }
       setStreamedMessage(null);
     } finally {
@@ -524,7 +524,7 @@ const Home: NextPage = () => {
   }, [transcript]);
 
   useEffect(() => {
-    //innerChatBoxRef.current && autoAnimate(innerChatBoxRef.current);
+    innerChatBoxRef.current && autoAnimate(innerChatBoxRef.current);
   }, [innerChatBoxRef]);
 
   useEffect(() => {
