@@ -373,7 +373,8 @@ const Home: NextPage = () => {
       if (e instanceof OpenAIError) {
         toast.error(e.message);
       } else {
-        toast.error("Unknown error generating message");
+        toast.error(" Unknown error generating message");
+        throw e;
       }
       setStreamedMessage(null);
     } finally {
