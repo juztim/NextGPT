@@ -3,10 +3,18 @@ import Image from "next/image";
 import Logo from "~/images/logo.png";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import ReactGA from "react-ga4";
 
 const Welcome: NextPage = () => {
   const { status } = useSession();
   const router = useRouter();
+
+  ReactGA.send({
+    hitType: "pageview",
+    page: router.pathname,
+    title: "Welcome",
+  });
+
   return (
     <>
       <div className="page-content">

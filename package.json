@@ -37,6 +37,7 @@
     "react-bootstrap": "^2.7.2",
     "react-device-detect": "^2.2.3",
     "react-dom": "18.2.0",
+    "react-ga4": "^2.1.0",
     "react-hot-toast": "^2.4.0",
     "react-intl": "^6.4.1",
     "react-markdown": "^8.0.7",

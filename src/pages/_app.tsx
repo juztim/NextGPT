@@ -1,8 +1,8 @@
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import { Analytics } from "@vercel/analytics/react";
 export { reportWebVitals } from "next-axiom";
+import ReactGA from "react-ga4";
 
 import { api } from "~/utils/api";
 
@@ -42,6 +42,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   const { locale: browserLocale } = useRouter();
+  ReactGA.initialize("G-GR6NHGRXN1");
 
   return (
     <>
@@ -77,7 +78,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <SessionProvider session={session}>
           <Toaster position="top-center" />
           <Component {...pageProps} />
-          <Analytics />
         </SessionProvider>
       </IntlProvider>
       <Script src="/js/jquery-3.6.3.min.js" strategy="beforeInteractive" />

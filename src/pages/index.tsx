@@ -47,6 +47,7 @@ import {
 import { FormattedMessage, useIntl } from "react-intl";
 import { useModalStore } from "~/stores/modalStore";
 import ContactUsModal from "~/components/modals/contactUs";
+import ReactGA from "react-ga4";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -73,6 +74,8 @@ const Home: NextPage = () => {
 
   const settingsStore = useSettingsStore();
   const modalStore = useModalStore();
+
+  ReactGA.send({ hitType: "pageview", page: router.pathname, title: "Home" });
 
   useAutosizeTextArea(textAreaRef.current, message);
 
