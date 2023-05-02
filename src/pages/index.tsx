@@ -141,7 +141,7 @@ const Home: NextPage = () => {
         toast.error("Error generating image");
       },
       onSuccess(imageUrl) {
-        addMessage({
+        void addMessage({
           newMessage: `![Generated Image](${imageUrl})`,
           botMessage: true,
           conversationId: activeChatId,
@@ -149,7 +149,7 @@ const Home: NextPage = () => {
       },
     });
 
-  const { mutate: addMessage, isLoading: isSendingMessage } =
+  const { mutateAsync: addMessage, isLoading: isSendingMessage } =
     api.openAi.addMessage.useMutation({
       onError: (e) => {
         const errorMessage = e.data?.zodError?.fieldErrors.newMessage;
@@ -246,17 +246,17 @@ const Home: NextPage = () => {
       },
     });
 
-  const generateImage = () => {
+  const generateImage = async () => {
     const prompt = message.toLowerCase().split("/imagine")[1];
     if (!prompt || prompt.trim() === "") {
       toast.error("Please enter a prompt");
       return;
     }
-    addMessage({
+    await addMessage({
       newMessage: message,
       conversationId: activeChatId,
     });
-    setMessage("");
+
     createImage({
       prompt: prompt.trim(),
     });
@@ -285,7 +285,7 @@ const Home: NextPage = () => {
       return;
     }
 
-    addMessage({
+    await addMessage({
       newMessage: message,
       conversationId: activeChatIdRef.current,
     });
@@ -364,7 +364,7 @@ const Home: NextPage = () => {
         setStreamedMessage(streamedLocalMessage);
       }
 
-      addMessage({
+      await addMessage({
         newMessage: streamedLocalMessage,
         conversationId: activeChatIdRef.current,
         botMessage: true,
@@ -446,7 +446,7 @@ const Home: NextPage = () => {
       setStreamedMessage(streamedLocalMessage);
     }
 
-    addMessage({
+    await addMessage({
       newMessage: streamedLocalMessage,
       conversationId: activeChatIdRef.current,
       botMessage: true,
