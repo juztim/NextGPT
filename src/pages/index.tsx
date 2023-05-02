@@ -362,23 +362,27 @@ const Home: NextPage = () => {
 
         streamedLocalMessage += chunk;
         setStreamedMessage(streamedLocalMessage);
+
+        console.log("Received chunk: ", chunk);
+        console.log("Streamed message: ", streamedLocalMessage);
       }
 
+      console.log("Sending message to server: ", streamedLocalMessage);
       await addMessage({
         newMessage: streamedLocalMessage,
         conversationId: activeChatIdRef.current,
         botMessage: true,
       });
+      console.log("Message sent to server: ", streamedLocalMessage);
     } catch (e) {
       if (e instanceof OpenAIError) {
         toast.error(e.message);
       } else {
         toast.error("Unknown error generating message");
-        toast.error(JSON.stringify(e));
       }
-      setStreamedMessage(null);
     } finally {
       stopGenerating.current = false;
+      setStreamedMessage(null);
     }
   };
 
