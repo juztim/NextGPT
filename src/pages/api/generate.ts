@@ -42,8 +42,11 @@ export default async function handler(req: Request): Promise<Response> {
     );
     return new Response(stream);
   } catch (e) {
-    if (e instanceof OpenAIError)
+    if (e instanceof OpenAIError) {
       return new Response(e.message, { status: 500 });
-    throw e;
+    }
+    return new Response(`Unhandled Error: ${JSON.stringify(e)}`, {
+      status: 500,
+    });
   }
 }
