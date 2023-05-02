@@ -36,7 +36,7 @@ export default async function handler(req: Request): Promise<Response> {
         top_p: topP ?? 0.9,
         presence_penalty: presencePenalty ?? 0,
         frequency_penalty: frequencyPenalty ?? 0,
-        max_tokens: maxLength == 0 ? undefined : maxLength ?? undefined,
+        // max_tokens: maxLength == 0 ? undefined : maxLength ?? undefined,
       },
       { apiKey: apiKey }
     );
