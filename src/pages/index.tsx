@@ -4,7 +4,7 @@ import Image from "next/image";
 import Logo from "~/images/logo.png";
 import ChatMessage from "~/components/chatMessage";
 import { api } from "~/utils/api";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import ChatFolder from "~/components/chatFolder";
 import AiChatMessage from "~/components/aiChatMessage";
@@ -174,6 +174,7 @@ const Home: NextPage = () => {
           setStreamedMessage(null);
         }
         await ctx.openAi.getAllChats.refetch();
+        setMessage("");
       },
     });
 
@@ -288,8 +289,6 @@ const Home: NextPage = () => {
       newMessage: message,
       conversationId: activeChatIdRef.current,
     });
-
-    setMessage("");
 
     resetTranscript();
 
