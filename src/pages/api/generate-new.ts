@@ -1,25 +1,12 @@
-import { ChatOpenAI } from "langchain/chat_models/openai";
 import { AIChatMessage, HumanChatMessage } from "langchain/schema";
-import { NextApiRequest, NextApiResponse } from "next";
-import {
-  BufferMemory,
-  ChatMessageHistory,
-  ConversationSummaryMemory,
-} from "langchain/memory";
-import { LLMChain, PromptTemplate } from "langchain";
-import { ConversationChain } from "langchain/chains";
-import {
-  ChatPromptTemplate,
-  HumanMessagePromptTemplate,
-  MessagesPlaceholder,
-  SystemMessagePromptTemplate,
-} from "langchain/prompts";
+import makeChain from "~/server/llm/makeChain";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const { messageHistory, apiKey, newMessage } = (await req.body) as {
+export const config = {
+  runtime: "edge",
+};
+
+export default async function handler(req: Request): Promise<Response> {
+  const { messageHistory, apiKey, newMessage } = (await req.json()) as {
     messageHistory: {
       role: "user" | "system" | "assistant";
       content: string;
@@ -36,48 +23,17 @@ export default async function handler(
     }
   });
 
-  const encoder = new TextEncoder();
+  const stream = new TransformStream();
 
-  res.writeHead(200, {
-    "Content-Type": "text/event-stream",
-    "Cache-Control": "no-cache no-transform",
-    Connection: "keep-alive",
-  });
+  const chain = makeChain(stream, apiKey, pastMessages);
 
-  const chat = new ChatOpenAI({
-    openAIApiKey: apiKey,
-    modelName: "gpt-3.5-turbo",
-    streaming: true,
-    callbacks: [
-      {
-        handleLLMNewToken(token: string) {
-          res.write(encoder.encode(token));
-        },
-      },
-    ],
-  });
-
-  const chatPrompt = ChatPromptTemplate.fromPromptMessages([
-    SystemMessagePromptTemplate.fromTemplate(
-      "The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know."
-    ),
-    new MessagesPlaceholder("history"),
-    HumanMessagePromptTemplate.fromTemplate("{input}"),
-  ]);
-
-  const chain = new ConversationChain({
-    memory: new BufferMemory({
-      returnMessages: true,
-      memoryKey: "history",
-      chatHistory: new ChatMessageHistory(pastMessages),
-    }),
-    prompt: chatPrompt,
-    llm: chat,
-  });
-
-  await chain.call({
+  void chain.call({
     input: newMessage,
   });
 
-  res.end();
+  return new Response(stream.readable, {
+    headers: {
+      "Content-Type": "text/event-stream",
+    },
+  });
 }
