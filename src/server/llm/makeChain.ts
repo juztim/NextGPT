@@ -49,6 +49,8 @@ export default function makeChain(
     memory: new BufferWindowMemory({
       chatHistory: new ChatMessageHistory(pastMessages),
       k: 10,
+      memoryKey: "history",
+      returnMessages: true,
     }),
     prompt: chatPrompt,
     llm: chat,
