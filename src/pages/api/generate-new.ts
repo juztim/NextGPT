@@ -36,6 +36,8 @@ export default async function handler(
     }
   });
 
+  const encoder = new TextEncoder();
+
   const chat = new ChatOpenAI({
     openAIApiKey: apiKey,
     modelName: "gpt-3.5-turbo",
@@ -43,7 +45,7 @@ export default async function handler(
     callbacks: [
       {
         handleLLMNewToken(token: string) {
-          res.write(token);
+          res.write(encoder.encode(token));
         },
       },
     ],
