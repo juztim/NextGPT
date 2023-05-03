@@ -6,7 +6,12 @@ import {
   SystemMessagePromptTemplate,
 } from "langchain/prompts";
 import { ConversationChain } from "langchain/chains";
-import { BufferWindowMemory, ChatMessageHistory } from "langchain/memory";
+import {
+  BufferMemory,
+  BufferWindowMemory,
+  ChatMessageHistory,
+  ConversationSummaryMemory,
+} from "langchain/memory";
 import type { HumanChatMessage, SystemChatMessage } from "langchain/schema";
 
 export default function makeChain(
@@ -47,8 +52,6 @@ export default function makeChain(
 
   const chain = new ConversationChain({
     memory: new BufferWindowMemory({
-      returnMessages: true,
-      memoryKey: "history",
       chatHistory: new ChatMessageHistory(pastMessages),
       k: 10,
     }),
