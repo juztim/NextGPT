@@ -6,12 +6,7 @@ import {
   SystemMessagePromptTemplate,
 } from "langchain/prompts";
 import { ConversationChain } from "langchain/chains";
-import {
-  BufferMemory,
-  BufferWindowMemory,
-  ChatMessageHistory,
-  ConversationSummaryMemory,
-} from "langchain/memory";
+import { BufferWindowMemory, ChatMessageHistory } from "langchain/memory";
 import type { HumanChatMessage, SystemChatMessage } from "langchain/schema";
 
 export default function makeChain(
