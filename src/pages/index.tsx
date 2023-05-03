@@ -327,13 +327,14 @@ const Home: NextPage = () => {
     }
 
     try {
-      const response = await fetch("/api/generate", {
+      const response = await fetch("/api/generate-new", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           messageHistory,
+          newMessage: message,
           temperature: settingsStore.temperature,
           topP: settingsStore.topP,
           apiKey: session.user.apiKey,

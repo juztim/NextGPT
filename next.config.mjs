@@ -21,6 +21,15 @@ const config = withAxiom({
     defaultLocale: "en",
   },
 
+  webpack(config) {
+    config.experiments = {
+      asyncWebAssembly: true,
+      layers: true,
+    };
+
+    return config;
+  },
+
   swcMinify: true,
 
   images: {
