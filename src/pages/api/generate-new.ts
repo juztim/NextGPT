@@ -38,7 +38,11 @@ export default async function handler(
 
   const encoder = new TextEncoder();
 
-  res.setHeader("Content-Type", "text/stream");
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache no-transform",
+    Connection: "keep-alive",
+  });
 
   const chat = new ChatOpenAI({
     openAIApiKey: apiKey,
