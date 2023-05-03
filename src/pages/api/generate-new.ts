@@ -38,6 +38,8 @@ export default async function handler(
 
   const encoder = new TextEncoder();
 
+  res.setHeader("Content-Type", "text/stream");
+
   const chat = new ChatOpenAI({
     openAIApiKey: apiKey,
     modelName: "gpt-3.5-turbo",
