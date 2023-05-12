@@ -48,6 +48,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useModalStore } from "~/stores/modalStore";
 import ContactUsModal from "~/components/modals/contactUs";
 import ReactGA from "react-ga4";
+import FilePickerModal from "~/components/modals/filePicker";
 
 const Home: NextPage = () => {
   const [activeChatId, setActiveChatId] = useState<string>("");
@@ -1069,7 +1070,7 @@ const Home: NextPage = () => {
                     <span
                       className="icon icon-paper-clip icon-md me-2 mt-3"
                       onClick={() => {
-                        toast.error("Coming soon!");
+                        modalStore.setActiveModal("pickFile");
                       }}
                       style={{ cursor: "pointer" }}
                     />
@@ -1204,6 +1205,13 @@ const Home: NextPage = () => {
           />
 
           <ContactUsModal />
+
+          <FilePickerModal
+            message={message}
+            setMessage={(message: string) => {
+              setMessage(message);
+            }
+          } />
         </div>
       </DndContext>
     </>
