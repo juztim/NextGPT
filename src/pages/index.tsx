@@ -1208,7 +1208,7 @@ const Home: NextPage = () => {
 
           <FilePickerModal
             message={message}
-            setMessage={(message: string) => {
+            setMessage={(message) => {
               setMessage(message);
             }
           } />

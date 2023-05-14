@@ -1,5 +1,5 @@
 import { useModalStore } from "~/stores/modalStore";
-import { Button, Modal, Form, FloatingLabel, FormLabel } from "react-bootstrap";
+import { Button, Modal, Form, FloatingLabel } from "react-bootstrap";
 import React, { useRef, useState } from "react";
 import mime from "mime-types";
 import { toast } from "react-hot-toast";
@@ -21,10 +21,10 @@ const FilePickerModal = ({ message, setMessage }: FilePickerModalProps) => {
   }
 
   function onApply() {
-    if (message.trim() == "") {
+    if (message.trim() === "") {
       setMessage(content);
     } else {
-      setMessage(message + `\n\n${content}`);
+      setMessage(`${message}\n\n${content}`);
     }
     toast.success("Cheers! Your file has been successfully uploaded and its text has been applied to the chat box. Let's keep the conversation going!")
     onDismiss()
@@ -42,7 +42,7 @@ const FilePickerModal = ({ message, setMessage }: FilePickerModalProps) => {
         const reader = new FileReader()
         reader.readAsText(selectedFile)
         reader.onload = () => {
-          const result: string = reader.result as string;
+          const result = reader.result as string;
           setContent(result);
         }
       } else {
@@ -54,7 +54,7 @@ const FilePickerModal = ({ message, setMessage }: FilePickerModalProps) => {
   return (
     <Modal
       show={modalStore.activeModal === "pickFile"}
-      onHide={() => onDismiss()}
+      onHide={onDismiss}
       centered
     >
       <Modal.Header closeButton>
@@ -66,18 +66,20 @@ const FilePickerModal = ({ message, setMessage }: FilePickerModalProps) => {
             <Form.Control type="file" style={{padding: '0.375rem 0.75rem'}} onChange={handleFileChange} ref={fileInputRef} />
           </Form.Group>
         </Form>
-        {content ?
-          <FloatingLabel
-            label="Preview"
-            className="mb-3"
-          >
-            <Form.Control
-              as="textarea"
-              disabled={true}
-              value={content}
-              onChange={(newContent) => {setContent(newContent.target.value)}}
-              style={{height: '100px'}} />
-          </FloatingLabel>: null
+        {
+          content && (
+            <FloatingLabel
+              label="Preview"
+              className="mb-3"
+            >
+              <Form.Control
+                as="textarea"
+                disabled={true}
+                value={content}
+                onChange={(newContent) => {setContent(newContent.target.value)}}
+                style={{height: '100px'}} />
+            </FloatingLabel>
+          )
         }
         <div style={{display: "flex", justifyContent: "space-between"}}>
           <Button className="btn btn-secondary" onClick={onDismiss}>Cancel</Button>
