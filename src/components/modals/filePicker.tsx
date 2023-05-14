@@ -82,7 +82,7 @@ const FilePickerModal = ({ message, setMessage }: FilePickerModalProps) => {
           )
         }
         <div style={{display: "flex", justifyContent: "space-between"}}>
-          <Button className="btn btn-secondary" onClick={onDismiss}>Cancel</Button>
+          <Button className="btn btn-outline-primary" onClick={onDismiss}>Cancel</Button>
           <Button onClick={onApply}>Add to message</Button>
         </div>
       </Modal.Body>
